@@ -8,6 +8,9 @@
             <p @click="gotoPage('/user')">
                 用户
             </p>
+            <p @click="gotoPage('/login')">
+                登录
+            </p>
         </div>
         <div class="right">
             <div v-if="true" class="user-wrapper">
@@ -91,6 +94,10 @@ export default {
                 height: 30px;
                 border-radius: 30px;
                 cursor: pointer;
+
+                .u-icon {
+                    height: 30px;
+                }
             }
         }
 
