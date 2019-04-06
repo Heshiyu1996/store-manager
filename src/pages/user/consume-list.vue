@@ -1,12 +1,12 @@
 <template>
-    <div class="client-index">
-        我是顾客
+    <div class="consume-list">
+        consume-list
     </div>
 </template>
 
 <script>
 export default {
-    name: 'client-index',
+    name: 'consume-list',
     data() {
         return {}
     },
@@ -15,6 +15,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.client-index {
+.consume-list {
 }
 </style>

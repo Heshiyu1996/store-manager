@@ -47,7 +47,7 @@ export default {
     name: 'manager-index',
     data() {
         return {
-            activeIndex: '1'
+            activeIndex: 'client'
         }
     },
     methods: {

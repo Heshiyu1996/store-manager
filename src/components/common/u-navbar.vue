@@ -1,11 +1,27 @@
 <template>
     <nav class="u-navbar navbar fix-top">
         <div class="left" @click="goHomePage">大笨象密室逃脱 | 管理平台</div>
+        <div>
+            <p @click="gotoPage('/manager')">
+                管理员
+            </p>
+            <p @click="gotoPage('/user')">
+                用户
+            </p>
+        </div>
         <div class="right">
             <div v-if="true" class="user-wrapper">
-                <div class="avatar-wrapper">
-                    <u-icon name="avatar.png"></u-icon>
-                </div>
+                <span class="name">大笨象密室深圳一店</span>
+                <el-dropdown @command="handleAvatar">
+                    <div class="avatar-wrapper">
+                        <u-icon name="avatar.png"></u-icon>
+                    </div>
+                    <el-dropdown-menu slot="dropdown">
+                        <el-dropdown-item command="updateInfo">编辑信息</el-dropdown-item>
+                        <el-dropdown-item command="changePassword">修改密码</el-dropdown-item>
+                        <el-dropdown-item command="logout" divided>退出</el-dropdown-item>
+                    </el-dropdown-menu>
+                </el-dropdown>
             </div>
             <div v-else class="sign-wrapper">
                 <span class="sign sign-in">登录</span>
@@ -24,6 +40,12 @@ export default {
     methods: {
         goHomePage() {
             this.$router.push('/')
+        },
+        handleAvatar(ev) {
+            console.log(ev)
+        },
+        gotoPage(path) {
+            this.$router.push(path)
         }
     }
 }
@@ -55,11 +77,21 @@ export default {
 
         .user-wrapper {
             display: inline-block;
-            width: 30px;
-            height: 30px;
-            border-radius: 30px;
-            cursor: pointer;
-            background: red;
+
+            .name {
+                line-height: 30px;
+                width: 200px;
+                max-width: 200px;
+                vertical-align: middle;
+                margin-right: 10px;
+            }
+
+            .avatar-wrapper {
+                width: 30px;
+                height: 30px;
+                border-radius: 30px;
+                cursor: pointer;
+            }
         }
 
         .sign-wrapper {
