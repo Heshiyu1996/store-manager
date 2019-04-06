@@ -1,24 +1,58 @@
 <template>
     <div class="manager-index">
         <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
-            <el-menu-item index="1">订单管理</el-menu-item>
+            <el-submenu index="1">
+                <template slot="title"
+                    >订单管理</template
+                >
+                <el-menu-item index="1-1">订单列表</el-menu-item>
+                <el-menu-item index="1-2">历史订单</el-menu-item>
+                <el-menu-item index="1-3">删除记录</el-menu-item>
+                <el-menu-item index="1-4">流失单管理</el-menu-item>
+            </el-submenu>
+
             <el-submenu index="2">
                 <template slot="title"
-                    >我的工作台</template
+                    >支付类型</template
                 >
-                <el-menu-item index="2-1">选项1</el-menu-item>
-                <el-menu-item index="2-2">选项2</el-menu-item>
-                <el-menu-item index="2-3">选项3</el-menu-item>
-                <el-submenu index="2-4">
-                    <template slot="title"
-                        >选项4</template
-                    >
-                    <el-menu-item index="2-4-1">选项1</el-menu-item>
-                    <el-menu-item index="2-4-2">选项2</el-menu-item>
-                    <el-menu-item index="2-4-3">选项3</el-menu-item>
-                </el-submenu>
+                <el-menu-item index="2-1">类型列表</el-menu-item>
+                <el-menu-item index="2-2">分组列表</el-menu-item>
             </el-submenu>
-            <el-menu-item index="3" disabled>目标管理</el-menu-item>
+
+            <el-menu-item index="3">失信名单</el-menu-item>
+            <el-menu-item index="4">主题管理</el-menu-item>
+
+            <el-submenu index="5">
+                <template slot="title"
+                    >密室统计</template
+                >
+                <el-menu-item index="5-1">收入统计</el-menu-item>
+                <el-menu-item index="5-2">订单统计</el-menu-item>
+            </el-submenu>
+
+            <el-menu-item index="6">员工信息</el-menu-item>
+            <el-menu-item index="7">客户来源</el-menu-item>
+            <el-menu-item index="8">钥匙管理</el-menu-item>
+            <el-menu-item index="9">目标管理</el-menu-item>
+
+            <el-submenu index="10">
+                <template slot="title"
+                    >物料管理</template
+                >
+                <el-menu-item index="10-1">库位管理</el-menu-item>
+                <el-menu-item index="10-2">库存管理</el-menu-item>
+                <el-menu-item index="10-2">出库单</el-menu-item>
+                <el-menu-item index="10-2">入库单</el-menu-item>
+            </el-submenu>
+            <el-menu-item index="11">会员系统</el-menu-item>
+
+            <!-- <el-submenu index="11">
+                <template slot="title"
+                    >会员系统</template
+                >
+                <el-menu-item index="10-1">会员列表</el-menu-item>
+                <el-menu-item index="10-2"></el-menu-item>
+            </el-submenu> -->
         </el-menu>
     </div>
 </template>

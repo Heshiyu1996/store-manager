@@ -1,6 +1,6 @@
 <template>
     <nav class="u-navbar navbar fix-top">
-        <div class="left">大笨象密室逃脱 | 管理平台</div>
+        <div class="left" @click="goHomePage">大笨象密室逃脱 | 管理平台</div>
         <div class="right">
             <div v-if="true" class="user-wrapper">
                 <div class="avatar-wrapper">
@@ -21,7 +21,11 @@ export default {
     data() {
         return {}
     },
-    methods: {}
+    methods: {
+        goHomePage() {
+            this.$router.push('/')
+        }
+    }
 }
 </script>
 
@@ -43,6 +47,7 @@ export default {
         display: inline-block;
         min-width: 300px;
         @include font-large(16px, $white);
+        cursor: pointer;
     }
 
     .right {

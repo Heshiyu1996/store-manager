@@ -1,7 +1,6 @@
 <template>
     <div class="main">
         <u-navbar></u-navbar>
-
         <router-view />
     </div>
 </template>
@@ -17,6 +16,6 @@ export default {
 
 <style lang="scss" scoped>
 .main {
-    padding: 0 40px;
+    padding: 0 20px;
 }
 </style>
