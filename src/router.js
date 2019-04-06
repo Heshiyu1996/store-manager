@@ -16,7 +16,27 @@ export default new Router({
                 {
                     path: '/manager',
                     name: 'manager',
-                    component: () => import('@/pages/manager/index')
+                    component: () => import('@/pages/manager/index'),
+                    children: [
+                        // 1-a[订单管理]订单列表
+                        {
+                            path: 'order-list',
+                            name: 'order',
+                            component: () => import('@/pages/manager/order/list')
+                        },
+                        // 1-b历史订单
+                        {
+                            path: 'order-history',
+                            name: 'order',
+                            component: () => import('@/pages/manager/order/history')
+                        },
+                        // 10-会员系统
+                        {
+                            path: 'client',
+                            name: 'client',
+                            component: () => import('@/pages/manager/client/index')
+                        }
+                    ]
                 },
                 // 2-用户
                 {
