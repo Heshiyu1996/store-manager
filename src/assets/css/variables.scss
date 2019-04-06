@@ -1,0 +1,65 @@
+$content-width: 1200px;
+
+$white: #fff;
+$black: #000;
+$primary-color: #337EFF;
+$border-color: #E6E6EB;
+$brand-disabled: #c4ccd8;
+$normal-color-m: #222222;
+$normal-color-s: #333333;
+$tip-color-m: #666666;
+$tip-color-s: #CCCCCC;
+$error-color: #F24957;
+$component-height: 32px;
+
+$font-family-medium: 'PingFangSC-Medium', 'Microsoft YaHei', Helvetica, Tahoma, Arial,
+    'Hiragino Sans GB', 'WenQuanYi Micro Hei', sans-serif;
+$font-family-regular: 'PingFangSC-Regular', 'Microsoft YaHei', Helvetica, Tahoma, Arial,
+    'Hiragino Sans GB', 'WenQuanYi Micro Hei', sans-serif;
+@mixin font-class($fontFamily, $fontSize, $fontColor, $isBold) {
+    font-family: $fontFamily;
+    font-size: $fontSize;
+    @if $isBold {
+        font-weight: bold;
+    }
+    color: $fontColor;
+    letter-spacing: 0;
+}
+
+@mixin font-large($size: 14px, $color: $normal-color-m, $isBlod: false) {
+    @include font-class($font-family-medium, $size, $color, $isBlod);
+}
+
+@mixin font-normal($size: 14px, $color: $normal-color-m, $isBlod: false) {
+    @include font-class($font-family-regular, $size, $color, $isBlod);
+}
+
+// 居中
+@mixin center {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+// 内容居中
+@mixin content-center {
+    width: $content-width;
+    margin: 0 auto;
+}
+
+// 单行省略
+@mixin ellipse() {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+// 多行省略
+@mixin ellipse-more($col) {
+    display: -webkit-box;
+    text-overflow: ellipsis;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: $col;
+    overflow: hidden;
+}
