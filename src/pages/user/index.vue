@@ -1,14 +1,12 @@
 <template>
-    <div class="main">
-        <u-navbar></u-navbar>
-
-        <router-view />
+    <div class="user-index">
+        我是user-index
     </div>
 </template>
 
 <script>
 export default {
-    name: 'list-main',
+    name: 'user-index',
     data() {
         return {}
     }
@@ -16,7 +14,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.main {
-    padding: 0 40px;
+.user-index {
 }
 </style>

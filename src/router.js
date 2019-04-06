@@ -10,18 +10,19 @@ export default new Router({
             path: '/',
             name: 'main',
             component: require('@/pages/main').default,
+            redirect: 'manager',
             children: [
                 // 1-管理员
                 {
                     path: '/manager',
                     name: 'manager',
-                    component: () => import('@/pages/main')
+                    component: () => import('@/pages/manager/index')
                 },
                 // 2-用户
                 {
                     path: '/user',
                     name: 'user',
-                    component: () => import('@/pages/main')
+                    component: () => import('@/pages/user/index')
                 }
             ]
         },
