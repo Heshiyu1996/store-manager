@@ -5,12 +5,16 @@ Vue.use(Router)
 
 export default new Router({
     routes: [
-        // 1-管理员
         {
             path: '/',
+            redirect: { name: 'manager' }
+        },
+        // 1-管理员
+        {
+            path: '/manager',
             name: 'manager',
             component: () => import('@/pages/manager/index'),
-            redirect: { name: 'login' },
+            // redirect: { name: 'login' },
             children: [
                 // 1-a[订单管理]订单列表
                 {
@@ -18,11 +22,23 @@ export default new Router({
                     name: 'order-list',
                     component: () => import('@/pages/manager/order/list')
                 },
-                // 1-b历史订单
+                // 1-b[订单管理]历史订单
                 {
                     path: 'order-history',
                     name: 'order-history',
                     component: () => import('@/pages/manager/order/history')
+                },
+                // 2-a[支付类型]类型列表
+                {
+                    path: 'pay-type-list',
+                    name: 'pay-type-list',
+                    component: () => import('@/pages/manager/pay-type/list')
+                },
+                // 2-b[支付类型]分组列表
+                {
+                    path: 'pay-type-group-list',
+                    name: 'pay-type-group-list',
+                    component: () => import('@/pages/manager/pay-type/group-list')
                 },
                 // 10-会员系统
                 {

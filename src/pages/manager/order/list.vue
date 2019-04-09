@@ -8,9 +8,7 @@
 export default {
     name: 'order-list',
     data() {
-        return {
-            activeIndex: '1'
-        }
+        return {}
     },
     methods: {}
 }

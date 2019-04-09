@@ -16,7 +16,6 @@ export default {
     },
     watch: {
         visible() {
-            console.log(1)
             this.canValidator = true
         }
     }

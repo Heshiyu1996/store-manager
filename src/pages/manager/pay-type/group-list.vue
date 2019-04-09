@@ -1,12 +1,12 @@
 <template>
-    <div class="order-history">
-        历史订单
+    <div class="pay-group-list">
+        支付类型分组
     </div>
 </template>
 
 <script>
 export default {
-    name: 'order-history',
+    name: 'pay-group-list',
     data() {
         return {}
     },
@@ -15,6 +15,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.order-history {
+.pay-group-list {
 }
 </style>

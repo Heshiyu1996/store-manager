@@ -3,16 +3,16 @@
         <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
             <el-submenu index="order">
                 <template slot="title">订单管理</template>
-                <el-menu-item index="list">订单列表</el-menu-item>
-                <el-menu-item index="history">历史订单</el-menu-item>
-                <el-menu-item index="delete">删除记录</el-menu-item>
-                <el-menu-item index="loss">流失单管理</el-menu-item>
+                <el-menu-item index="order-list">订单列表</el-menu-item>
+                <el-menu-item index="order-history">历史订单</el-menu-item>
+                <el-menu-item index="order-delete">删除记录</el-menu-item>
+                <el-menu-item index="order-loss">流失单管理</el-menu-item>
             </el-submenu>
 
-            <el-submenu index="2">
+            <el-submenu index="pay-type">
                 <template slot="title">支付类型</template>
-                <el-menu-item index="2-1">类型列表</el-menu-item>
-                <el-menu-item index="2-2">分组列表</el-menu-item>
+                <el-menu-item index="pay-type-list">类型列表</el-menu-item>
+                <el-menu-item index="pay-type-group-list">分组列表</el-menu-item>
             </el-submenu>
 
             <el-menu-item index="3">失信名单</el-menu-item>
@@ -47,13 +47,14 @@ export default {
     name: 'manager-index',
     data() {
         return {
-            activeIndex: 'client'
+            activeIndex: 'pay-type-list'
         }
     },
     methods: {
         handleSelect(key, keyPath) {
             console.log(key, keyPath)
-            const path = keyPath.join('-')
+            const path = keyPath[1]
+            this.activeIndex = path
             this.$router.push(`/manager/${path}`)
         }
     }
