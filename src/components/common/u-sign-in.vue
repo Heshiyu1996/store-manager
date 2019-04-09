@@ -8,10 +8,12 @@
             <div class="content">
                 <el-form ref="form" :model="form">
                     <el-form-item>
-                        <el-input v-model="form.account" placeholder="请输入用户名"></el-input>
+                        <u-input v-model.trim="form.account" :regex="/^[a-zA-Z0-9\u4e00-\u9fa5]+$/g" maxLength="100" placeholder="请输入用户名" />
+                        <u-error :visible="!$v.form.account.required" text="用户名不能为空" />
                     </el-form-item>
                     <el-form-item>
-                        <el-input v-model="form.password" placeholder="请输入密码"></el-input>
+                        <u-input v-model.trim="form.password" maxLength="100" placeholder="请输入密码" type="password" />
+                        <u-error :visible="!$v.form.password.required" text="密码不能为空" />
                     </el-form-item>
                     <el-form-item>
                         <el-checkbox v-model="passwordMemory">记住密码</el-checkbox>
@@ -19,7 +21,7 @@
                     </el-form-item>
 
                     <el-form-item class="operation">
-                        <el-button type="primary" @click="onSubmit" round>登录</el-button>
+                        <el-button type="primary" @click="onSubmit" :disabled="$v.$invalid" round>登录</el-button>
                     </el-form-item>
                 </el-form>
             </div>
@@ -28,6 +30,8 @@
 </template>
 
 <script>
+import { required } from 'vuelidate/lib/validators'
+
 export default {
     props: {},
     data() {
@@ -39,6 +43,12 @@ export default {
 
             passwordMemory: false,
             value: ''
+        }
+    },
+    validations: {
+        form: {
+            account: { required },
+            password: { required }
         }
     },
     methods: {
@@ -67,11 +77,15 @@ export default {
 
         /deep/ .el-card__body {
             padding: 40px;
+            padding-top: 30px;
 
             .content {
                 .el-input,
                 .el-button {
                     width: 320px;
+                }
+                .el-form-item {
+                    margin-bottom: 16px;
                 }
             }
 

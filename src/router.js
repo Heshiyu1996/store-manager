@@ -7,9 +7,10 @@ export default new Router({
     routes: [
         // 1-管理员
         {
-            path: '/manager',
+            path: '/',
             name: 'manager',
             component: () => import('@/pages/manager/index'),
+            redirect: { name: 'login' },
             children: [
                 // 1-a[订单管理]订单列表
                 {

@@ -1,7 +1,7 @@
 <template>
     <div class="login">
         <transition name="el-zoom-in-center" mode="out-in">
-            <u-sign-in v-if="!showSignIn" @toggle="toggleBox" />
+            <u-sign-in v-if="showSignIn" @toggle="toggleBox" />
             <u-sign-up v-else @toggle="toggleBox" />
         </transition>
     </div>
