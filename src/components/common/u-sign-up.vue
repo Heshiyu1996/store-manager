@@ -8,16 +8,17 @@
             <div class="content">
                 <el-form ref="form" :model="form">
                     <el-form-item>
-                        <u-input v-model="form.account" placeholder="请输入用户名" />
+                        <u-input v-model="form.account" placeholder="请输入用户名" lazy />
                         <u-error :visible="!$v.form.account.required" text="请输入用户名" />
                         <u-error :visible="!$v.form.account.checkFormat" text="支持长度为2~15的英文、中文、下划线，不能包含空格" />
                     </el-form-item>
                     <el-form-item>
-                        <u-input v-model="form.password" placeholder="请输入密码" />
+                        <u-input v-model="form.password" placeholder="请输入密码" type="password" />
                         <u-error :visible="!$v.form.password.required" text="请输入密码" />
+                        <u-error :visible="!$v.form.password.minLength" text="密码不能少于6个字符" />
                     </el-form-item>
                     <el-form-item>
-                        <u-input v-model="form.passwordConfirm" placeholder="请再次输入密码" lazy />
+                        <u-input v-model="form.passwordConfirm" placeholder="请再次输入密码" type="password" lazy />
                         <u-error :visible="!$v.form.passwordConfirm.required" text="请再次输入密码" />
                         <u-error :visible="!$v.form.passwordConfirm.isTheSame" text="两次输入的密码不一致" />
                     </el-form-item>
@@ -26,7 +27,7 @@
                         <u-error :visible="!$v.form.realName.required" text="请输入姓名" />
                     </el-form-item>
                     <el-form-item>
-                        <u-input v-model="form.phone" :regex="/^[0-9\u4e00-\u9fa5]+$/g" maxLength="11" placeholder="请输入手机号" lazy />
+                        <u-input v-model="form.phone" :regex="/^[0-9\u4e00-\u9fa5]+$/g" maxLength="11" placeholder="请输入手机号" />
                         <u-error :visible="!$v.form.phone.required" text="手机必填" />
                         <u-error :visible="!$v.form.phone.isPhone" text="手机格式不正确" />
                     </el-form-item>
@@ -35,7 +36,7 @@
                     </el-form-item>
 
                     <el-form-item class="operation">
-                        <el-button type="primary" @click="onSubmit" round>注册</el-button>
+                        <el-button type="primary" @click="onSubmit" :disabled="$v.$invalid" round>注册</el-button>
                     </el-form-item>
                 </el-form>
             </div>
@@ -44,7 +45,7 @@
 </template>
 
 <script>
-import { required, helpers } from 'vuelidate/lib/validators'
+import { required, helpers, minLength } from 'vuelidate/lib/validators'
 
 export default {
     props: {},
@@ -71,7 +72,10 @@ export default {
                     return !helpers.req(value) || regex_account.test(value) // 有值时!helpers.req为false，这时候才采取后面校验；没值时，不校验
                 }
             },
-            password: { required },
+            password: {
+                required,
+                minLength: minLength(6)
+            },
             passwordConfirm: {
                 required,
                 isTheSame(value) {
@@ -85,7 +89,8 @@ export default {
                     let regex_phone = /^1[345678][0-9]{9}$/
                     return !helpers.req(value) || regex_phone.test(value) // 有值时!helpers.req为false，这时候才采取后面校验；没值时，不校验
                 }
-            }
+            },
+            birthday: { required }
         }
     },
     methods: {
@@ -93,10 +98,7 @@ export default {
             this.$emit('toggle')
         },
         onSubmit() {
-            console.log('submit!')
-        },
-        fogetPassword() {
-            console.log(1)
+            console.log(this.form)
         }
     }
 }
