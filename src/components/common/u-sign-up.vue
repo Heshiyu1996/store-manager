@@ -120,8 +120,10 @@ export default {
 
             .content {
                 .el-input,
-                .el-button {
+                .el-button,
+                input {
                     width: 320px;
+                    height: 40px;
                 }
                 .el-form-item {
                     margin-bottom: 16px;

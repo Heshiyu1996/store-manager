@@ -56,7 +56,7 @@ export default {
             this.$emit('toggle')
         },
         onSubmit() {
-            console.log('submit!')
+            console.log(this.form)
         },
         fogetPassword() {
             console.log(1)

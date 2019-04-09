@@ -23,6 +23,18 @@ $margin-base: 20px;
 $margin-large: 30px;
 
 .u-layout {
+    &[layout='inline-block'] > * {
+        display: inline-block;
+    }
+
+    &[layout='inline'] > * {
+        display: inline;
+    }
+
+    &[layout='block'] > * {
+        display: block;
+    }
+
     &[direction='h'] {
         & > *:not(:last-child) {
             margin-right: $margin-base;
@@ -81,6 +93,18 @@ $margin-large: 30px;
                 margin-bottom: $margin-large;
             }
         }
+    }
+
+    &[align='left'] {
+        text-align: left;
+    }
+
+    &[align='center'] {
+        text-align: center;
+    }
+
+    &[align='right'] {
+        text-align: right;
     }
 }
 </style>

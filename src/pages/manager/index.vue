@@ -11,8 +11,8 @@
 
             <el-submenu index="pay-type">
                 <template slot="title">支付类型</template>
-                <el-menu-item index="pay-type-list">类型列表</el-menu-item>
-                <el-menu-item index="pay-type-group-list">分组列表</el-menu-item>
+                <el-menu-item index="pay-type-list">支付类型</el-menu-item>
+                <el-menu-item index="pay-type-group-list">支付类型分组</el-menu-item>
             </el-submenu>
 
             <el-menu-item index="3">失信名单</el-menu-item>
@@ -63,5 +63,13 @@ export default {
 
 <style lang="scss" scoped>
 .manager-index {
+    position: relative;
+    padding-top: 60px;
+
+    .el-menu {
+        position: absolute;
+        top: 0;
+        width: 100%;
+    }
 }
 </style>

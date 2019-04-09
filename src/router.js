@@ -7,7 +7,7 @@ export default new Router({
     routes: [
         {
             path: '/',
-            redirect: { name: 'manager' }
+            redirect: { name: 'pay-type-list' }
         },
         // 1-管理员
         {

@@ -97,7 +97,7 @@ export default {
     display: inline-block;
     height: $component-height;
     width: 320px;
-    height: 36px;
+    height: 40px;
 
     &.textarea {
         height: 200px;
