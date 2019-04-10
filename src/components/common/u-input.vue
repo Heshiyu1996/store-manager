@@ -23,6 +23,7 @@
                 :type="type"
                 class="input"
             />
+            <i class="icon el-icon-search"></i>
         </template>
         <textarea
             v-else
@@ -94,7 +95,9 @@ export default {
 
 <style lang="scss" scoped>
 .u-input {
-    display: inline-block;
+    display: flex;
+    position: relative;
+    align-items: center;
     height: $component-height;
     width: 320px;
     height: 40px;
@@ -162,6 +165,13 @@ export default {
             letter-spacing: 0;
             line-height: 14px;
         }
+    }
+
+    .icon {
+        position: absolute;
+        right: 10px;
+        font-size: 18px;
+        color: $normal-color-s;
     }
 }
 </style>
