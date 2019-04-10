@@ -31,14 +31,17 @@ export default {
     data() {
         return {
             activeIndex: 'pay-type-list',
-            fullPath: [],
 
             MENU_LIST
         }
     },
-    created() {
-        console.log(this.$route)
-        this.routeName = this.$route.name
+    watch: {
+        '$route.name': {
+            handler(val) {
+                this.activeIndex = val
+            },
+            immediate: true
+        }
     },
     computed: {
         crumbPath() {
@@ -60,11 +63,8 @@ export default {
     },
     methods: {
         handleSelect(key, keyPath) {
-            console.log(key, keyPath)
-            // this.fullPath = [ ...keyPath ]
             const path = [ ...keyPath ].pop()
             this.activeIndex = path
-            console.log(this.activeIndex)
             this.$router.push(`/manager/${path}`)
         }
     }
