@@ -8,6 +8,7 @@ import '@/plugins' /* 组件，指令，插件等core统一入口 */
 
 Vue.config.productionTip = false
 Vue.use(ElementUI)
+Vue.prototype.$bus = new Vue()
 
 new Vue({
     router,

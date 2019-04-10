@@ -82,7 +82,10 @@ export default {
                     return !helpers.req(value) || value === this.form.password // 有值时!helpers.req为false，这时候才采取后面校验；没值时，不校验
                 }
             },
-            realName: { required },
+            realName: {
+                required,
+                minLength: minLength(2)
+            },
             phone: {
                 required,
                 isPhone(value) {
