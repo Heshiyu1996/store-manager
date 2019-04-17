@@ -1,14 +1,30 @@
 <template>
     <u-layout class="pay-list" direction="v">
-        <u-layout class="filter-wrapper">
-            <el-select v-model="searchParams.storeId" filterable placeholder="请选择门店">
-                <el-option v-for="item in storeList" :key="item.value" :label="item.label" :value="item.value"> </el-option>
-            </el-select>
-            <el-select v-model="searchParams.useStatus" placeholder="请选择使用状态">
-                <el-option v-for="item in useStatusList" :key="item.value" :label="item.label" :value="item.value"> </el-option>
-            </el-select>
-            <u-input v-model.trim="searchParams.searchContent" maxLength="100" placeholder="请输入支付类型" />
-        </u-layout>
+        <div class="top-wrapper">
+            <u-layout>
+                <el-select v-model="searchParams.storeId" filterable placeholder="请选择门店">
+                    <el-option v-for="item in storeList" :key="item.value" :label="item.label" :value="item.value"> </el-option>
+                </el-select>
+                <el-select v-model="searchParams.useStatus" placeholder="请选择使用状态">
+                    <el-option v-for="item in useStatusList" :key="item.value" :label="item.label" :value="item.value"> </el-option>
+                </el-select>
+                <u-input v-model.trim="searchParams.searchContent" maxLength="100" placeholder="请输入支付类型" searchIcon @key-press-enter="goSearch" />
+            </u-layout>
+            <u-layout class="operation">
+                <el-tooltip class="item" effect="dark" content="添加" placement="top">
+                    <el-button type="primary" icon="el-icon-plus" circle></el-button>
+                </el-tooltip>
+                <el-tooltip class="item" effect="dark" content="批量删除" placement="top">
+                    <el-button type="warning" icon="el-icon-minus" circle></el-button>
+                </el-tooltip>
+                <el-tooltip class="item" effect="dark" content="批量启用" placement="top">
+                    <el-button type="success" icon="el-icon-check" circle></el-button>
+                </el-tooltip>
+                <el-tooltip class="item" effect="dark" content="批量禁用" placement="top">
+                    <el-button type="danger" icon="el-icon-close" circle></el-button>
+                </el-tooltip>
+            </u-layout>
+        </div>
 
         <u-layout class="content-wrapper" direction="v">
             <el-table ref="multipleTable" :data="tableData" tooltip-effect="dark" style="width: 100%" @selection-change="handleSelectionChange">
@@ -21,11 +37,15 @@
                 <el-table-column prop="storeName" label="所属门店" width="200" show-overflow-tooltip> </el-table-column>
                 <el-table-column prop="useStatus" label="使用状态" width="80">
                     <template slot-scope="{ row }">
-                        <el-switch v-model="row.useStatus" active-color="#13ce66" inactive-color="#ff4949"> </el-switch>
+                        <el-switch v-model="row.useStatus" @change="switchRow(row)" active-color="#13ce66" inactive-color="#ff4949"> </el-switch>
                     </template>
                 </el-table-column>
                 <el-table-column label="操作" width="120">
-                    <u-layout direction="h"> <i class="icon el-icon-edit"></i> <i class="icon el-icon-delete"></i> </u-layout>
+                    <template slot-scope="{ row }">
+                        <u-layout direction="h">
+                            <i class="icon el-icon-edit" @click="editRow(row)"></i> <i class="icon el-icon-delete" @click="deleteRow(row)"></i>
+                        </u-layout>
+                    </template>
                 </el-table-column>
             </el-table>
 
@@ -59,7 +79,7 @@ export default {
             useStatusList: [
                 {
                     value: '1',
-                    label: '全部状态'
+                    label: '所有状态'
                 },
                 {
                     value: '2',
@@ -113,16 +133,31 @@ export default {
     },
     watch: {
         'searchParams.storeId'() {
-            this._getVariableList(true)
+            this._getList(true)
         },
         'searchParams.useStatus'() {
-            this._getVariableList(false)
+            this._getList(false)
         },
         'searchParams.currentPage'() {
-            this._getVariableList(false)
+            this._getList(false)
+        },
+        'searchParams.pageSize'() {
+            this._getList(true)
         }
     },
     methods: {
+        switchRow(row) {
+            console.log(row)
+        },
+        editRow(row) {
+            console.log(row)
+        },
+        deleteRow(row) {
+            console.log(row)
+        },
+        goSearch() {
+            console.log(123)
+        },
         _getList(isNew) {
             console.log('拉取列表，isNew：', isNew)
             // this.searchKeyword = this.searchParams.searchContent
@@ -160,15 +195,21 @@ export default {
     height: 100%;
     padding: 0 30px 40px;
 
-    .filter-wrapper {
+    .top-wrapper {
         display: flex;
         height: 40px;
+        justify-content: space-between;
         align-items: center;
+
+        .el-button {
+            margin-right: 0;
+        }
     }
 
     .content-wrapper {
         .icon {
             font-size: 20px;
+            cursor: pointer;
         }
 
         .el-pagination {

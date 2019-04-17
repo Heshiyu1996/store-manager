@@ -1,20 +1,9 @@
 <template>
     <nav class="u-navbar navbar fix-top">
-        <div class="left" @click="goHomePage">123</div>
-        <div>
-            <p @click="gotoPage('/manager')">
-                管理员
-            </p>
-            <p @click="gotoPage('/user')">
-                用户
-            </p>
-            <p @click="gotoPage('/login')">
-                登录
-            </p>
-        </div>
+        <div class="left" @click="goHomePage">大笨象密室逃脱 | 管理平台</div>
         <div class="right">
             <div v-if="true" class="user-wrapper">
-                <span class="name">tes</span>
+                <span class="name">大笨象密室深圳一店</span>
                 <el-dropdown @command="handleAvatar">
                     <div class="avatar-wrapper">
                         <u-icon name="avatar.png"></u-icon>

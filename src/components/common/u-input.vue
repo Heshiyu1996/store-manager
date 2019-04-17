@@ -8,6 +8,7 @@
                 v-on="listeners"
                 @input="onInput($event.target.value)"
                 @blur="onBlur"
+                @keypress.enter="keyPressEnter"
                 :disabled="disabled"
                 :type="type"
                 class="input"
@@ -19,11 +20,12 @@
                 v-on="listeners"
                 @change="onInput($event.target.value)"
                 @blur="onBlur"
+                @keypress.enter="keyPressEnter"
                 :disabled="disabled"
                 :type="type"
                 class="input"
             />
-            <i class="icon el-icon-search"></i>
+            <i v-if="searchIcon" class="icon el-icon-search"></i>
         </template>
         <textarea
             v-else
@@ -46,7 +48,8 @@ export default {
         value: { type: [String, Number] },
         disabled: { type: Boolean, default: false },
         lazy: { type: Boolean, default: false },
-        regex: { type: RegExp, default: null }
+        regex: { type: RegExp, default: null },
+        searchIcon: { type: Boolean, default: false }
     },
     data() {
         return {
@@ -75,6 +78,9 @@ export default {
         }
     },
     methods: {
+        keyPressEnter() {
+            this.$emit('key-press-enter')
+        },
         onInput(currentInputValue) {
             let newValue = this._isRegexValid(currentInputValue) ? currentInputValue : this.oldValue
             this.inputValue = this.oldValue = newValue
@@ -95,7 +101,7 @@ export default {
 
 <style lang="scss" scoped>
 .u-input {
-    display: flex;
+    display: inline-block;
     position: relative;
     align-items: center;
     height: $component-height;
@@ -169,6 +175,7 @@ export default {
 
     .icon {
         position: absolute;
+        top: 10px;
         right: 10px;
         font-size: 18px;
         color: $normal-color-s;
