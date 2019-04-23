@@ -11,6 +11,7 @@
     "svg": "vsvg -s ./src/assets/svg -t ./src/assets/icon"
   },
   "dependencies": {
+    "axios": "^0.18.0",
     "core-js": "^2.6.5",
     "element-ui": "^2.7.2",
     "vue": "^2.6.6",

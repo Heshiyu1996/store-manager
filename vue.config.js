@@ -24,6 +24,15 @@ module.exports = {
         host: '0.0.0.0',
         port: 8082,
         https: false,
-        proxy: null
+        proxy: {
+            '/elephant': {
+                target: 'http://129.204.183.7:80/elephant',
+                changeOrigin: true,
+                ws: true,
+                pathRewrite: {
+                  '^/elephant': ''
+                }
+            }
+        }
     }
 }
