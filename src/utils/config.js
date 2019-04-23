@@ -1,6 +1,6 @@
 export const isDev = process.env.NODE_ENV === 'development'
 export const isMock = false
-export const rootURL = isDev ? (isMock ? 'http://localhost:8002' : 'http://localhost:8080') : '/'
+export const rootURL = isDev ? (isMock ? 'http://localhost:8002' : 'http://localhost:8082') : '/'
 
 /* 编辑模式，新增/编辑 */
 export const MODIFY_MODAL_TYPE = {
@@ -133,3 +133,19 @@ export const MENU_LIST = [
         subMenuItemList: []
     }
 ]
+
+// 成功-200 数据重复-601 参数不正确-401
+export const SERVER_ERROR_CODE = {
+    SUCCESS: 200,
+    REPEAT: 601,
+    ERROR_PARAM: 401
+}
+// 账号类型。0普通用户、1~5依次代表：店员、副店、店长、区域管理员、老板
+export const ACCOUNT_TYPE = {
+    NORMAL: 0,
+    STAFF: 1,
+    VICE_MANAGER: 2,
+    MAIN_MANAGER: 3,
+    AREA_MANAGER: 4,
+    BOSS: 5
+}
