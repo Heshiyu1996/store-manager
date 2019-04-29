@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import axios from 'axios'
 import { rootURL, isMock } from '@/utils/config'
+import { fetchCookieValue } from '@/utils/common'
 // import { botIdLoc } from '@/utils/locs'
 
 const service = axios.create({
@@ -21,11 +22,11 @@ service.interceptors.request.use(
                 config.data = JSON.stringify(config.data)
             }
         }
-
-        // let token = botIdLoc.get()
-        // if (token) {
-        //     config.headers['botid'] = token
-        // }
+        // 预防CSRF攻击，请求头携带sessionId字段
+        let sessionId = fetchCookieValue('ZZH_ELP_SESS')
+        if (sessionId) {
+            config.headers['sessionId'] = sessionId
+        }
         return config
     },
     error => {
@@ -39,7 +40,7 @@ service.interceptors.response.use(
         const res = response.data
         console.log(res)
         if (res.code === 200) {
-            return res.detail // 直接返回数据
+            return res.data // 直接返回数据
         } else {
             !response.config.error && Vue.prototype.$message.error(res.message) // 错误统一报出
             return Promise.reject(res)
