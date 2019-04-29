@@ -31,6 +31,7 @@
 
 <script>
 import { required } from 'vuelidate/lib/validators'
+import { signIn } from '@/server/api'
 
 export default {
     props: {},
@@ -57,6 +58,10 @@ export default {
         },
         onSubmit() {
             console.log(this.form)
+            signIn(this.form).then(() => {
+                this.$message('登录成功')
+                this.$bus.$emit('toggleLogin', true)
+            })
         },
         fogetPassword() {
             console.log(1)

@@ -2,7 +2,7 @@
     <nav class="u-navbar navbar fix-top">
         <div class="left" @click="goHomePage">大笨象密室逃脱 | 管理平台</div>
         <div class="right">
-            <div v-if="true" class="user-wrapper">
+            <div v-if="ifLogin" class="user-wrapper">
                 <span class="name">大笨象密室深圳一店</span>
                 <el-dropdown @command="handleAvatar">
                     <div class="avatar-wrapper">
@@ -29,15 +29,27 @@
 <script>
 import AUserinfoModal from '@/components/account/a-userinfo-modal'
 import APasswordModal from '@/components/account/a-password-modal'
+import { signOut, getUserInfo } from '@/server/api'
 
 export default {
     props: {},
     components: { AUserinfoModal, APasswordModal },
     data() {
         return {
+            ifLogin: false,
+
             isOpenUserInfoModal: false,
             isOpenPasswordModal: false
         }
+    },
+    created() {
+        this.$bus.$on('toggleLogin', status => {
+            this.ifLogin = status
+        })
+        getUserInfo().then(data => {
+            this.ifLogin = true
+            console.log(data)
+        })
     },
     methods: {
         closeEntityUserInfoModal(isSuccess) {
@@ -68,7 +80,10 @@ export default {
                 cancelButtonText: '否',
                 type: 'warning'
             }).then(() => {
-                console.log('退出登录')
+                signOut().then(() => {
+                    this.ifLogin = false
+                    this.$message('登出成功')
+                })
             })
         },
         changePassword() {
