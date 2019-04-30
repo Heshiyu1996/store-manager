@@ -23,10 +23,12 @@ module.exports = {
         open: process.platform === 'darwin',
         host: '0.0.0.0',
         port: 8082,
+        // https: true,
         https: false,
         proxy: {
             '/elephant': {
-                target: 'http://129.204.183.7:80/elephant',
+                target: 'http://www.dbxyyxt.com/elephant',
+                // target: 'http://192.168.1.5:8080/elephant',
                 changeOrigin: true,
                 ws: true,
                 pathRewrite: {
