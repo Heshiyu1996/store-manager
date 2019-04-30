@@ -44,7 +44,7 @@ export default new Router({
                 {
                     path: 'vip-card',
                     name: 'vip-card',
-                    component: () => import('@/pages/manager/vip-card/index')
+                    component: () => import('@/pages/manager/vip-card/list')
                 }
             ]
         },
