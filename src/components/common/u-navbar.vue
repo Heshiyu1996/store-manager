@@ -2,8 +2,8 @@
     <nav class="u-navbar navbar fix-top">
         <div class="left" @click="goHomePage">大笨象密室逃脱 | 管理平台</div>
         <div class="right">
-            <div v-if="ifLogin" class="user-wrapper">
-                <span class="name">大笨象密室深圳一店</span>
+            <div v-if="getIflogin" class="user-wrapper">
+                <span class="name">{{ getUserInfoStore.realName }}</span>
                 <el-dropdown @command="handleAvatar">
                     <div class="avatar-wrapper">
                         <u-icon name="avatar.png"></u-icon>
@@ -30,6 +30,9 @@
 import AUserinfoModal from '@/components/account/a-userinfo-modal'
 import APasswordModal from '@/components/account/a-password-modal'
 import { signOut, getUserInfo } from '@/server/api'
+import { createNamespacedHelpers } from 'vuex'
+
+const { mapGetters, mapActions } = createNamespacedHelpers('login')
 
 export default {
     props: {},
@@ -42,16 +45,24 @@ export default {
             isOpenPasswordModal: false
         }
     },
+    computed: {
+        ...mapGetters(['getIflogin', 'getUserInfoStore'])
+    },
+    watch: {
+        getIflogin(val) {
+            val && this._getUserInfo()
+        }
+    },
     created() {
-        this.$bus.$on('toggleLogin', status => {
-            this.ifLogin = status
-        })
-        getUserInfo().then(data => {
-            this.ifLogin = true
-            console.log(data)
-        })
+        this._getUserInfo()
     },
     methods: {
+        _getUserInfo() {
+            getUserInfo().then(data => {
+                this.actSetIfLogin(true)
+                this.actSetUserInfoStore({ ...data })
+            })
+        },
         closeEntityUserInfoModal(isSuccess) {
             this.isOpenUserInfoModal = false
             // 点击ok
@@ -81,7 +92,8 @@ export default {
                 type: 'warning'
             }).then(() => {
                 signOut().then(() => {
-                    this.ifLogin = false
+                    this.actSetIfLogin(false)
+                    this.actSetUserInfoStore({})
                     this.$message('登出成功')
                 })
             })
@@ -106,7 +118,8 @@ export default {
         },
         gotoPage(path) {
             this.$router.push(path)
-        }
+        },
+        ...mapActions(['actSetIfLogin', 'actSetUserInfoStore'])
     }
 }
 </script>

@@ -33,6 +33,9 @@
 import { required } from 'vuelidate/lib/validators'
 import { signIn } from '@/server/api'
 
+import { createNamespacedHelpers } from 'vuex'
+const { mapActions } = createNamespacedHelpers('login')
+
 export default {
     props: {},
     data() {
@@ -60,12 +63,13 @@ export default {
             console.log(this.form)
             signIn(this.form).then(() => {
                 this.$message('登录成功')
-                this.$bus.$emit('toggleLogin', true)
+                this.actSetIfLogin(true)
             })
         },
         fogetPassword() {
             console.log(1)
-        }
+        },
+        ...mapActions(['actSetIfLogin', 'actSetUserInfoStore'])
     }
 }
 </script>
