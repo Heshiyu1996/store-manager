@@ -31,6 +31,7 @@ import AUserinfoModal from '@/components/account/a-userinfo-modal'
 import APasswordModal from '@/components/account/a-password-modal'
 import { signOut, getUserInfo } from '@/server/api'
 import { createNamespacedHelpers } from 'vuex'
+import { ACCOUNT_TYPE } from '@/utils/config'
 
 const { mapGetters, mapActions } = createNamespacedHelpers('login')
 
@@ -58,10 +59,13 @@ export default {
     },
     methods: {
         _getUserInfo() {
-            getUserInfo().then(data => {
-                this.actSetIfLogin(true)
-                this.actSetUserInfoStore({ ...data })
-            })
+            getUserInfo()
+                .then(data => {
+                    this.actSetIfLogin(true)
+                    this.actSetUserInfoStore({ ...data })
+                    this.$router.push(this.getUserInfoStore.userType === ACCOUNT_TYPE.NORMAL ? { name: 'user' } : { name: 'manager' })
+                })
+                .catch(() => this.$router.push({ name: 'login' }))
         },
         closeEntityUserInfoModal(isSuccess) {
             this.isOpenUserInfoModal = false
@@ -95,6 +99,7 @@ export default {
                     this.actSetIfLogin(false)
                     this.actSetUserInfoStore({})
                     this.$message('登出成功')
+                    this.$router.push({ name: 'login' })
                 })
             })
         },
