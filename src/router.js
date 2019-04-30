@@ -40,11 +40,11 @@ export default new Router({
                     name: 'pay-type-group-list',
                     component: () => import('@/pages/manager/pay-type/group-list')
                 },
-                // 10-会员系统
+                // 10-会员卡系统
                 {
-                    path: 'client',
-                    name: 'client',
-                    component: () => import('@/pages/manager/client/index')
+                    path: 'vip-card',
+                    name: 'vip-card',
+                    component: () => import('@/pages/manager/vip-card/index')
                 }
             ]
         },

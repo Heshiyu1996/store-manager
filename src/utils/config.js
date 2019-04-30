@@ -127,8 +127,8 @@ export const MENU_LIST = [
     },
     {
         subMenuInfo: {
-            value: 'client',
-            label: '会员系统'
+            value: 'vip-card',
+            label: '会员卡系统'
         },
         subMenuItemList: []
     }

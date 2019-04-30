@@ -1,12 +1,12 @@
 <template>
-    <div class="client-index">
+    <div class="vip-card-index">
         我是顾客
     </div>
 </template>
 
 <script>
 export default {
-    name: 'client-index',
+    name: 'vip-card-index',
     data() {
         return {}
     },
@@ -15,6 +15,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.client-index {
+.vip-card-index {
 }
 </style>
