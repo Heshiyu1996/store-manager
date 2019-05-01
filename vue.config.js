@@ -29,8 +29,8 @@ module.exports = {
         https: false,
         proxy: {
             '/elephant': {
-                target: 'http://www.dbxyyxt.com/elephant',
-                // target: 'http://192.168.1.5:8080/elephant',
+                // target: 'http://www.dbxyyxt.com/elephant',
+                target: 'http://192.168.1.5:8080',
                 changeOrigin: true,
                 ws: true,
                 pathRewrite: {

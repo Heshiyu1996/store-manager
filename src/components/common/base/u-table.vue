@@ -26,7 +26,7 @@
                     <slot :row="row" :rowIndex="index" />
                 </tr>
             </tbody>
-            <div v-else class="no-data"><u-icon name="empty-data.png" scale="1" />暂无数据记录</div>
+            <div v-else class="no-data">暂无数据记录</div>
         </template>
     </table>
 </template>
