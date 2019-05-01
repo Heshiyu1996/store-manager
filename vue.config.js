@@ -1,4 +1,6 @@
 module.exports = {
+    publicPath: '/elephant/',
+
     // 是否为生产环境构建生成 source map
     productionSourceMap: false,
 
