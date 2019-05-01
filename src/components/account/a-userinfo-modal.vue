@@ -21,6 +21,16 @@
             <el-form-item label="生日">
                 <el-date-picker v-model="form.birthday" type="date" placeholder="请输入你的生日" size="medium"> </el-date-picker>
             </el-form-item>
+            <template v-if="isGM">
+                <el-form-item label="卡号">
+                    <u-input v-model="form.cardId" placeholder="请输入卡号" />
+                </el-form-item>
+                <el-form-item label="类型">
+                    <el-select v-model="form.userType" filterable placeholder="请选择账号类型">
+                        <el-option v-for="item in USER_TYPE_MAP" :key="item.value" :label="item.label" :value="item.value"> </el-option>
+                    </el-select>
+                </el-form-item>
+            </template>
         </el-form>
     </u-modal>
 </template>
@@ -28,25 +38,45 @@
 <script>
 import { CloseModalMixin, InvalidCheckMixin } from '@/components/common/mixins'
 import { required, minLength, helpers } from 'vuelidate/lib/validators'
+import { getUserInfoByAccount, setUserInfo } from '@/server/api'
+import { USER_TYPE_MAP } from '@/utils/config'
 
 export default {
     mixins: [CloseModalMixin, InvalidCheckMixin],
     props: {
-        visible: { type: Boolean, default: false }
+        visible: { type: Boolean, default: false },
+        isGM: { type: Boolean, default: true },
+        account: { type: String, default: '' }
     },
     data() {
         return {
             form: {
                 realName: '',
                 phone: '',
-                birthday: ''
-            }
+                birthday: 0,
+                cardId: '',
+                userType: 0,
+                cardType: 0
+            },
+
+            USER_TYPE_MAP
         }
     },
+    // computed: {
+    //     ...mapGetters(['getUserInfoStore'])
+    // },
     watch: {
         visible(newVal) {
-            newVal && this.$v.$reset()
+            if (!newVal) return
+            this.$v.$reset()
+            this._getUserInfoByAccount()
         }
+        // account(val) {
+        //     this._getUserInfoByAccount(val)
+        // }
+        // getUserInfoStore(val) {
+        //     this.form = { ...val }
+        // }
     },
     validations: {
         form: {
@@ -75,13 +105,24 @@ export default {
                 return
             }
 
-            this._setPassword()
+            this._setUserInfo()
         },
         _openConfirmWhenChangedData() {
-            this.$v.$anyDirty ? this.$confirm('确认放弃修改密码吗？').then(() => this.closeModal()) : this.closeModal()
+            console.log(this.$v.$anyDirty)
+            this.$v.$anyDirty ? this.$confirm('确认放弃修改吗？').then(() => this.closeModal()) : this.closeModal()
         },
-        _setPassword() {
-            console.log(this.form)
+        _setUserInfo() {
+            if (typeof this.form.birthday !== 'number') {
+                this.form.birthday = this.form.birthday.getTime()
+            }
+            setUserInfo(this.form).then(() => {
+                this.$message('修改成功')
+                this._close()
+            })
+        },
+        _getUserInfoByAccount() {
+            this.form = {}
+            getUserInfoByAccount(this.account).then(data => (this.form = { ...data }))
         }
     }
 }

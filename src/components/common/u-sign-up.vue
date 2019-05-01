@@ -11,6 +11,7 @@
                         <u-input v-model="form.account" placeholder="请输入用户名" lazy />
                         <u-error :visible="!$v.form.account.required" text="请输入用户名" />
                         <u-error :visible="!$v.form.account.checkFormat" text="支持长度为2~15的英文、中文、下划线，不能包含空格" />
+                        <u-error :visible="!$v.form.account.isUnique && !$v.form.account.$pending" text="该账号已被注册" />
                     </el-form-item>
                     <el-form-item>
                         <u-input v-model="form.password" placeholder="请输入密码" type="password" />
@@ -25,6 +26,7 @@
                     <el-form-item>
                         <u-input v-model="form.realName" placeholder="请输入姓名" />
                         <u-error :visible="!$v.form.realName.required" text="请输入姓名" />
+                        <u-error :visible="!$v.form.realName.minLength" text="姓名不能少于2个字符" />
                     </el-form-item>
                     <el-form-item>
                         <u-input v-model="form.phone" :regex="/^[0-9\u4e00-\u9fa5]+$/g" maxLength="11" placeholder="请输入手机号" />
@@ -46,6 +48,8 @@
 
 <script>
 import { required, helpers, minLength } from 'vuelidate/lib/validators'
+import { checkAccount, signUp } from '@/server/api'
+import { USER_TYPE } from '@/utils/config'
 
 export default {
     props: {},
@@ -57,7 +61,8 @@ export default {
                 passwordConfirm: '',
                 realName: '',
                 phone: '',
-                birthday: ''
+                birthday: '',
+                userType: USER_TYPE.NORMAL
             },
 
             value: ''
@@ -70,6 +75,10 @@ export default {
                 checkFormat: function(value) {
                     let regex_account = /^[a-zA-Z0-9_\u4e00-\u9fa5]{2,}$/g
                     return !helpers.req(value) || regex_account.test(value) // 有值时!helpers.req为false，这时候才采取后面校验；没值时，不校验
+                },
+                async isUnique(value) {
+                    let result = helpers.req(value) && (await checkAccount(value))
+                    return !result
                 }
             },
             password: {
@@ -102,6 +111,11 @@ export default {
         },
         onSubmit() {
             console.log(this.form)
+            this.form.birthday = this.form.birthday.getTime()
+            signUp(this.form).then(() => {
+                this.$message('注册成功')
+                this.toggleBox()
+            })
         }
     }
 }

@@ -9,7 +9,8 @@
                         <u-icon name="avatar.png"></u-icon>
                     </div>
                     <el-dropdown-menu slot="dropdown">
-                        <el-dropdown-item command="updateInfo">编辑信息</el-dropdown-item>
+                        <el-dropdown-item disabled>{{ getUserInfoStore.account }}</el-dropdown-item>
+                        <el-dropdown-item command="updateInfo" divided>编辑信息</el-dropdown-item>
                         <el-dropdown-item command="changePassword">修改密码</el-dropdown-item>
                         <el-dropdown-item command="logout" divided>退出</el-dropdown-item>
                     </el-dropdown-menu>
@@ -21,7 +22,7 @@
             </div>
         </div>
 
-        <AUserinfoModal :visible="isOpenUserInfoModal" @close="closeEntityUserInfoModal" />
+        <AUserinfoModal :visible="isOpenUserInfoModal" :account="accountTrans" @close="closeUserInfoModal" />
         <APasswordModal :visible="isOpenPasswordModal" @close="closePasswordModal" />
     </nav>
 </template>
@@ -31,7 +32,7 @@ import AUserinfoModal from '@/components/account/a-userinfo-modal'
 import APasswordModal from '@/components/account/a-password-modal'
 import { signOut, getUserInfo } from '@/server/api'
 import { createNamespacedHelpers } from 'vuex'
-import { ACCOUNT_TYPE } from '@/utils/config'
+import { USER_TYPE } from '@/utils/config'
 
 const { mapGetters, mapActions } = createNamespacedHelpers('login')
 
@@ -42,6 +43,7 @@ export default {
         return {
             ifLogin: false,
 
+            accountTrans: '',
             isOpenUserInfoModal: false,
             isOpenPasswordModal: false
         }
@@ -63,20 +65,16 @@ export default {
                 .then(data => {
                     this.actSetIfLogin(true)
                     this.actSetUserInfoStore({ ...data })
-                    this.$router.push(this.getUserInfoStore.userType === ACCOUNT_TYPE.NORMAL ? { name: 'user' } : { name: 'manager' })
+
+                    if (this.$route.name === 'login') {
+                        this.$router.push(this.getUserInfoStore.userType === USER_TYPE.NORMAL ? { name: 'user' } : { name: 'manager' })
+                    }
                 })
                 .catch(() => this.$router.push({ name: 'login' }))
         },
-        closeEntityUserInfoModal(isSuccess) {
+        closeUserInfoModal() {
             this.isOpenUserInfoModal = false
-            // 点击ok
-            if (isSuccess) {
-                // 创建实体 Or 编辑实体名称
-                console.log('创建实体 Or 编辑实体名称')
-            } else {
-                // 点击cancel
-                console.log('点击cancel')
-            }
+            this._getUserInfo()
         },
         closePasswordModal(isSuccess) {
             this.isOpenPasswordModal = false
@@ -107,6 +105,7 @@ export default {
             this.isOpenPasswordModal = true
         },
         updateInfo() {
+            this.accountTrans = this.getUserInfoStore.account
             this.isOpenUserInfoModal = true
         },
         goHomePage() {

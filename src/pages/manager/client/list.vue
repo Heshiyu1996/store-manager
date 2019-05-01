@@ -35,7 +35,7 @@
                     </u-table-column>
                     <u-table-column width="12vw" label="账号类型" ellipse>{{ _findUserType(row.userType) || '-' }}</u-table-column>
                     <u-table-column label="操作">
-                        <u-layout direction="h">
+                        <u-layout v-show="_hasRight(row.userType)" direction="h">
                             <i class="icon el-icon-edit" @click="editRow(row)"></i> <i class="icon el-icon-delete" @click="deleteRow(row)"></i>
                         </u-layout>
                     </u-table-column>
@@ -43,6 +43,7 @@
             </u-table>
 
             <el-pagination
+                v-show="userList.length"
                 @size-change="handleSizeChange"
                 @current-change="handleCurrentChange"
                 :current-page="searchParams.currentPage"
@@ -53,28 +54,40 @@
             >
             </el-pagination>
         </u-layout>
+
+        <AUserinfoModal :visible="isOpenUserInfoModal" :account="accountTrans" @close="closeUserInfoModal" />
     </u-layout>
 </template>
 
 <script>
+import AUserinfoModal from '@/components/account/a-userinfo-modal'
 import { USER_TYPE_MAP } from '@/utils/config'
-import { getUserList } from '@/server/api'
+import { getUserList, deleteUser } from '@/server/api'
+import { createNamespacedHelpers } from 'vuex'
+
+const { mapGetters } = createNamespacedHelpers('login')
 
 export default {
     name: 'client-list',
+    components: { AUserinfoModal },
     data() {
         return {
             searchParams: {
                 currentPage: 1,
                 pageSize: 50,
-                order: 'desc',
                 userType: '' // 不传该字段则查全部；按照账号类型搜：0普通用户、1~5依次代表：店员、副店、店长、区域管理员、老板
             },
 
             userList: [{}],
 
+            isOpenUserInfoModal: false,
+            accountTrans: '',
+
             USER_TYPE_MAP: [{ label: '所有用户', value: '' }].concat(USER_TYPE_MAP)
         }
+    },
+    computed: {
+        ...mapGetters(['getUserInfoStore'])
     },
     watch: {
         'searchParams.userType'() {
@@ -96,22 +109,30 @@ export default {
         },
         editRow(row) {
             console.log(row)
+
+            this.isOpenUserInfoModal = true
+            this.accountTrans = row.account
         },
         deleteRow(row) {
-            console.log(row)
+            console.log(row.account)
+            this.$confirm(`是否删除用户 ${row.account} ？`).then(() => deleteUser(row.account).then(() => this.$message('用户删除成功')))
         },
         _getList(isNew) {
             console.log('拉取列表，isNew：', isNew)
             isNew && (this.searchParams.currentPage = 1)
 
             getUserList(this.searchParams).then(data => {
-                this.userList = data || []
+                this.userList = data.userList || []
                 this.totalCount = data.totalCount || 0
             })
         },
         _findUserType(type) {
             if (typeof type === 'undefined') return '-'
             return this.USER_TYPE_MAP.find(item => type === item.value).label
+        },
+        _hasRight(type) {
+            if (typeof type === 'undefined') return false
+            return this.getUserInfoStore.userType > type
         },
         // 多选
         handleSelectionChange(val) {
@@ -127,6 +148,10 @@ export default {
         handleCurrentChange(val) {
             this.searchParams.currentPage = val
             console.log(`当前页: ${val}`)
+        },
+        closeUserInfoModal() {
+            this.isOpenUserInfoModal = false
+            this._getList(false)
         }
     }
 }

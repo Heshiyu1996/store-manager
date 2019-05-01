@@ -43,8 +43,8 @@ export const getUserInfo = data =>
         data
     })
 
-// 用户信息查询（管理员）
-export const getUserInfoByGM = data =>
+// 用户信息查询（根据Account、且只能查自己的下级或自己）
+export const getUserInfoByAccount = data =>
     http({
         url: `/elephant/user/${data}/userInfo`,
         method: 'get',
@@ -54,7 +54,7 @@ export const getUserInfoByGM = data =>
 // 用户信息修改
 export const setUserInfo = data =>
     http({
-        url: `/elephant/user/${data}/userInfo`,
+        url: `/elephant/user/${data.account}/userInfo`,
         method: 'put',
         data
     })
@@ -64,5 +64,13 @@ export const getUserList = data =>
     http({
         url: `/elephant/user/list`,
         method: 'post',
+        data
+    })
+
+// 用户删除
+export const deleteUser = data =>
+    http({
+        url: `/elephant/user/${data}`,
+        method: 'delete',
         data
     })
