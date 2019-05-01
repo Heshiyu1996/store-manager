@@ -151,7 +151,7 @@ export const SERVER_ERROR_CODE = {
 }
 
 // 账号类型。0普通用户、1~5依次代表：店员、副店、店长、区域管理员、老板
-export const ACCOUNT_TYPE = {
+export const USER_TYPE = {
     NORMAL: 0,
     STAFF: 1,
     VICE_MANAGER: 2,
@@ -161,29 +161,29 @@ export const ACCOUNT_TYPE = {
 }
 
 // 账号类型Map
-export const ACCOUNT_TYPE_MAP = [
+export const USER_TYPE_MAP = [
     {
         label: '普通用户',
-        value: ACCOUNT_TYPE.NORMAL
+        value: USER_TYPE.NORMAL
     },
     {
         label: '店员',
-        value: ACCOUNT_TYPE.STAFF
+        value: USER_TYPE.STAFF
     },
     {
         label: '副店',
-        value: ACCOUNT_TYPE.VICE_MANAGER
+        value: USER_TYPE.VICE_MANAGER
     },
     {
         label: '店长',
-        value: ACCOUNT_TYPE.MAIN_MANAGER
+        value: USER_TYPE.MAIN_MANAGER
     },
     {
         label: '区域管理员',
-        value: ACCOUNT_TYPE.AREA_MANAGER
+        value: USER_TYPE.AREA_MANAGER
     },
     {
         label: '老板',
-        value: ACCOUNT_TYPE.BOSS
+        value: USER_TYPE.BOSS
     }
 ]

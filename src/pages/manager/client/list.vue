@@ -2,8 +2,8 @@
     <u-layout class="client-list" direction="v">
         <div class="top-wrapper">
             <u-layout>
-                <el-select v-model="searchParams.accountType" filterable placeholder="请选择账号类型">
-                    <el-option v-for="item in ACCOUNT_TYPE_MAP" :key="item.value" :label="item.label" :value="item.value"> </el-option>
+                <el-select v-model="searchParams.userType" filterable placeholder="请选择账号类型">
+                    <el-option v-for="item in USER_TYPE_MAP" :key="item.value" :label="item.label" :value="item.value"> </el-option>
                 </el-select>
             </u-layout>
             <u-layout class="operation">
@@ -23,23 +23,24 @@
         </div>
 
         <u-layout class="content-wrapper" direction="v">
-            <el-table ref="multipleTable" :data="tableData" tooltip-effect="dark" style="width: 100%" @selection-change="handleSelectionChange">
-                <el-table-column type="selection" width="55"> </el-table-column>
-                <el-table-column prop="cardId" label="卡号"> </el-table-column>
-                <el-table-column prop="cardType" label="卡种"> </el-table-column>
-                <el-table-column prop="account" label="账号"> </el-table-column>
-                <el-table-column prop="realName" label="姓名"> </el-table-column>
-                <el-table-column prop="phone" label="手机"> </el-table-column>
-                <el-table-column prop="birthday" label="生日">{{1}}</el-table-column>
-                <el-table-column prop="userType" label="账号类型"> </el-table-column>
-                <el-table-column label="操作" width="120">
-                    <template slot-scope="{ row }">
+            <u-table ref="operationTable" :list="userList" auto is-list>
+                <template slot-scope="{ row }">
+                    <u-table-column width="12vw" label="卡号" ellipse>{{ row.cardId || '-' }}</u-table-column>
+                    <u-table-column width="12vw" label="卡种" ellipse>{{ row.cardType || '-' }}</u-table-column>
+                    <u-table-column width="12vw" label="账号" ellipse>{{ row.account }}</u-table-column>
+                    <u-table-column width="12vw" label="姓名" ellipse>{{ row.realName }}</u-table-column>
+                    <u-table-column width="12vw" label="手机" ellipse> {{ row.phone }} </u-table-column>
+                    <u-table-column width="12vw" label="生日">
+                        {{ row.birthday | dateFormat }}
+                    </u-table-column>
+                    <u-table-column width="12vw" label="账号类型" ellipse>{{ _findUserType(row.userType) || '-' }}</u-table-column>
+                    <u-table-column label="操作">
                         <u-layout direction="h">
                             <i class="icon el-icon-edit" @click="editRow(row)"></i> <i class="icon el-icon-delete" @click="deleteRow(row)"></i>
                         </u-layout>
-                    </template>
-                </el-table-column>
-            </el-table>
+                    </u-table-column>
+                </template>
+            </u-table>
 
             <el-pagination
                 @size-change="handleSizeChange"
@@ -48,7 +49,7 @@
                 :page-sizes="[10, 50, 100]"
                 :page-size="searchParams.pageSize"
                 layout="total, sizes, prev, pager, next, jumper"
-                :total="tableData.length"
+                :total="userList.length"
             >
             </el-pagination>
         </u-layout>
@@ -56,7 +57,7 @@
 </template>
 
 <script>
-import { ACCOUNT_TYPE_MAP } from '@/utils/config'
+import { USER_TYPE_MAP } from '@/utils/config'
 import { getUserList } from '@/server/api'
 
 export default {
@@ -67,25 +68,18 @@ export default {
                 currentPage: 1,
                 pageSize: 50,
                 order: 'desc',
-                accountType: '' // 不传该字段则查全部；按照账号类型搜：0普通用户、1~5依次代表：店员、副店、店长、区域管理员、老板
+                userType: '' // 不传该字段则查全部；按照账号类型搜：0普通用户、1~5依次代表：店员、副店、店长、区域管理员、老板
             },
 
-            tableData: [
-                {
-                    account: '',
-                    birthday: 0,
-                    cardId: '',
-                    cardType: '',
-                    phone: 0,
-                    realName: '',
-                    userType: ''
-                }
-            ],
+            userList: [{}],
 
-            ACCOUNT_TYPE_MAP: [{ label: '所有用户', value: '' }].concat(ACCOUNT_TYPE_MAP)
+            USER_TYPE_MAP: [{ label: '所有用户', value: '' }].concat(USER_TYPE_MAP)
         }
     },
     watch: {
+        'searchParams.userType'() {
+            this._getList(false)
+        },
         'searchParams.currentPage'() {
             this._getList(false)
         },
@@ -111,9 +105,13 @@ export default {
             isNew && (this.searchParams.currentPage = 1)
 
             getUserList(this.searchParams).then(data => {
-                this.tableData = data || []
+                this.userList = data || []
                 this.totalCount = data.totalCount || 0
             })
+        },
+        _findUserType(type) {
+            if (typeof type === 'undefined') return '-'
+            return this.USER_TYPE_MAP.find(item => type === item.value).label
         },
         // 多选
         handleSelectionChange(val) {
