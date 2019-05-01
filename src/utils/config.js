@@ -127,10 +127,19 @@ export const MENU_LIST = [
     },
     {
         subMenuInfo: {
-            value: 'vip-card',
-            label: '会员卡系统'
+            value: 'client',
+            label: '会员管理'
         },
-        subMenuItemList: []
+        subMenuItemList: [
+            {
+                value: 'client-list',
+                label: '会员列表'
+            },
+            {
+                value: 'client-card-list',
+                label: '会员卡系统'
+            }
+        ]
     }
 ]
 
@@ -140,6 +149,7 @@ export const SERVER_ERROR_CODE = {
     REPEAT: 601,
     ERROR_PARAM: 401
 }
+
 // 账号类型。0普通用户、1~5依次代表：店员、副店、店长、区域管理员、老板
 export const ACCOUNT_TYPE = {
     NORMAL: 0,
@@ -149,3 +159,31 @@ export const ACCOUNT_TYPE = {
     AREA_MANAGER: 4,
     BOSS: 5
 }
+
+// 账号类型Map
+export const ACCOUNT_TYPE_MAP = [
+    {
+        label: '普通用户',
+        value: ACCOUNT_TYPE.NORMAL
+    },
+    {
+        label: '店员',
+        value: ACCOUNT_TYPE.STAFF
+    },
+    {
+        label: '副店',
+        value: ACCOUNT_TYPE.VICE_MANAGER
+    },
+    {
+        label: '店长',
+        value: ACCOUNT_TYPE.MAIN_MANAGER
+    },
+    {
+        label: '区域管理员',
+        value: ACCOUNT_TYPE.AREA_MANAGER
+    },
+    {
+        label: '老板',
+        value: ACCOUNT_TYPE.BOSS
+    }
+]

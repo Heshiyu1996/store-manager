@@ -1,5 +1,5 @@
 <template>
-    <u-layout class="pay-list" direction="v">
+    <u-layout class="client-list" direction="v">
         <div class="top-wrapper">
             <u-layout>
                 <el-select v-model="searchParams.storeId" filterable placeholder="请选择门店">
@@ -65,7 +65,7 @@
 
 <script>
 export default {
-    name: 'pay-list',
+    name: 'client-list',
     data() {
         return {
             searchParams: {
@@ -191,7 +191,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.pay-list {
+.client-list {
     height: 100%;
     padding: 0 30px 40px;
 

@@ -50,3 +50,19 @@ export const getUserInfoByGM = data =>
         method: 'get',
         data
     })
+
+// 用户信息修改
+export const setUserInfo = data =>
+    http({
+        url: `/elephant/user/${data}/userInfo`,
+        method: 'put',
+        data
+    })
+
+// 用户列表查询
+export const getUserList = data =>
+    http({
+        url: `/elephant/user/list`,
+        method: 'post',
+        data
+    })
