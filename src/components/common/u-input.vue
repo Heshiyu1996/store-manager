@@ -109,7 +109,7 @@ export default {
     height: 40px;
 
     &.textarea {
-        height: 200px;
+        height: 180px;
     }
 
     &[size='xs'] {
@@ -133,7 +133,7 @@ export default {
         width: 100%;
         height: 100%;
         font-size: 14px;
-        color: $normal-color-s;
+        color: $normal-color-m;
         padding: 0 15px;
         border: 1px solid $border-color;
         border-radius: 4px;
@@ -171,6 +171,10 @@ export default {
             letter-spacing: 0;
             line-height: 14px;
         }
+    }
+
+    .textarea {
+        padding: 15px;
     }
 
     .icon {

@@ -9,7 +9,7 @@ export const MODIFY_MODAL_TYPE = {
 }
 
 /* 管理员导航 */
-export const MENU_LIST = [
+export const MENU_LIST_MANAGER = [
     {
         subMenuInfo: {
             value: 'order',
@@ -143,6 +143,17 @@ export const MENU_LIST = [
     }
 ]
 
+/* 用户导航 */
+export const MENU_LIST_USER = [
+    {
+        subMenuInfo: {
+            value: 'consume-list',
+            label: '消费记录'
+        },
+        subMenuItemList: []
+    }
+]
+
 // 成功-200 数据重复-601 参数不正确-401
 export const SERVER_ERROR_CODE = {
     SUCCESS: 200,
@@ -185,5 +196,17 @@ export const USER_TYPE_MAP = [
     {
         label: '老板',
         value: USER_TYPE.BOSS
+    }
+]
+
+// 充值方式
+export const RECHARGE_TYPE_MAP = [
+    {
+        label: '哆啦宝',
+        value: 1
+    },
+    {
+        label: '现金',
+        value: 2
     }
 ]

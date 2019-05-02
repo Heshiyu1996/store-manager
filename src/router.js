@@ -60,13 +60,7 @@ export default new Router({
             name: 'user',
             component: () => import('@/pages/user/index'),
             children: [
-                // 2-充值记录
-                {
-                    path: 'recharge-list',
-                    name: 'recharge-list',
-                    component: () => import('@/pages/user/recharge-list')
-                },
-                // 2-消费记录
+                // 1-消费记录
                 {
                     path: 'consume-list',
                     name: 'consume-list',
