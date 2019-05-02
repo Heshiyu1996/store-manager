@@ -210,3 +210,19 @@ export const RECHARGE_TYPE_MAP = [
         value: 2
     }
 ]
+
+// 卡种
+export const CARD_TYPE_MAP = [
+    {
+        label: '金卡',
+        value: 1
+    },
+    {
+        label: '银卡',
+        value: 2
+    },
+    {
+        label: '铜卡',
+        value: 3
+    }
+]

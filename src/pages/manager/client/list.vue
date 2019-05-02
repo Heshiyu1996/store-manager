@@ -21,7 +21,7 @@
                 <template slot-scope="{ row }">
                     <u-table-column width="2vw" label="" ellipse><el-checkbox v-model="row.checked"/></u-table-column>
                     <u-table-column width="10vw" label="卡号" ellipse>{{ row.cardId || '-' }}</u-table-column>
-                    <u-table-column width="10vw" label="卡种" ellipse>{{ row.cardType || '-' }}</u-table-column>
+                    <u-table-column width="10vw" label="卡种" ellipse>{{ _findCardType(row.cardType) || '-' }}</u-table-column>
                     <u-table-column width="10vw" label="账号" ellipse>{{ row.account }}</u-table-column>
                     <u-table-column width="12vw" label="姓名" ellipse>{{ row.realName }}</u-table-column>
                     <u-table-column width="12vw" label="手机" ellipse> {{ row.phone }} </u-table-column>
@@ -56,7 +56,7 @@
 
 <script>
 import AUserinfoModal from '@/components/account/a-userinfo-modal'
-import { USER_TYPE_MAP, MODIFY_MODAL_TYPE } from '@/utils/config'
+import { USER_TYPE_MAP, MODIFY_MODAL_TYPE, CARD_TYPE_MAP } from '@/utils/config'
 import { getUserList, deleteUser } from '@/server/api'
 import { createNamespacedHelpers } from 'vuex'
 
@@ -125,9 +125,13 @@ export default {
                 this.totalCount = data.totalCount || 0
             })
         },
-        _findUserType(type) {
-            if (typeof type === 'undefined') return '-'
-            return this.USER_TYPE_MAP.find(item => type === item.value).label
+        _findUserType(utype) {
+            if (typeof utype === 'undefined') return '-'
+            return this.USER_TYPE_MAP.find(item => utype === item.value).label
+        },
+        _findCardType(ctype) {
+            if (ctype === null || typeof ctype === 'undefined') return '-'
+            return CARD_TYPE_MAP.find(item => ctype === item.value).label
         },
         _hasRight(type) {
             if (typeof type === 'undefined') return false

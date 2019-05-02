@@ -22,7 +22,7 @@
             </div>
         </div>
 
-        <AUserinfoModal :visible="isOpenUserInfoModal" :account="accountTrans" @close="closeUserInfoModal" />
+        <AUserinfoModal :visible="isOpenUserInfoModal" @close="closeUserInfoModal" />
         <APasswordModal :visible="isOpenPasswordModal" @close="closePasswordModal" />
     </nav>
 </template>
@@ -32,7 +32,7 @@ import AUserinfoModal from '@/components/account/a-userinfo-modal'
 import APasswordModal from '@/components/account/a-password-modal'
 import { signOut, getUserInfo } from '@/server/api'
 import { createNamespacedHelpers } from 'vuex'
-import { USER_TYPE } from '@/utils/config'
+import { USER_TYPE, MODIFY_MODAL_TYPE } from '@/utils/config'
 
 const { mapGetters, mapActions } = createNamespacedHelpers('login')
 
@@ -43,7 +43,6 @@ export default {
         return {
             ifLogin: false,
 
-            accountTrans: '',
             isOpenUserInfoModal: false,
             isOpenPasswordModal: false
         }
@@ -105,7 +104,7 @@ export default {
             this.isOpenPasswordModal = true
         },
         updateInfo() {
-            this.accountTrans = this.getUserInfoStore.account
+            this.$bus.$emit('open-userinfo-modal', this.getUserInfoStore.account, MODIFY_MODAL_TYPE.EDIT)
             this.isOpenUserInfoModal = true
         },
         goHomePage() {

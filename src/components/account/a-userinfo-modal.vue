@@ -2,7 +2,7 @@
     <u-modal
         :visible="visible"
         :enableConfirm="$v.$anyDirty && !$v.$invalid"
-        title="修改信息"
+        :title="type ? '新增用户' : '修改信息'"
         @before-close="submit"
         @close="closeModal"
         class="a-password-modal"
@@ -27,7 +27,7 @@
                 </el-form-item>
                 <el-form-item label="类型">
                     <el-select v-model="form.userType" filterable placeholder="请选择账号类型">
-                        <el-option v-for="item in USER_TYPE_MAP" :key="item.value" :label="item.label" :value="item.value"> </el-option>
+                        <el-option v-for="item in userTypeModifiedList" :key="item.value" :label="item.label" :value="item.value"> </el-option>
                     </el-select>
                 </el-form-item>
             </template>
@@ -38,18 +38,20 @@
 <script>
 import { CloseModalMixin, InvalidCheckMixin } from '@/components/common/mixins'
 import { required, minLength, helpers } from 'vuelidate/lib/validators'
-import { getUserInfoByAccount, setUserInfo } from '@/server/api'
-import { USER_TYPE_MAP } from '@/utils/config'
+import { setUserInfo } from '@/server/api'
+import { USER_TYPE, USER_TYPE_MAP, MODIFY_MODAL_TYPE } from '@/utils/config'
+import { createNamespacedHelpers } from 'vuex'
+
+const { mapGetters } = createNamespacedHelpers('login')
 
 export default {
     mixins: [CloseModalMixin, InvalidCheckMixin],
     props: {
-        visible: { type: Boolean, default: false },
-        isGM: { type: Boolean, default: true },
-        account: { type: String, default: '' }
+        visible: { type: Boolean, default: false }
     },
     data() {
         return {
+            type: MODIFY_MODAL_TYPE.ADD,
             form: {
                 realName: '',
                 phone: '',
@@ -59,24 +61,28 @@ export default {
                 cardType: 0
             },
 
+            account: '',
+
             USER_TYPE_MAP
         }
     },
-    // computed: {
-    //     ...mapGetters(['getUserInfoStore'])
-    // },
-    watch: {
-        visible(newVal) {
-            if (!newVal) return
-            this.$v.$reset()
-            this._getUserInfoByAccount()
-        }
-        // account(val) {
-        //     this._getUserInfoByAccount(val)
-        // }
-        // getUserInfoStore(val) {
-        //     this.form = { ...val }
-        // }
+    computed: {
+        isGM() {
+            return this.getUserInfoStore.userType > USER_TYPE.NORMAL
+        },
+        userTypeModifiedList() {
+            return USER_TYPE_MAP.filter(item => item.value <= this.getUserInfoStore.userType)
+        },
+        ...mapGetters(['getUserInfoStore'])
+    },
+    created() {
+        this.$bus.$on('open-userinfo-modal', (accountDetail, isAdd) => {
+            this.type = isAdd
+            this.form = { ...accountDetail }
+        })
+    },
+    destroyed() {
+        this.$bus.$off('open-userinfo-modal')
     },
     validations: {
         form: {
@@ -119,10 +125,6 @@ export default {
                 this.$message('修改成功')
                 this._close()
             })
-        },
-        _getUserInfoByAccount() {
-            this.form = {}
-            getUserInfoByAccount(this.account).then(data => (this.form = { ...data }))
         }
     }
 }
