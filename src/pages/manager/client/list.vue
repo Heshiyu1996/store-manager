@@ -8,16 +8,10 @@
             </u-layout>
             <u-layout class="operation">
                 <el-tooltip class="item" effect="dark" content="添加" placement="top">
-                    <el-button type="primary" icon="el-icon-plus" circle></el-button>
+                    <el-button type="primary" icon="el-icon-plus" circle @click="addPatch"></el-button>
                 </el-tooltip>
                 <el-tooltip class="item" effect="dark" content="删除" placement="top">
-                    <el-button type="warning" icon="el-icon-minus" circle></el-button>
-                </el-tooltip>
-                <el-tooltip class="item" effect="dark" content="启用" placement="top">
-                    <el-button type="success" icon="el-icon-check" circle></el-button>
-                </el-tooltip>
-                <el-tooltip class="item" effect="dark" content="禁用" placement="top">
-                    <el-button type="danger" icon="el-icon-close" circle></el-button>
+                    <el-button type="warning" icon="el-icon-minus" circle @click="deleteSelectedRows"></el-button>
                 </el-tooltip>
             </u-layout>
         </div>
@@ -25,9 +19,10 @@
         <u-layout class="content-wrapper" direction="v">
             <u-table ref="operationTable" :list="userList" auto is-list>
                 <template slot-scope="{ row }">
-                    <u-table-column width="12vw" label="卡号" ellipse>{{ row.cardId || '-' }}</u-table-column>
-                    <u-table-column width="12vw" label="卡种" ellipse>{{ row.cardType || '-' }}</u-table-column>
-                    <u-table-column width="12vw" label="账号" ellipse>{{ row.account }}</u-table-column>
+                    <u-table-column width="2vw" label="" ellipse><el-checkbox v-model="row.checked"/></u-table-column>
+                    <u-table-column width="10vw" label="卡号" ellipse>{{ row.cardId || '-' }}</u-table-column>
+                    <u-table-column width="10vw" label="卡种" ellipse>{{ row.cardType || '-' }}</u-table-column>
+                    <u-table-column width="10vw" label="账号" ellipse>{{ row.account }}</u-table-column>
                     <u-table-column width="12vw" label="姓名" ellipse>{{ row.realName }}</u-table-column>
                     <u-table-column width="12vw" label="手机" ellipse> {{ row.phone }} </u-table-column>
                     <u-table-column width="12vw" label="生日">
@@ -55,13 +50,13 @@
             </el-pagination>
         </u-layout>
 
-        <AUserinfoModal :visible="isOpenUserInfoModal" :account="accountTrans" @close="closeUserInfoModal" />
+        <AUserinfoModal :visible="isOpenUserInfoModal" @close="closeUserInfoModal" />
     </u-layout>
 </template>
 
 <script>
 import AUserinfoModal from '@/components/account/a-userinfo-modal'
-import { USER_TYPE_MAP } from '@/utils/config'
+import { USER_TYPE_MAP, MODIFY_MODAL_TYPE } from '@/utils/config'
 import { getUserList, deleteUser } from '@/server/api'
 import { createNamespacedHelpers } from 'vuex'
 
@@ -81,7 +76,6 @@ export default {
             userList: [],
 
             isOpenUserInfoModal: false,
-            accountTrans: '',
 
             USER_TYPE_MAP: [{ label: '所有用户', value: '' }].concat(USER_TYPE_MAP)
         }
@@ -104,14 +98,19 @@ export default {
         this._getList(true)
     },
     methods: {
-        switchRow(row) {
-            console.log(row)
+        addPatch() {
+            this.$bus.$emit('open-userinfo-modal', {}, MODIFY_MODAL_TYPE.ADD)
+            this.isOpenUserInfoModal = true
+        },
+        deleteSelectedRows() {
+            let delList = this.userList.filter(item => item.checked).map(item => item.account)
+            console.log(delList)
         },
         editRow(row) {
             console.log(row)
 
+            this.$bus.$emit('open-userinfo-modal', row, MODIFY_MODAL_TYPE.EDIT)
             this.isOpenUserInfoModal = true
-            this.accountTrans = row.account
         },
         deleteRow(row) {
             console.log(row.account)

@@ -12,12 +12,6 @@
                 <el-tooltip class="item" effect="dark" content="删除" placement="top">
                     <el-button type="warning" icon="el-icon-minus" circle></el-button>
                 </el-tooltip>
-                <el-tooltip class="item" effect="dark" content="启用" placement="top">
-                    <el-button type="success" icon="el-icon-check" circle></el-button>
-                </el-tooltip>
-                <el-tooltip class="item" effect="dark" content="禁用" placement="top">
-                    <el-button type="danger" icon="el-icon-close" circle></el-button>
-                </el-tooltip>
             </u-layout>
         </div>
 
@@ -106,9 +100,9 @@ export default {
     },
     methods: {
         addPatch() {
-            this.isOpenConsumeModal = true
             let param = { cardId: this.searchParams.cardId }
             this.$bus.$emit('open-consume-modal', param, MODIFY_MODAL_TYPE.ADD)
+            this.isOpenConsumeModal = true
         },
         editRow(row) {
             console.log(row)
