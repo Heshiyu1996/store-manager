@@ -78,7 +78,7 @@ export default {
                 userType: '' // 不传该字段则查全部；按照账号类型搜：0普通用户、1~5依次代表：店员、副店、店长、区域管理员、老板
             },
 
-            userList: [{}],
+            userList: [],
 
             isOpenUserInfoModal: false,
             accountTrans: '',

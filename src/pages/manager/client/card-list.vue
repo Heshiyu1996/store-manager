@@ -1,18 +1,13 @@
 <template>
-    <u-layout class="client-list" direction="v">
+    <u-layout class="card-list" direction="v">
         <div class="top-wrapper">
             <u-layout>
-                <el-select v-model="searchParams.storeId" filterable placeholder="请选择门店">
-                    <el-option v-for="item in storeList" :key="item.value" :label="item.label" :value="item.value"> </el-option>
-                </el-select>
-                <el-select v-model="searchParams.useStatus" placeholder="请选择使用状态">
-                    <el-option v-for="item in useStatusList" :key="item.value" :label="item.label" :value="item.value"> </el-option>
-                </el-select>
-                <u-input v-model.trim="searchParams.searchContent" maxLength="100" placeholder="请输入支付类型" searchIcon @key-press-enter="goSearch" />
+                <el-date-picker v-model="rangeTime" type="daterange" range-separator="至" start-placeholder="起始日期" end-placeholder="结束日期" />
+                <u-input v-model.number="searchParams.cardId" maxLength="100" placeholder="请输入卡号" searchIcon @key-press-enter="_getList(true)" />
             </u-layout>
             <u-layout class="operation">
                 <el-tooltip class="item" effect="dark" content="添加" placement="top">
-                    <el-button type="primary" icon="el-icon-plus" circle></el-button>
+                    <el-button type="primary" icon="el-icon-plus" circle @click="addPatch"></el-button>
                 </el-tooltip>
                 <el-tooltip class="item" effect="dark" content="删除" placement="top">
                     <el-button type="warning" icon="el-icon-minus" circle></el-button>
@@ -27,115 +22,65 @@
         </div>
 
         <u-layout class="content-wrapper" direction="v">
-            <el-table ref="multipleTable" :data="tableData" tooltip-effect="dark" style="width: 100%" @selection-change="handleSelectionChange">
-                <el-table-column type="selection" width="55"> </el-table-column>
-                <el-table-column prop="payTypeName" label="支付类型名称" width="180"> </el-table-column>
-                <el-table-column prop="payTypeGroupName" label="支付类型分组" width="180"> </el-table-column>
-                <el-table-column prop="payTypeNum" label="支付类型编码"> </el-table-column>
-                <el-table-column prop="settlementPrice" label="结算价"> </el-table-column>
-                <el-table-column prop="orderNum" label="排序号" width="70"> </el-table-column>
-                <el-table-column prop="storeName" label="所属门店" width="200" show-overflow-tooltip> </el-table-column>
-                <el-table-column prop="useStatus" label="使用状态" width="80">
-                    <template slot-scope="{ row }">
-                        <el-switch v-model="row.useStatus" @change="switchRow(row)" active-color="#13ce66" inactive-color="#ff4949"> </el-switch>
-                    </template>
-                </el-table-column>
-                <el-table-column label="操作" width="120">
-                    <template slot-scope="{ row }">
+            <u-table ref="operationTable" :list="consumeList" auto is-list>
+                <template slot-scope="{ row }">
+                    <u-table-column width="14vw" label="流水ID" ellipse>{{ row.id || '-' }}</u-table-column>
+                    <u-table-column width="14vw" label="充值方式" ellipse>{{ _findRechargeTxt(row.rechargeWay) || '-' }}</u-table-column>
+                    <u-table-column width="14vw" label="流水描述" ellipse>{{ row.flowDesc }}</u-table-column>
+                    <u-table-column width="14vw" label="消费/充值金额" ellipse>{{ row.amount }}</u-table-column>
+                    <u-table-column width="14vw" label="余额" ellipse> {{ row.balance }} </u-table-column>
+                    <u-table-column width="14vw" label="消费时间">
+                        {{ row.flowTime | dateFormat }}
+                    </u-table-column>
+                    <u-table-column label="操作">
                         <u-layout direction="h">
                             <i class="icon el-icon-edit" @click="editRow(row)"></i> <i class="icon el-icon-delete" @click="deleteRow(row)"></i>
                         </u-layout>
-                    </template>
-                </el-table-column>
-            </el-table>
+                    </u-table-column>
+                </template>
+            </u-table>
 
             <el-pagination
+                v-show="consumeList.length"
                 @size-change="handleSizeChange"
                 @current-change="handleCurrentChange"
                 :current-page="searchParams.currentPage"
                 :page-sizes="[10, 50, 100]"
                 :page-size="searchParams.pageSize"
                 layout="total, sizes, prev, pager, next, jumper"
-                :total="tableData.length"
+                :total="consumeList.length"
             >
             </el-pagination>
         </u-layout>
+
+        <CConsumeModal :visible="isOpenConsumeModal" @close="closeConsumeModal" />
     </u-layout>
 </template>
 
 <script>
+import CConsumeModal from '@/components/consume/c-consume-modal'
+import { getConsumeList, deleteConsume } from '@/server/api'
+import { RECHARGE_TYPE_MAP, MODIFY_MODAL_TYPE } from '@/utils/config'
+
 export default {
-    name: 'client-list',
+    name: 'card-list',
+    components: { CConsumeModal },
     data() {
         return {
             searchParams: {
-                storeId: '1',
-                useStatus: '1',
-                searchContent: '',
+                cardId: 10000,
                 currentPage: 1,
                 pageSize: 50
             },
+            rangeTime: [],
 
-            useStatusList: [
-                {
-                    value: '1',
-                    label: '所有状态'
-                },
-                {
-                    value: '2',
-                    label: '启用'
-                },
-                {
-                    value: '3',
-                    label: '禁用'
-                }
-            ],
-            storeList: [
-                {
-                    value: '1',
-                    label: '大笨象密室深圳一店'
-                },
-                {
-                    value: '2',
-                    label: '大笨象密室深圳二店'
-                },
-                {
-                    value: '3',
-                    label: '大笨象密室深圳三店'
-                }
-            ],
+            consumeList: [],
 
-            tableData: [
-                {
-                    payTypeId: 1,
-                    payTypeName: '补差价哆啦宝',
-                    payTypeNum: '222223',
-                    payTypeGroupName: '支付类型分组1',
-                    settlementPrice: 1.0,
-                    orderNum: 5,
-                    storeName: '大笨象密室深圳一店',
-                    storeId: 1,
-                    useStatus: false
-                },
-                {
-                    payTypeId: 2,
-                    payTypeName: '补差价现金',
-                    payTypeNum: '888',
-                    payTypeGroupName: '支付类型分组2',
-                    settlementPrice: 2.0,
-                    orderNum: 2,
-                    storeName: '大笨象密室深圳一店',
-                    storeId: 1,
-                    useStatus: true
-                }
-            ]
+            isOpenConsumeModal: false
         }
     },
     watch: {
-        'searchParams.storeId'() {
-            this._getList(true)
-        },
-        'searchParams.useStatus'() {
+        'searchParams.userType'() {
             this._getList(false)
         },
         'searchParams.currentPage'() {
@@ -143,38 +88,49 @@ export default {
         },
         'searchParams.pageSize'() {
             this._getList(true)
+        },
+        rangeTime(val) {
+            if (!val) {
+                delete this.searchParams.startTime
+                delete this.searchParams.endTime
+            } else {
+                let [startTime, endTime] = val
+                this.searchParams.startTime = startTime.getTime()
+                this.searchParams.endTime = endTime.getTime()
+            }
+            this._getList(true)
         }
     },
+    created() {
+        this._getList(true)
+    },
     methods: {
-        switchRow(row) {
-            console.log(row)
+        addPatch() {
+            this.isOpenConsumeModal = true
+            let param = { cardId: this.searchParams.cardId }
+            this.$bus.$emit('open-consume-modal', param, MODIFY_MODAL_TYPE.ADD)
         },
         editRow(row) {
             console.log(row)
+            this.isOpenConsumeModal = true
+            this.$bus.$emit('open-consume-modal', row, MODIFY_MODAL_TYPE.EDIT)
         },
         deleteRow(row) {
-            console.log(row)
-        },
-        goSearch() {
-            console.log(123)
+            this.$confirm(`是否删除ID为 ${row.id} 的流水记录？`).then(() =>
+                deleteConsume(row).then(() => {
+                    this.$message('流水记录删除成功')
+                    this._getList(true)
+                })
+            )
         },
         _getList(isNew) {
-            console.log('拉取列表，isNew：', isNew)
-            // this.searchKeyword = this.searchParams.searchContent
-            // isNew && (this.searchParams.currentPage = 1)
-            // sortType && (this.searchParams.sortType = sortType)
-            // order && (this.searchParams.order = order)
+            if (!this.searchParams.cardId) return
+            isNew && (this.searchParams.currentPage = 1)
 
-            // getList(this.searchParams).then(data => {
-            //     this.intentionList = data.dialogueList || []
-            //     this.totalCount = data.totalCount || 0
-            //     this._combindNames()
-            // })
-        },
-        // 多选
-        handleSelectionChange(val) {
-            this.multipleSelection = val
-            console.log(this.multipleSelection)
+            getConsumeList(this.searchParams).then(data => {
+                this.consumeList = data.list || []
+                this.totalCount = data.totalCount || 0
+            })
         },
         // pageSize大小
         handleSizeChange(val) {
@@ -185,13 +141,21 @@ export default {
         handleCurrentChange(val) {
             this.searchParams.currentPage = val
             console.log(`当前页: ${val}`)
+        },
+        closeConsumeModal() {
+            this.isOpenConsumeModal = false
+            this._getList(false)
+        },
+        _findRechargeTxt(type) {
+            if (typeof type !== 'number') return '-'
+            return RECHARGE_TYPE_MAP.find(item => type === item.value).label
         }
     }
 }
 </script>
 
 <style lang="scss" scoped>
-.client-list {
+.card-list {
     height: 100%;
     padding: 0 30px 40px;
 

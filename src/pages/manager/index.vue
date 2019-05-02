@@ -1,7 +1,7 @@
 <template>
     <u-layout class="manager-index" direction="v">
         <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
-            <template v-for="subMenu in MENU_LIST">
+            <template v-for="subMenu in MENU_LIST_MANAGER">
                 <template v-if="subMenu.subMenuItemList.length !== 0">
                     <el-submenu :key="subMenu.id" :index="subMenu.subMenuInfo.value">
                         <template slot="title">{{ subMenu.subMenuInfo.label }}</template>
@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import { MENU_LIST } from '@/utils/config'
+import { MENU_LIST_MANAGER } from '@/utils/config'
 
 export default {
     name: 'manager-index',
@@ -32,7 +32,7 @@ export default {
         return {
             activeIndex: 'pay-type-list',
 
-            MENU_LIST
+            MENU_LIST_MANAGER
         }
     },
     watch: {
@@ -46,7 +46,7 @@ export default {
     computed: {
         crumbPath() {
             let arr = []
-            MENU_LIST.map(subMenu => {
+            MENU_LIST_MANAGER.map(subMenu => {
                 if (subMenu.subMenuInfo.value === this.activeIndex) {
                     arr.push(subMenu.subMenuInfo.label)
                 } else {

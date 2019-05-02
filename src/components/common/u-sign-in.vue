@@ -12,7 +12,7 @@
                         <u-error :visible="!$v.form.account.required" text="用户名不能为空" />
                     </el-form-item>
                     <el-form-item>
-                        <u-input v-model.trim="form.password" maxLength="100" placeholder="请输入密码" type="password" />
+                        <u-input v-model.trim="form.password" maxLength="100" placeholder="请输入密码" type="password" @keypress.enter="onSubmit" />
                         <u-error :visible="!$v.form.password.required" text="密码不能为空" />
                     </el-form-item>
                     <el-form-item>
