@@ -9,9 +9,6 @@
                 <el-tooltip class="item" effect="dark" content="添加" placement="top">
                     <el-button type="primary" icon="el-icon-plus" circle @click="addPatch"></el-button>
                 </el-tooltip>
-                <el-tooltip class="item" effect="dark" content="删除" placement="top">
-                    <el-button type="warning" icon="el-icon-minus" circle></el-button>
-                </el-tooltip>
             </u-layout>
         </div>
 
@@ -62,7 +59,7 @@ export default {
     data() {
         return {
             searchParams: {
-                cardId: 10000,
+                cardId: '',
                 currentPage: 1,
                 pageSize: 50
             },
@@ -158,6 +155,10 @@ export default {
         height: 40px;
         justify-content: space-between;
         align-items: center;
+
+        /deep/ .el-range-separator {
+            padding: 0;
+        }
 
         .el-button {
             margin-right: 0;
