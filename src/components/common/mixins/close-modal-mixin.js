@@ -1,7 +1,7 @@
 export default {
     methods: {
-        closeModal() {
-            this._close()
+        closeModal(success = false) {
+            this._close(success)
         },
         _close(success = false, modifyType) {
             this.$emit('close', success, modifyType)

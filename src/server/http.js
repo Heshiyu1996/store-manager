@@ -24,13 +24,15 @@ service.interceptors.request.use(
             }
 
             // 对密码进行MD5预处理
-            let requestData = JSON.parse(config.data)
-            for (let key of Object.keys(requestData)) {
-                if (['password', 'newPassword'].includes(key)) {
-                    requestData[key] = md5(requestData[key])
+            if (config.data) {
+                let requestData = JSON.parse(config.data)
+                for (let key of Object.keys(requestData)) {
+                    if (['password', 'newPassword'].includes(key)) {
+                        requestData[key] = md5(requestData[key])
+                    }
                 }
+                config.data = JSON.stringify(requestData)
             }
-            config.data = JSON.stringify(requestData)
         }
         // 预防CSRF攻击，请求头携带sessionId字段
         let sessionId = fetchCookieValue('ZZH_ELP_SESS')

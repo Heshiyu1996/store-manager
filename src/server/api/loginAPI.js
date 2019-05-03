@@ -59,6 +59,14 @@ export const setUserInfo = data =>
         data
     })
 
+// 用户密码修改
+export const setPassword = data =>
+    http({
+        url: `/elephant/user/${data.account}/password`,
+        method: 'put',
+        data
+    })
+
 // 用户列表查询
 export const getUserList = data =>
     http({

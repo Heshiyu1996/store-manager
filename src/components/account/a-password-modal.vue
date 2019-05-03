@@ -30,6 +30,15 @@
 <script>
 import { CloseModalMixin, InvalidCheckMixin } from '@/components/common/mixins'
 import { required, minLength, helpers } from 'vuelidate/lib/validators'
+import { setPassword } from '@/server/api'
+import { createNamespacedHelpers } from 'vuex'
+
+const { mapGetters } = createNamespacedHelpers('login')
+const DEFAULT_FORM = {
+    password: '',
+    newPassword: '',
+    newPasswordConfirm: ''
+}
 
 export default {
     mixins: [CloseModalMixin, InvalidCheckMixin],
@@ -38,16 +47,19 @@ export default {
     },
     data() {
         return {
-            form: {
-                password: '',
-                newPassword: '',
-                newPasswordConfirm: ''
-            }
+            form: { ...DEFAULT_FORM }
         }
     },
+    computed: {
+        ...mapGetters(['getUserInfoStore'])
+    },
     watch: {
-        visible(newVal) {
-            newVal && this.$v.$reset()
+        visible(val) {
+            if (val) {
+                this.$v.$reset()
+            } else {
+                this._resetData()
+            }
         }
     },
     validations: {
@@ -86,6 +98,14 @@ export default {
         },
         _setPassword() {
             console.log(this.form)
+            this.form.account = this.getUserInfoStore.account
+            setPassword(this.form).then(() => {
+                this.$message('密码修改成功')
+                this._close()
+            })
+        },
+        _resetData() {
+            this.form = { ...DEFAULT_FORM }
         }
     }
 }
