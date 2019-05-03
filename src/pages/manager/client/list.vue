@@ -10,25 +10,22 @@
                 <el-tooltip class="item" effect="dark" content="添加" placement="top">
                     <el-button type="primary" icon="el-icon-plus" circle @click="addPatch"></el-button>
                 </el-tooltip>
-                <el-tooltip class="item" effect="dark" content="删除" placement="top">
-                    <el-button type="warning" icon="el-icon-minus" circle></el-button>
-                </el-tooltip>
             </u-layout>
         </div>
 
         <u-layout class="content-wrapper" direction="v">
             <u-table ref="operationTable" :list="userList" auto is-list>
                 <template slot-scope="{ row }">
-                    <u-table-column width="2vw" label="" ellipse><el-checkbox v-model="row.checked"/></u-table-column>
                     <u-table-column width="10vw" label="卡号" ellipse>{{ row.cardId || '-' }}</u-table-column>
                     <u-table-column width="10vw" label="卡种" ellipse>{{ _findCardType(row.cardType) || '-' }}</u-table-column>
                     <u-table-column width="10vw" label="账号" ellipse>{{ row.account }}</u-table-column>
-                    <u-table-column width="12vw" label="姓名" ellipse>{{ row.realName }}</u-table-column>
-                    <u-table-column width="12vw" label="手机" ellipse> {{ row.phone }} </u-table-column>
-                    <u-table-column width="12vw" label="生日">
+                    <u-table-column width="10vw" label="姓名" ellipse>{{ row.realName }}</u-table-column>
+                    <u-table-column width="10vw" label="手机" ellipse> {{ row.phone }} </u-table-column>
+                    <u-table-column width="10vw" label="生日">
                         {{ row.birthday | dateFormat }}
                     </u-table-column>
                     <u-table-column width="12vw" label="账号类型" ellipse>{{ _findUserType(row.userType) || '-' }}</u-table-column>
+                    <u-table-column width="12vw" label="所属门店" ellipse>{{ row.storeId || '-' }}</u-table-column>
                     <u-table-column label="操作">
                         <u-layout v-show="_hasRight(row.userType)" direction="h">
                             <i class="icon el-icon-edit" @click="editRow(row)"></i> <i class="icon el-icon-delete" @click="deleteRow(row)"></i>
