@@ -50,12 +50,14 @@
             </el-pagination>
         </u-layout>
 
+        <AAddUserModal :visible="isOpenAddUserModal" @close="closeAddUserModal" />
         <AUserinfoModal :visible="isOpenUserInfoModal" @close="closeUserInfoModal" />
     </u-layout>
 </template>
 
 <script>
 import AUserinfoModal from '@/components/account/a-userinfo-modal'
+import AAddUserModal from '@/components/account/a-add-user-modal'
 import { USER_TYPE_MAP, MODIFY_MODAL_TYPE, CARD_TYPE_MAP } from '@/utils/config'
 import { getUserList, deleteUser } from '@/server/api'
 import { createNamespacedHelpers } from 'vuex'
@@ -64,7 +66,7 @@ const { mapGetters } = createNamespacedHelpers('login')
 
 export default {
     name: 'client-list',
-    components: { AUserinfoModal },
+    components: { AUserinfoModal, AAddUserModal },
     data() {
         return {
             searchParams: {
@@ -76,6 +78,7 @@ export default {
             userList: [],
 
             isOpenUserInfoModal: false,
+            isOpenAddUserModal: false,
 
             USER_TYPE_MAP: [{ label: '所有用户', value: '' }].concat(USER_TYPE_MAP)
         }
@@ -99,8 +102,7 @@ export default {
     },
     methods: {
         addPatch() {
-            this.$bus.$emit('open-userinfo-modal', {}, MODIFY_MODAL_TYPE.ADD)
-            this.isOpenUserInfoModal = true
+            this.isOpenAddUserModal = true
         },
         editRow(row) {
             console.log(row)
@@ -148,9 +150,13 @@ export default {
             this.searchParams.currentPage = val
             console.log(`当前页: ${val}`)
         },
-        closeUserInfoModal() {
+        closeUserInfoModal(isSuccess) {
             this.isOpenUserInfoModal = false
-            this._getList(false)
+            isSuccess && this._getList(false)
+        },
+        closeAddUserModal(isSuccess) {
+            this.isOpenAddUserModal = false
+            isSuccess && this._getList(false)
         }
     }
 }

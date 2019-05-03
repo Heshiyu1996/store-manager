@@ -2,7 +2,7 @@
     <u-modal
         :visible="visible"
         :enableConfirm="$v.$anyDirty && !$v.$invalid"
-        :title="type ? '新增用户' : '修改信息'"
+        title="用户修改信息"
         @before-close="submit"
         @close="closeModal"
         class="a-password-modal"
@@ -43,6 +43,14 @@ import { USER_TYPE, USER_TYPE_MAP, MODIFY_MODAL_TYPE } from '@/utils/config'
 import { createNamespacedHelpers } from 'vuex'
 
 const { mapGetters } = createNamespacedHelpers('login')
+const DEFAULT_FORM = {
+    realName: '',
+    phone: '',
+    birthday: Date.now(),
+    cardId: '',
+    userType: 0,
+    cardType: 0
+}
 
 export default {
     mixins: [CloseModalMixin, InvalidCheckMixin],
@@ -52,18 +60,20 @@ export default {
     data() {
         return {
             type: MODIFY_MODAL_TYPE.ADD,
-            form: {
-                realName: '',
-                phone: '',
-                birthday: 0,
-                cardId: '',
-                userType: 0,
-                cardType: 0
-            },
+            form: { ...DEFAULT_FORM },
 
             account: '',
 
             USER_TYPE_MAP
+        }
+    },
+    watch: {
+        visible(val) {
+            if (val) {
+                this.$v.$reset()
+            } else {
+                this._resetData()
+            }
         }
     },
     computed: {
@@ -114,8 +124,7 @@ export default {
             this._setUserInfo()
         },
         _openConfirmWhenChangedData() {
-            console.log(this.$v.$anyDirty)
-            this.$v.$anyDirty ? this.$confirm('确认放弃修改吗？').then(() => this.closeModal()) : this.closeModal()
+            this.$v.$anyDirty ? this.$confirm('确认放弃修改吗？').then(() => this.closeModal(true)) : this.closeModal(false)
         },
         _setUserInfo() {
             if (typeof this.form.birthday !== 'number') {
@@ -123,8 +132,11 @@ export default {
             }
             setUserInfo(this.form).then(() => {
                 this.$message('修改成功')
-                this._close()
+                this.closeModal(true)
             })
+        },
+        _resetData() {
+            this.form = { ...DEFAULT_FORM }
         }
     }
 }
