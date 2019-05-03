@@ -1,10 +1,11 @@
 <template>
-    <u-layout class="client-list" direction="v">
+    <u-layout class="user-list" direction="v">
         <div class="top-wrapper">
             <u-layout>
                 <el-select v-model="searchParams.userType" filterable placeholder="请选择账号类型">
                     <el-option v-for="item in USER_TYPE_MAP" :key="item.value" :label="item.label" :value="item.value"> </el-option>
                 </el-select>
+                <u-input v-model.trim="searchParams.name" maxLength="100" placeholder="请输入姓名" searchIcon @key-press-enter="_getList" />
             </u-layout>
             <u-layout class="operation">
                 <el-tooltip class="item" effect="dark" content="添加" placement="top">
@@ -55,21 +56,22 @@
 <script>
 import AUserinfoModal from '@/components/account/a-userinfo-modal'
 import AAddUserModal from '@/components/account/a-add-user-modal'
-import { USER_TYPE_MAP, MODIFY_MODAL_TYPE, CARD_TYPE_MAP } from '@/utils/config'
+import { USER_TYPE_MAP, CARD_TYPE_MAP } from '@/utils/config'
 import { getUserList, deleteUser } from '@/server/api'
 import { createNamespacedHelpers } from 'vuex'
 
 const { mapGetters } = createNamespacedHelpers('login')
 
 export default {
-    name: 'client-list',
+    name: 'user-list',
     components: { AUserinfoModal, AAddUserModal },
     data() {
         return {
             searchParams: {
                 currentPage: 1,
                 pageSize: 50,
-                userType: '' // 不传该字段则查全部；按照账号类型搜：0普通用户、1~5依次代表：店员、副店、店长、区域管理员、老板
+                userType: '', // 不传该字段则查全部；按照账号类型搜：0普通用户、1~5依次代表：店员、副店、店长、区域管理员、老板
+                name: ''
             },
 
             userList: [],
@@ -104,7 +106,7 @@ export default {
         editRow(row) {
             console.log(row)
 
-            this.$bus.$emit('open-userinfo-modal', row, MODIFY_MODAL_TYPE.EDIT)
+            this.$bus.$emit('open-userinfo-modal', row)
             this.isOpenUserInfoModal = true
         },
         deleteRow(row) {
@@ -125,11 +127,12 @@ export default {
             return this.USER_TYPE_MAP.find(item => utype === item.value).label
         },
         _findCardType(ctype) {
-            if (ctype === null || typeof ctype === 'undefined') return '-'
+            if (ctype === null || typeof ctype === 'undefined' || ctype === 0) return '-'
             return CARD_TYPE_MAP.find(item => ctype === item.value).label
         },
         _hasRight(type) {
             if (typeof type === 'undefined') return false
+            console.log(this.getUserInfoStore.userType)
             return this.getUserInfoStore.userType > type
         },
         // 多选
@@ -160,7 +163,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.client-list {
+.user-list {
     height: 100%;
     padding: 0 30px 40px;
 

@@ -1,5 +1,5 @@
 <template>
-    <u-layout class="user-index" direction="v">
+    <u-layout class="client-index" direction="v">
         <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
             <template v-for="subMenu in MENU_LIST_USER">
                 <template v-if="subMenu.subMenuItemList.length !== 0">
@@ -27,7 +27,7 @@
 import { MENU_LIST_USER } from '@/utils/config'
 
 export default {
-    name: 'user-index',
+    name: 'client-index',
     data() {
         return {
             activeIndex: 'consume-list',
@@ -73,7 +73,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.user-index {
+.client-index {
     position: relative;
 
     .el-breadcrumb {

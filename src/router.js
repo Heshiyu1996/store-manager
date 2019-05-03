@@ -40,31 +40,31 @@ export default new Router({
                     name: 'pay-type-group-list',
                     component: () => import('@/pages/manager/pay-type/group-list')
                 },
-                // 10-a[会员管理]会员列表
+                // 10-a[用户管理]用户列表
                 {
-                    path: 'client-list',
-                    name: 'client-list',
-                    component: () => import('@/pages/manager/client/list')
+                    path: 'user-list',
+                    name: 'user-list',
+                    component: () => import('@/pages/manager/user/list')
                 },
-                // 10-b[会员管理]会员卡系统
+                // 10-b[用户管理]会员卡系统
                 {
                     path: 'client-card-list',
                     name: 'client-card-list',
-                    component: () => import('@/pages/manager/client/card-list')
+                    component: () => import('@/pages/manager/user/card-list')
                 }
             ]
         },
         // 2-用户
         {
-            path: '/user',
-            name: 'user',
-            component: () => import('@/pages/user/index'),
+            path: '/client',
+            name: 'client',
+            component: () => import('@/pages/client/index'),
             children: [
                 // 1-消费记录
                 {
                     path: 'consume-list',
                     name: 'consume-list',
-                    component: () => import('@/pages/user/consume-list')
+                    component: () => import('@/pages/client/consume-list')
                 }
             ]
         },
