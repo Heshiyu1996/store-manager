@@ -11,7 +11,7 @@
                     <el-button type="primary" icon="el-icon-plus" circle @click="addPatch"></el-button>
                 </el-tooltip>
                 <el-tooltip class="item" effect="dark" content="删除" placement="top">
-                    <el-button type="warning" icon="el-icon-minus" circle @click="deleteSelectedRows"></el-button>
+                    <el-button type="warning" icon="el-icon-minus" circle></el-button>
                 </el-tooltip>
             </u-layout>
         </div>
@@ -101,10 +101,6 @@ export default {
         addPatch() {
             this.$bus.$emit('open-userinfo-modal', {}, MODIFY_MODAL_TYPE.ADD)
             this.isOpenUserInfoModal = true
-        },
-        deleteSelectedRows() {
-            let delList = this.userList.filter(item => item.checked).map(item => item.account)
-            console.log(delList)
         },
         editRow(row) {
             console.log(row)
