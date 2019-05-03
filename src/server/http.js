@@ -9,6 +9,7 @@ const service = axios.create({
     timeout: 300000, // 请求超时时间，原15000
     withCredentials: !isMock // 允许携带cookie
 })
+const md5 = require('blueimp-md5')
 
 // request拦截器
 service.interceptors.request.use(
@@ -21,6 +22,15 @@ service.interceptors.request.use(
                 // 序列化
                 config.data = JSON.stringify(config.data)
             }
+
+            // 对密码进行MD5预处理
+            let requestData = JSON.parse(config.data)
+            for (let key of Object.keys(requestData)) {
+                if (['password', 'newPassword'].includes(key)) {
+                    requestData[key] = md5(requestData[key])
+                }
+            }
+            config.data = JSON.stringify(requestData)
         }
         // 预防CSRF攻击，请求头携带sessionId字段
         let sessionId = fetchCookieValue('ZZH_ELP_SESS')
