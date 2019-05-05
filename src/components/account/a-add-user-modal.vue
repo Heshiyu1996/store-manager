@@ -2,16 +2,27 @@
     <u-modal
         :visible="visible"
         :enableConfirm="$v.$anyDirty && !$v.$invalid"
-        title="用户修改信息"
+        title="新增用户"
         @before-close="submit"
         @close="closeModal"
-        class="a-password-modal"
+        class="a-add-user-modal"
     >
-        <el-form ref="form" :model="form" label-width="68px">
-            <el-form-item v-if="isGM" label="账号类型">
+        <el-form ref="form" :model="form" label-width="70px">
+            <el-form-item label="账号类型">
                 <el-select v-model="$v.form.userType.$model" filterable placeholder="请选择账号类型" @change="changeUserType">
                     <el-option v-for="item in userTypeModifiedList" :key="item.value" :label="item.label" :value="item.value"> </el-option>
                 </el-select>
+            </el-form-item>
+            <el-form-item label="账号">
+                <u-input v-model="$v.form.account.$model" placeholder="请输入账号" lazy />
+                <u-error :visible="!$v.form.account.required" text="请输入账号" />
+                <u-error :visible="!$v.form.account.checkFormat" text="支持长度为2~15的英文、中文、下划线，不能包含空格" />
+                <u-error :visible="!$v.form.account.isUnique && !$v.form.account.$pending" text="该账号已被注册" />
+            </el-form-item>
+            <el-form-item label="密码">
+                <u-input v-model="$v.form.password.$model" placeholder="请输入密码" type="password" />
+                <u-error :visible="!$v.form.password.required" text="请输入密码" />
+                <u-error :visible="!$v.form.password.minLength" text="密码不能少于6个字符" />
             </el-form-item>
             <el-form-item label="姓名">
                 <u-input v-model="$v.form.realName.$model" placeholder="请输入姓名" />
@@ -28,7 +39,8 @@
             </el-form-item>
             <template v-if="form.userType === USER_TYPE.NORMAL">
                 <el-form-item label="卡号">
-                    <u-input v-model="$v.form.cardId.$model" placeholder="请输入卡号" />
+                    <u-input v-model="$v.form.cardId.$model" :regex="/^\d+$/g" placeholder="请输入卡号" />
+                    <u-error :visible="!$v.form.cardId.required" text="卡号必填" />
                 </el-form-item>
                 <el-form-item label="卡种">
                     <el-select v-model="$v.form.cardType.$model" filterable placeholder="请选择卡种">
@@ -50,21 +62,25 @@
 <script>
 import { CloseModalMixin, InvalidCheckMixin } from '@/components/common/mixins'
 import { required, requiredIf, minLength, helpers } from 'vuelidate/lib/validators'
-import { setUserInfo } from '@/server/api'
-import { USER_TYPE, USER_TYPE_MAP, MODIFY_MODAL_TYPE, CARD_TYPE_MAP } from '@/utils/config'
+import { signUp, checkAccount } from '@/server/api'
+import { USER_TYPE, USER_TYPE_MAP, CARD_TYPE_MAP } from '@/utils/config'
 import { createNamespacedHelpers } from 'vuex'
 
 const { mapGetters } = createNamespacedHelpers('login')
 const DEFAULT_FORM = {
+    account: '',
+    password: '',
     realName: '',
     phone: '',
     birthday: Date.now(),
-    userType: 0,
+    userType: USER_TYPE.NORMAL,
 
     cardId: '',
     cardType: '',
 
-    storeId: ''
+    storeId: '',
+    // extra
+    passwordConfirm: ''
 }
 
 export default {
@@ -74,7 +90,6 @@ export default {
     },
     data() {
         return {
-            type: MODIFY_MODAL_TYPE.ADD,
             form: { ...DEFAULT_FORM },
 
             account: '',
@@ -82,15 +97,6 @@ export default {
             USER_TYPE,
             USER_TYPE_MAP,
             CARD_TYPE_MAP
-        }
-    },
-    watch: {
-        visible(val) {
-            if (val) {
-                this.$v.$reset()
-            } else {
-                this._resetData()
-            }
         }
     },
     computed: {
@@ -102,18 +108,32 @@ export default {
         },
         ...mapGetters(['getUserInfoStore'])
     },
-    created() {
-        this.$bus.$on('open-userinfo-modal', accountDetail => {
-            console.log(accountDetail)
-            this.form = { ...DEFAULT_FORM, ...accountDetail }
-        })
-    },
-    destroyed() {
-        this.$bus.$off('open-userinfo-modal')
+    watch: {
+        visible(val) {
+            if (val) {
+                this.$v.$reset()
+            } else {
+                this._resetData()
+            }
+        }
     },
     validations: {
         form: {
-            userType: { required },
+            account: {
+                required,
+                checkFormat: function(value) {
+                    let regex_account = /^[a-zA-Z0-9_\u4e00-\u9fa5]{2,}$/g
+                    return !helpers.req(value) || regex_account.test(value) // 有值时!helpers.req为false，这时候才采取后面校验；没值时，不校验
+                },
+                async isUnique(value) {
+                    let result = helpers.req(value) && (await checkAccount(value))
+                    return !result
+                }
+            },
+            password: {
+                required,
+                minLength: minLength(6)
+            },
             realName: {
                 required,
                 minLength: minLength(2)
@@ -125,10 +145,10 @@ export default {
                     return !helpers.req(value) || regex_phone.test(value) // 有值时!helpers.req为false，这时候才采取后面校验；没值时，不校验
                 }
             },
+            userType: { required },
             birthday: { required },
             cardId: {
                 required: requiredIf(function() {
-                    console.log(this.form.userType)
                     return this.form.userType === USER_TYPE.NORMAL
                 })
             },
@@ -147,27 +167,28 @@ export default {
     methods: {
         submit(e) {
             // 检查数据
-            if (this._isInvalid()) return
-
+            // if (this._isInvalid()) return
             e.preventDefault()
+
             if (!e.ok) {
                 this._openConfirmWhenChangedData()
                 return
             }
 
-            this._setUserInfo()
+            this._signUp()
         },
-        _openConfirmWhenChangedData() {
-            this.$v.$anyDirty ? this.$confirm('确认放弃修改吗？').then(() => this.closeModal(true)) : this.closeModal(false)
-        },
-        _setUserInfo() {
+        _signUp() {
             if (typeof this.form.birthday !== 'number') {
                 this.form.birthday = this.form.birthday.getTime()
             }
-            setUserInfo(this.form).then(() => {
-                this.$message('修改成功')
+            signUp(this.form).then(() => {
+                this.$message('添加用户成功')
                 this.closeModal(true)
             })
+        },
+        _openConfirmWhenChangedData() {
+            console.log(this.$v.$anyDirty)
+            this.$v.$anyDirty ? this.$confirm('确认放弃修改吗？').then(() => this.closeModal(true)) : this.closeModal(false)
         },
         changeUserType(val) {
             if (val === USER_TYPE.NORMAL) {

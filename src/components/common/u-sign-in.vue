@@ -8,8 +8,8 @@
             <div class="content">
                 <el-form ref="form" :model="form">
                     <el-form-item>
-                        <u-input v-model.trim="form.account" :regex="/^[a-zA-Z0-9\u4e00-\u9fa5]+$/g" maxLength="100" placeholder="请输入用户名" />
-                        <u-error :visible="!$v.form.account.required" text="用户名不能为空" />
+                        <u-input v-model.trim="form.account" :regex="/^[a-zA-Z0-9\u4e00-\u9fa5]+$/g" maxLength="100" placeholder="请输入账号" />
+                        <u-error :visible="!$v.form.account.required" text="账号不能为空" />
                     </el-form-item>
                     <el-form-item>
                         <u-input v-model.trim="form.password" maxLength="100" placeholder="请输入密码" type="password" @keypress.enter="onSubmit" />

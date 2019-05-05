@@ -8,8 +8,8 @@
             <div class="content">
                 <el-form ref="form" :model="form">
                     <el-form-item>
-                        <u-input v-model="form.account" placeholder="请输入用户名" lazy />
-                        <u-error :visible="!$v.form.account.required" text="请输入用户名" />
+                        <u-input v-model="form.account" placeholder="请输入账号" lazy />
+                        <u-error :visible="!$v.form.account.required" text="请输入账号" />
                         <u-error :visible="!$v.form.account.checkFormat" text="支持长度为2~15的英文、中文、下划线，不能包含空格" />
                         <u-error :visible="!$v.form.account.isUnique && !$v.form.account.$pending" text="该账号已被注册" />
                     </el-form-item>
@@ -110,7 +110,9 @@ export default {
             this.$emit('toggle')
         },
         onSubmit() {
-            console.log(this.form)
+            if (typeof this.form.birthday !== 'number') {
+                this.form.birthday = this.form.birthday.getTime()
+            }
             this.form.birthday = this.form.birthday.getTime()
             signUp(this.form).then(() => {
                 this.$message('注册成功')

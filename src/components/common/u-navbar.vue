@@ -32,7 +32,7 @@ import AUserinfoModal from '@/components/account/a-userinfo-modal'
 import APasswordModal from '@/components/account/a-password-modal'
 import { signOut, getUserInfo } from '@/server/api'
 import { createNamespacedHelpers } from 'vuex'
-import { USER_TYPE, MODIFY_MODAL_TYPE } from '@/utils/config'
+import { USER_TYPE } from '@/utils/config'
 
 const { mapGetters, mapActions } = createNamespacedHelpers('login')
 
@@ -60,16 +60,16 @@ export default {
     },
     methods: {
         _getUserInfo() {
-            getUserInfo()
-                .then(data => {
-                    this.actSetIfLogin(true)
-                    this.actSetUserInfoStore({ ...data })
+            getUserInfo().then(data => {
+                this.actSetIfLogin(true)
+                this.actSetUserInfoStore({ ...data })
 
-                    if (this.$route.name === 'login') {
-                        this.$router.push(this.getUserInfoStore.userType === USER_TYPE.NORMAL ? { name: 'user' } : { name: 'manager' })
-                    }
-                })
-                .catch(() => this.$router.push({ name: 'login' }))
+                if (this.$route.name === 'login') {
+                    this.$router.push(this.getUserInfoStore.userType === USER_TYPE.NORMAL ? { name: 'user' } : { name: 'manager' })
+                }
+            })
+            // TODO: 避免未登录状态下会跳到登录页
+            .catch(() => this.$router.push({ name: 'login' }))
         },
         closeUserInfoModal() {
             this.isOpenUserInfoModal = false
@@ -104,7 +104,7 @@ export default {
             this.isOpenPasswordModal = true
         },
         updateInfo() {
-            this.$bus.$emit('open-userinfo-modal', this.getUserInfoStore.account, MODIFY_MODAL_TYPE.EDIT)
+            this.$bus.$emit('open-userinfo-modal', this.getUserInfoStore)
             this.isOpenUserInfoModal = true
         },
         goHomePage() {
