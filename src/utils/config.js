@@ -1,6 +1,6 @@
 export const isDev = process.env.NODE_ENV === 'development'
 export const isMock = false
-export const rootURL = isDev ? (isMock ? 'http://localhost:8002' : 'http://localhost:8082') : '/'
+export const rootURL = isDev ? (isMock ? '/' : 'http://localhost:8082') : '/'
 
 /* 编辑模式，新增/编辑 */
 export const MODIFY_MODAL_TYPE = {
@@ -75,13 +75,6 @@ export const MENU_LIST_MANAGER = [
     },
     {
         subMenuInfo: {
-            value: 'staff',
-            label: '员工信息'
-        },
-        subMenuItemList: []
-    },
-    {
-        subMenuInfo: {
             value: 'customer',
             label: '客户来源'
         },
@@ -91,13 +84,6 @@ export const MENU_LIST_MANAGER = [
         subMenuInfo: {
             value: 'key',
             label: '钥匙管理'
-        },
-        subMenuItemList: []
-    },
-    {
-        subMenuInfo: {
-            value: 'goal',
-            label: '目标管理'
         },
         subMenuItemList: []
     },
@@ -127,19 +113,26 @@ export const MENU_LIST_MANAGER = [
     },
     {
         subMenuInfo: {
-            value: 'client',
-            label: '会员管理'
+            value: 'user',
+            label: '用户管理'
         },
         subMenuItemList: [
             {
-                value: 'client-list',
-                label: '会员列表'
+                value: 'user-list',
+                label: '用户列表'
             },
             {
                 value: 'client-card-list',
                 label: '会员卡系统'
             }
         ]
+    },
+    {
+        subMenuInfo: {
+            value: 'store-list',
+            label: '门店管理'
+        },
+        subMenuItemList: []
     }
 ]
 

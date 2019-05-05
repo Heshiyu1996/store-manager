@@ -51,6 +51,12 @@ export default new Router({
                     path: 'client-card-list',
                     name: 'client-card-list',
                     component: () => import('@/pages/manager/user/card-list')
+                },
+                // 11-a[门店管理]门店列表
+                {
+                    path: 'store-list',
+                    name: 'store-list',
+                    component: () => import('@/pages/manager/store-list')
                 }
             ]
         },
