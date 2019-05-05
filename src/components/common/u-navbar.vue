@@ -60,16 +60,17 @@ export default {
     },
     methods: {
         _getUserInfo() {
-            getUserInfo().then(data => {
-                this.actSetIfLogin(true)
-                this.actSetUserInfoStore({ ...data })
+            getUserInfo()
+                .then(data => {
+                    this.actSetIfLogin(true)
+                    this.actSetUserInfoStore({ ...data })
 
-                if (this.$route.name === 'login') {
-                    this.$router.push(this.getUserInfoStore.userType === USER_TYPE.NORMAL ? { name: 'user' } : { name: 'manager' })
-                }
-            })
-            // TODO: 避免未登录状态下会跳到登录页
-            .catch(() => this.$router.push({ name: 'login' }))
+                    if (this.$route.name === 'login') {
+                        this.$router.push(this.getUserInfoStore.userType === USER_TYPE.NORMAL ? { name: 'user' } : { name: 'manager' })
+                    }
+                })
+                // TODO: 避免未登录状态下会跳到登录页
+                .catch(() => this.$router.push({ name: 'login' }))
         },
         closeUserInfoModal() {
             this.isOpenUserInfoModal = false
