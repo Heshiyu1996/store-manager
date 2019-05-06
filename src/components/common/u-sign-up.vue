@@ -113,7 +113,6 @@ export default {
             if (typeof this.form.birthday !== 'number') {
                 this.form.birthday = this.form.birthday.getTime()
             }
-            this.form.birthday = this.form.birthday.getTime()
             signUp(this.form).then(() => {
                 this.$message('注册成功')
                 this.toggleBox()
