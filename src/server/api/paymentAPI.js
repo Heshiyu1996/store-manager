@@ -6,7 +6,7 @@ import http from '../http.js'
 // 获取支付类型列表
 export const getPaymentList = data =>
     http({
-        url: `/elephant/payment/type/list`,
+        url: `/api/payment/type/list`,
         method: 'post',
         data
     })
@@ -14,7 +14,7 @@ export const getPaymentList = data =>
 // 添加支付类型
 export const addPayment = data =>
     http({
-        url: `/elephant/payment/type/add`,
+        url: `/api/payment/type/add`,
         method: 'post',
         data
     })
@@ -22,7 +22,7 @@ export const addPayment = data =>
 // 批量启用/禁用（支付类型）
 export const updatePaymentStatus = data =>
     http({
-        url: `/elephant/payment/type/status/update`,
+        url: `/api/payment/type/status/update`,
         method: 'put',
         data
     })
@@ -30,7 +30,7 @@ export const updatePaymentStatus = data =>
 // 删除支付类型
 export const deletePayment = data =>
     http({
-        url: `/elephant/payment/type/delete`,
+        url: `/api/payment/type/delete`,
         method: 'delete',
         data
     })
@@ -38,7 +38,7 @@ export const deletePayment = data =>
 // 修改支付类型
 export const editPayment = data =>
     http({
-        url: `/elephant/payment/type/${data.typeId}`,
+        url: `/api/payment/type/${data.typeId}`,
         method: 'put',
         data
     })
@@ -49,7 +49,7 @@ export const editPayment = data =>
 // 获取支付类型分组列表
 export const getPaymentGroupList = data =>
     http({
-        url: `/elephant/payment/group/list`,
+        url: `/api/payment/group/list`,
         method: 'post',
         data
     })
@@ -57,7 +57,7 @@ export const getPaymentGroupList = data =>
 // 添加支付类型分组
 export const addPaymentGroup = data =>
     http({
-        url: `/elephant/payment/group/add`,
+        url: `/api/payment/group/add`,
         method: 'post',
         data
     })
@@ -65,7 +65,7 @@ export const addPaymentGroup = data =>
 // 批量启用/禁用（支付类型分组）
 export const updatePaymentGroupStatus = data =>
     http({
-        url: `/elephant/payment/group/status/update`,
+        url: `/api/payment/group/status/update`,
         method: 'put',
         data
     })
@@ -73,7 +73,7 @@ export const updatePaymentGroupStatus = data =>
 // 删除支付类型分组
 export const deletePaymentGroup = data =>
     http({
-        url: `/elephant/payment/group/delete`,
+        url: `/api/payment/group/delete`,
         method: 'delete',
         data
     })
@@ -81,7 +81,7 @@ export const deletePaymentGroup = data =>
 // 修改支付类型分组
 export const editPaymentGroup = data =>
     http({
-        url: `/elephant/payment/group/${data.groupId}`,
+        url: `/api/payment/group/${data.groupId}`,
         method: 'put',
         data
     })

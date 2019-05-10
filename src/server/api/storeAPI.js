@@ -6,7 +6,7 @@ import http from '../http.js'
 // 获取门店列表
 export const getStoreList = data =>
     http({
-        url: `/elephant/store/list`,
+        url: `/api/store/list`,
         method: 'post',
         data
     })
@@ -14,7 +14,7 @@ export const getStoreList = data =>
 // 门店新增
 export const addStore = data =>
     http({
-        url: `/elephant/store/add`,
+        url: `/api/store/add`,
         method: 'post',
         data
     })
@@ -22,7 +22,7 @@ export const addStore = data =>
 // 门店删除
 export const deleteStore = data =>
     http({
-        url: `/elephant/store/${data}`,
+        url: `/api/store/${data}`,
         method: 'delete',
         data
     })
@@ -30,7 +30,7 @@ export const deleteStore = data =>
 // 门店修改
 export const editStore = data =>
     http({
-        url: `/elephant/store/${data}`,
+        url: `/api/store/${data}`,
         method: 'put',
         data
     })

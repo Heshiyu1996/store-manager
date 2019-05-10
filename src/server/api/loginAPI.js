@@ -6,7 +6,7 @@ import http from '../http.js'
 // 用户名检测
 export const checkAccount = data =>
     http({
-        url: `/elephant/user/${data}/check`,
+        url: `/api/user/${data}/check`,
         method: 'get',
         data
     })
@@ -14,7 +14,7 @@ export const checkAccount = data =>
 // 用户登录
 export const signIn = data =>
     http({
-        url: `/elephant/user/signIn`,
+        url: `/api/user/signIn`,
         method: 'post',
         data
     })
@@ -22,7 +22,7 @@ export const signIn = data =>
 // 用户注册
 export const signUp = data =>
     http({
-        url: `/elephant/user/signUp`,
+        url: `/api/user/signUp`,
         method: 'post',
         data
     })
@@ -30,7 +30,7 @@ export const signUp = data =>
 // 用户登出
 export const signOut = data =>
     http({
-        url: `/elephant/user/signOut`,
+        url: `/api/user/signOut`,
         method: 'post',
         data
     })
@@ -38,7 +38,7 @@ export const signOut = data =>
 // 当前用户信息查询
 export const getUserInfo = data =>
     http({
-        url: `/elephant/user/userInfo`,
+        url: `/api/user/userInfo`,
         method: 'get',
         data
     })
@@ -46,7 +46,7 @@ export const getUserInfo = data =>
 // 用户信息查询（根据Account、且只能查自己的下级或自己）
 export const getUserInfoByAccount = data =>
     http({
-        url: `/elephant/user/${data}/userInfo`,
+        url: `/api/user/${data}/userInfo`,
         method: 'get',
         data
     })
@@ -54,7 +54,7 @@ export const getUserInfoByAccount = data =>
 // 用户信息修改
 export const setUserInfo = data =>
     http({
-        url: `/elephant/user/${data.account}/userInfo`,
+        url: `/api/user/${data.account}/userInfo`,
         method: 'put',
         data
     })
@@ -62,7 +62,7 @@ export const setUserInfo = data =>
 // 用户密码修改
 export const setPassword = data =>
     http({
-        url: `/elephant/user/${data.account}/password`,
+        url: `/api/user/${data.account}/password`,
         method: 'put',
         data
     })
@@ -70,7 +70,7 @@ export const setPassword = data =>
 // 用户列表查询
 export const getUserList = data =>
     http({
-        url: `/elephant/user/list`,
+        url: `/api/user/list`,
         method: 'post',
         data
     })
@@ -78,7 +78,7 @@ export const getUserList = data =>
 // 用户删除
 export const deleteUser = data =>
     http({
-        url: `/elephant/user/${data}`,
+        url: `/api/user/${data}`,
         method: 'delete',
         data
     })

@@ -1,6 +1,4 @@
 module.exports = {
-    publicPath: '/elephant/',
-
     // 是否为生产环境构建生成 source map
     productionSourceMap: false,
 
@@ -28,13 +26,13 @@ module.exports = {
         // https: true,
         https: false,
         proxy: {
-            '/elephant': {
-                // target: 'http://www.dbxyyxt.com/elephant',
+            '/api': {
+                // target: 'http://www.dbxyyxt.com/api',
                 target: 'http://192.168.1.5:8080',
                 changeOrigin: true,
                 ws: true,
                 pathRewrite: {
-                  '^/elephant': ''
+                  '^/api': ''
                 }
             }
         }
