@@ -30,7 +30,7 @@
 <script>
 import AUserinfoModal from '@/components/account/a-userinfo-modal'
 import APasswordModal from '@/components/account/a-password-modal'
-import { signOut, getUserInfo } from '@/server/api'
+import { signOut, getUserInfo, getStoreList } from '@/server/api'
 import { createNamespacedHelpers } from 'vuex'
 import { USER_TYPE } from '@/utils/config'
 
@@ -48,6 +48,9 @@ export default {
         }
     },
     computed: {
+        isGM() {
+            return this.getUserInfoStore.userType !== USER_TYPE.NORMAL
+        },
         ...mapGetters(['getIflogin', 'getUserInfoStore'])
     },
     watch: {
@@ -60,17 +63,27 @@ export default {
     },
     methods: {
         _getUserInfo() {
-            getUserInfo()
-                .then(data => {
-                    this.actSetIfLogin(true)
-                    this.actSetUserInfoStore({ ...data })
+            getUserInfo().then(userInfo => {
+                this.actSetIfLogin(true)
+                this.actSetUserInfoStore({ ...userInfo })
+                if (this.isGM) {
+                    this._getStoreList()
+                }
 
-                    if (this.$route.name === 'login') {
-                        this.$router.push(this.getUserInfoStore.userType === USER_TYPE.NORMAL ? { name: 'user' } : { name: 'manager' })
-                    }
+                if (this.$route.name === 'login') {
+                    this.$router.push(this.isGM ? { name: 'user' } : { name: 'manager' })
+                }
+            })
+            // TODO: 避免未登录状态下会跳到登录页
+            .catch(() => this.$router.push({ name: 'login' }))
+        },
+        _getStoreList() {
+            getStoreList()
+                .then(data => {
+                    this.actSetStoreListStore(data.storeList || [])
+                    console.log(data.storeList)
                 })
-                // TODO: 避免未登录状态下会跳到登录页
-                .catch(() => this.$router.push({ name: 'login' }))
+                .catch(e => console.log(e))
         },
         closeUserInfoModal() {
             this.isOpenUserInfoModal = false
@@ -123,7 +136,7 @@ export default {
         gotoPage(path) {
             this.$router.push(path)
         },
-        ...mapActions(['actSetIfLogin', 'actSetUserInfoStore'])
+        ...mapActions(['actSetIfLogin', 'actSetUserInfoStore', 'actSetStoreListStore'])
     }
 }
 </script>

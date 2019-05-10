@@ -1,6 +1,7 @@
 const state = {
     ifLogin: false, // 是否登录
-    userInfoStore: {} // 用户信息
+    userInfoStore: {}, // 用户信息
+    storeList: []
 }
 
 const getters = {
@@ -11,6 +12,10 @@ const getters = {
     // 用户信息
     getUserInfoStore(state) {
         return state.userInfoStore
+    },
+    // 门店信息
+    getStoreListStore(state) {
+        return state.storeList
     }
 }
 
@@ -22,6 +27,10 @@ const mutations = {
     // 设置用户信息
     setUserInfoStore(state, payload) {
         return (state.userInfoStore = payload)
+    },
+    // 设置用户信息
+    setStoreListStore(state, payload) {
+        return (state.storeList = payload)
     }
 }
 
@@ -33,6 +42,10 @@ const actions = {
     // 设置用户信息
     actSetUserInfoStore({ commit }, payload) {
         commit('setUserInfoStore', payload)
+    },
+    // 设置用户信息
+    actSetStoreListStore({ commit }, payload) {
+        commit('setStoreListStore', payload)
     }
 }
 
