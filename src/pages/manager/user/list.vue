@@ -111,10 +111,12 @@ export default {
         },
         deleteRow(row) {
             console.log(row.account)
-            this.$confirm(`是否删除用户 ${row.account} ？`).then(() => deleteUser(row.account).then(() => {
-                this.$message('用户删除成功')
-                this._getList(false)
-            }))
+            this.$confirm(`是否删除用户 ${row.account} ？`).then(() =>
+                deleteUser(row.account).then(() => {
+                    this.$message('用户删除成功')
+                    this._getList(false)
+                })
+            )
         },
         _getList(isNew) {
             console.log('拉取列表，isNew：', isNew)

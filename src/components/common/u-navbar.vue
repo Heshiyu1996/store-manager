@@ -17,8 +17,8 @@
                 </el-dropdown>
             </div>
             <div v-else class="sign-wrapper">
-                <span class="sign sign-in">登录</span>
-                <span class="sign sign-up">注册</span>
+                <span class="sign sign-in" @click="goToLogin('sign-in')">登录</span>
+                <span class="sign sign-up" @click="goToLogin('sign-up')">注册</span>
             </div>
         </div>
 
@@ -71,14 +71,14 @@ export default {
                 }
 
                 if (this.$route.name === 'login') {
-                    this.$router.push(this.isGM ? { name: 'user' } : { name: 'manager' })
+                    this.$router.push(this.isGM ? { name: 'manager' } : { name: 'client' })
                 }
             })
             // TODO: 避免未登录状态下会跳到登录页
-            .catch(() => this.$router.push({ name: 'login' }))
+            // .catch(() => this.$router.push({ name: 'login' }))
         },
         _getStoreList() {
-            getStoreList()
+            getStoreList({ currentPage: 1 })
                 .then(data => {
                     this.actSetStoreListStore(data.storeList || [])
                     console.log(data.storeList)
@@ -98,6 +98,14 @@ export default {
             } else {
                 // 点击cancel
                 console.log('点击cancel')
+            }
+        },
+        goToLogin(loginType) {
+            if (this.$route.name === 'login') {
+                // 本身就在login页内
+                this.$bus.$emit('toggleBox', loginType)
+            } else {
+                this.$router.push({ name: 'login', params: { type: loginType } })
             }
         },
         logout() {

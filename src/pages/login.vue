@@ -15,9 +15,20 @@ export default {
             showSignIn: true
         }
     },
+    created() {
+        this.$route.params.type === 'sign-up' && this.toggleBox()
+        this.$bus.$on('toggleBox', loginType => this.toggleBox(loginType))
+    },
+    beforeDestroy() {
+        this.$bus.$off('toggleBox', loginType => this.toggleBox(loginType))
+    },
     methods: {
-        toggleBox() {
-            this.showSignIn = !this.showSignIn
+        toggleBox(loginType) {
+            if (loginType) {
+                this.showSignIn = loginType === 'sign-in' ? true : false
+            } else {
+                this.showSignIn = !this.showSignIn
+            }
         }
     }
 }
