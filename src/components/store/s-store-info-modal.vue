@@ -77,14 +77,14 @@ export default {
             let param = { ...this.form }
             addStore(param).then(() => {
                 this.$message('新增成功')
-                this._close()
+                this.closeModal(true)
             })
         },
         _editStore() {
             let param = { ...this.form }
             editStore(param).then(() => {
                 this.$message('修改成功')
-                this._close()
+                this.closeModal(true)
             })
         }
     }

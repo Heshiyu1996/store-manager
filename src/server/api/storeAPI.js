@@ -30,7 +30,7 @@ export const deleteStore = data =>
 // 门店修改
 export const editStore = data =>
     http({
-        url: `/api/store/${data}`,
+        url: `/api/store/${data.id}`,
         method: 'put',
         data
     })

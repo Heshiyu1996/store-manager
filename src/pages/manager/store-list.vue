@@ -83,14 +83,19 @@ export default {
         },
         deleteRow(row) {
             console.log(row)
-            this.$confirm(`是否删除门店 ${row.name} ？`).then(() => deleteStore(row.id).then(() => this.$message('门店删除成功')))
+            this.$confirm(`是否删除门店 ${row.name} ？`).then(() =>
+                deleteStore(row.id).then(() => {
+                    this.$message('门店删除成功')
+                    this._getList(false)
+                })
+            )
         },
         _getList(isNew) {
             console.log('拉取列表，isNew：', isNew)
             isNew && (this.searchParams.currentPage = 1)
             getStoreList(this.searchParams)
                 .then(data => {
-                    this.storeList = data.storeList || []
+                    this.storeList = data.list || []
                     this.totalCount = data.totalCount || 0
                 })
                 .catch(e => console.log(e))
