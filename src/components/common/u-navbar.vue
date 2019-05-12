@@ -2,7 +2,8 @@
     <nav class="u-navbar navbar fix-top">
         <div class="left" @click="goHomePage">大笨象密室逃脱 | 管理平台</div>
         <div class="right">
-            <div v-if="getIflogin" class="user-wrapper">
+            <u-layout v-if="getIflogin" class="user-wrapper" gap="s">
+                <el-tag size="mini" :user-type="getUserInfoStore.userType">{{ userTypeModified }}</el-tag>
                 <span class="name">{{ getUserInfoStore.realName }}</span>
                 <el-dropdown @command="handleAvatar">
                     <div class="avatar-wrapper">
@@ -15,7 +16,7 @@
                         <el-dropdown-item command="logout" divided>退出</el-dropdown-item>
                     </el-dropdown-menu>
                 </el-dropdown>
-            </div>
+            </u-layout>
             <div v-else class="sign-wrapper">
                 <span class="sign sign-in" @click="goToLogin('sign-in')">登录</span>
                 <span class="sign sign-up" @click="goToLogin('sign-up')">注册</span>
@@ -32,7 +33,7 @@ import AUserinfoModal from '@/components/account/a-userinfo-modal'
 import APasswordModal from '@/components/account/a-password-modal'
 import { signOut, getUserInfo, getStoreList } from '@/server/api'
 import { createNamespacedHelpers } from 'vuex'
-import { USER_TYPE } from '@/utils/config'
+import { USER_TYPE, USER_TYPE_MAP } from '@/utils/config'
 
 const { mapGetters, mapActions } = createNamespacedHelpers('login')
 
@@ -51,12 +52,17 @@ export default {
         isGM() {
             return this.getUserInfoStore.userType !== USER_TYPE.NORMAL
         },
+        userTypeModified() {
+            let targetObj = USER_TYPE_MAP.filter(item => item.value === this.getUserInfoStore.userType)[0]
+            return targetObj.label || ''
+        },
         ...mapGetters(['getIflogin', 'getUserInfoStore', 'getStoreListStore'])
     },
     watch: {
-        getIflogin(val) {
-            val && this._getUserInfo()
-        }
+        // TODO: 暂时注销，因为created加载一次就可以了
+        // getIflogin(val) {
+        //     val && this._getUserInfo()
+        // }
     },
     created() {
         this._getUserInfo()
@@ -84,9 +90,9 @@ export default {
                 })
                 .catch(e => console.log(e))
         },
-        closeUserInfoModal() {
+        closeUserInfoModal(isSuccess) {
             this.isOpenUserInfoModal = false
-            this._getUserInfo()
+            isSuccess && this._getUserInfo()
         },
         closePasswordModal(isSuccess) {
             this.isOpenPasswordModal = false
@@ -175,12 +181,36 @@ export default {
         .user-wrapper {
             display: inline-block;
 
+            .el-tag {
+                vertical-align: middle;
+                color: white;
+
+                // 0普通用户、1~5依次代表：店员、副店、店长、区域管理员、老板
+                &[user-type='0'] {
+                    background-color: #409eff;
+                }
+                &[user-type='1'] {
+                    background-color: #dbb64c;
+                }
+                &[user-type='2'] {
+                    background-color: #6d6dc1;
+                }
+                &[user-type='3'] {
+                    background-color: #67c23a;
+                }
+                &[user-type='4'] {
+                    background-color: #e6a23c;
+                }
+                &[user-type='5'] {
+                    background-color: #f56c6c;
+                }
+            }
+
             .name {
                 line-height: 30px;
                 width: 200px;
                 max-width: 200px;
                 vertical-align: middle;
-                margin-right: 10px;
             }
 
             .avatar-wrapper {
