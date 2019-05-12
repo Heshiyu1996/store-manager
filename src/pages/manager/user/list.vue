@@ -140,11 +140,6 @@ export default {
             console.log(this.getUserInfoStore.userType)
             return this.getUserInfoStore.userType > type
         },
-        // 多选
-        handleSelectionChange(val) {
-            this.multipleSelection = val
-            console.log(this.multipleSelection)
-        },
         // pageSize大小
         handleSizeChange(val) {
             this.searchParams.pageSize = val

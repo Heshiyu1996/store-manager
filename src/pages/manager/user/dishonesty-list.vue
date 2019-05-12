@@ -18,23 +18,23 @@
                 <el-tooltip class="item" effect="dark" content="删除" placement="top">
                     <el-button type="warning" icon="el-icon-minus" circle @click="updateRows(OPERATION_TYPE.DELETE)"></el-button>
                 </el-tooltip>
-                <el-tooltip class="item" effect="dark" content="启用" placement="top">
+                <!-- <el-tooltip class="item" effect="dark" content="启用" placement="top">
                     <el-button type="success" icon="el-icon-check" circle @click="updateRows(OPERATION_TYPE.OPEN)"></el-button>
                 </el-tooltip>
                 <el-tooltip class="item" effect="dark" content="禁用" placement="top">
                     <el-button type="danger" icon="el-icon-close" circle @click="updateRows(OPERATION_TYPE.CLOSE)"></el-button>
-                </el-tooltip>
+                </el-tooltip> -->
             </u-layout>
         </div>
 
         <u-layout class="content-wrapper" direction="v">
             <u-table ref="operationTable" :list="list" auto is-list>
                 <template slot-scope="{ row }">
-                    <u-table-column width="2vw" label="" ellipse><el-checkbox v-model="row.checked"/></u-table-column>
-                    <u-table-column width="18vw" label="名称" ellipse>{{ row.name || '-' }}</u-table-column>
-                    <u-table-column width="18vw" label="电话" ellipse>{{ row.name || '-' }}</u-table-column>
-                    <u-table-column width="18vw" label="所属门店" ellipse> {{ row.storeName }} </u-table-column>
-                    <u-table-column width="18vw" label="使用状态" ellipse>
+                    <!-- <u-table-column width="2vw" label="" ellipse><el-checkbox v-model="row.checked"/></u-table-column> -->
+                    <u-table-column width="20vw" label="名称" ellipse>{{ row.name || '-' }}</u-table-column>
+                    <u-table-column width="20vw" label="电话" ellipse>{{ row.name || '-' }}</u-table-column>
+                    <u-table-column width="20vw" label="所属门店" ellipse> {{ row.storeName }} </u-table-column>
+                    <u-table-column width="20vw" label="使用状态" ellipse>
                         <el-switch v-model="row.status" @change="switchRow(row)" active-color="#13ce66" inactive-color="#ff4949"> </el-switch>
                     </u-table-column>
                     <u-table-column label="操作">
@@ -142,8 +142,8 @@ export default {
             this.$bus.$emit('open-dishonesty-modal', {}, MODIFY_MODAL_TYPE.ADD)
             this.isOpenDishonestyfoModal = true
         },
-        updateRows(otype) {
-            let params = this._fetchSelectedRows()
+        updateRows(otype, id) {
+            let params = id || this._fetchSelectedRows()
             switch (otype) {
                 case OPERATION_TYPE.DELETE:
                     console.log('delete', params)
@@ -154,7 +154,7 @@ export default {
                     console.log('close', params)
                     var isOpen = otype === OPERATION_TYPE.OPEN
                     updatePaymentStatus({ ids: params, status: isOpen }).then(() => {
-                        this.$message(`${isOpen ? '启用' : '删除'} 成功`)
+                        this.$message(`${isOpen ? '启用' : '禁用'} 成功`)
                         this._getList(true)
                     })
                     break
@@ -167,6 +167,7 @@ export default {
         },
         switchRow(row) {
             console.log(row)
+            this.updateRows(OPERATION_TYPE[row.status ? 'OPEN' : 'CLOSE'], [row.id])
         },
         editRow(row) {
             console.log(row)
@@ -195,11 +196,6 @@ export default {
         _hasRight(type) {
             if (typeof type === 'undefined') return false
             return this.getUserInfoStore.userType > type
-        },
-        // 多选
-        handleSelectionChange(val) {
-            this.multipleSelection = val
-            console.log(this.multipleSelection)
         },
         // pageSize大小
         handleSizeChange(val) {
@@ -235,7 +231,7 @@ export default {
         }
 
         .operation {
-            min-width: 200px;
+            min-width: 100px;
         }
 
         .el-button {

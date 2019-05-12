@@ -143,7 +143,6 @@ export default {
             this.isOpenMaterialHouseInfoModal = true
         },
         updateRows(otype, id) {
-            console.log(otype, 'otype')
             let params = id || this._fetchSelectedRows()
             switch (otype) {
                 case OPERATION_TYPE.DELETE:
@@ -155,7 +154,7 @@ export default {
                     console.log('close', params)
                     var isOpen = otype === OPERATION_TYPE.OPEN
                     updateMaterialHouseStatus({ ids: params, status: isOpen }).then(() => {
-                        this.$message(`${isOpen ? '启用' : '删除'} 成功`)
+                        this.$message(`${isOpen ? '启用' : '禁用'} 成功`)
                         this._getList(true)
                     })
                     break

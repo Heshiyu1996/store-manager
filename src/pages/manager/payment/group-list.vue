@@ -62,7 +62,7 @@
 
 <script>
 import PPaymentGroupInfoModal from '@/components/pay-type/p-payment-group-info-modal'
-import { USER_TYPE_MAP, MODIFY_MODAL_TYPE, CARD_TYPE_MAP } from '@/utils/config'
+import { MODIFY_MODAL_TYPE } from '@/utils/config'
 import { getPaymentGroupList, deletePayment, updatePaymentGroupStatus } from '@/server/api'
 import { createNamespacedHelpers } from 'vuex'
 
@@ -105,7 +105,6 @@ export default {
 
             isOpenPaymentGroupInfoModal: false,
 
-            USER_TYPE_MAP: [{ label: '所有用户', value: '' }].concat(USER_TYPE_MAP),
             OPERATION_TYPE,
             STATUS_LIST
         }
@@ -141,8 +140,8 @@ export default {
             this.$bus.$emit('open-payment-group-info-modal', {}, MODIFY_MODAL_TYPE.ADD)
             this.isOpenPaymentGroupInfoModal = true
         },
-        updateRows(otype) {
-            let params = this._fetchSelectedRows()
+        updateRows(otype, id) {
+            let params = id || this._fetchSelectedRows()
             switch (otype) {
                 case OPERATION_TYPE.DELETE:
                     console.log('delete', params)
@@ -153,7 +152,7 @@ export default {
                     console.log('close', params)
                     var isOpen = otype === OPERATION_TYPE.OPEN
                     updatePaymentGroupStatus({ ids: params, status: isOpen }).then(() => {
-                        this.$message(`${isOpen ? '启用' : '删除'} 成功`)
+                        this.$message(`${isOpen ? '启用' : '禁用'} 成功`)
                         this._getList(true)
                     })
                     break
@@ -166,6 +165,7 @@ export default {
         },
         switchRow(row) {
             console.log(row)
+            this.updateRows(OPERATION_TYPE[row.status ? 'OPEN' : 'CLOSE'], [row.id])
         },
         editRow(row) {
             console.log(row)
@@ -190,23 +190,6 @@ export default {
                 this.list.forEach(item => this.$set(item, 'checked', false))
                 this.totalCount = data.totalCount || 0
             })
-        },
-        _findUserType(utype) {
-            if (typeof utype === 'undefined') return '-'
-            return this.USER_TYPE_MAP.find(item => utype === item.value).label
-        },
-        _findCardType(ctype) {
-            if (ctype === null || typeof ctype === 'undefined') return '-'
-            return CARD_TYPE_MAP.find(item => ctype === item.value).label
-        },
-        _hasRight(type) {
-            if (typeof type === 'undefined') return false
-            return this.getUserInfoStore.userType > type
-        },
-        // 多选
-        handleSelectionChange(val) {
-            this.multipleSelection = val
-            console.log(this.multipleSelection)
         },
         // pageSize大小
         handleSizeChange(val) {
