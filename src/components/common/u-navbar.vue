@@ -51,7 +51,7 @@ export default {
         isGM() {
             return this.getUserInfoStore.userType !== USER_TYPE.NORMAL
         },
-        ...mapGetters(['getIflogin', 'getUserInfoStore'])
+        ...mapGetters(['getIflogin', 'getUserInfoStore', 'getStoreListStore'])
     },
     watch: {
         getIflogin(val) {
@@ -80,8 +80,7 @@ export default {
         _getStoreList() {
             getStoreList({ currentPage: 1 })
                 .then(data => {
-                    this.actSetStoreListStore(data.storeList || [])
-                    console.log(data.storeList)
+                    this.actSetStoreListStore(data.list || [])
                 })
                 .catch(e => console.log(e))
         },
