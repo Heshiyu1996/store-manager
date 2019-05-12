@@ -1,5 +1,5 @@
 <template>
-    <u-modal :visible="visible" :title="type ? '新增消费记录' : '编辑消费记录'" @before-close="submit" @close="closeModal" class="c-consume-modal">
+    <u-modal :visible="visible" :title="type ? '新增消费记录' : '编辑消费记录'" @before-close="submit" @close="closeModal" class="u-consume-modal">
         <el-form ref="form" :model="form" label-width="110px">
             <el-form-item v-if="!type" label="流水ID">
                 <u-label :text="form.id" />
@@ -123,7 +123,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.c-consume-modal {
+.u-consume-modal {
     /deep/ .u-modal-body {
         overflow-y: visible;
 

@@ -44,18 +44,18 @@
             </el-pagination>
         </u-layout>
 
-        <CConsumeModal :visible="isOpenConsumeModal" @close="closeConsumeModal" />
+        <UConsumeModal :visible="isOpenConsumeModal" @close="closeConsumeModal" />
     </u-layout>
 </template>
 
 <script>
-import CConsumeModal from '@/components/consume/c-consume-modal'
+import UConsumeModal from '@/components/user/consume-modal'
 import { getConsumeList, deleteConsume } from '@/server/api'
 import { RECHARGE_TYPE_MAP, MODIFY_MODAL_TYPE } from '@/utils/config'
 
 export default {
     name: 'card-list',
-    components: { CConsumeModal },
+    components: { UConsumeModal },
     data() {
         return {
             searchParams: {
