@@ -48,9 +48,15 @@ export default new Router({
                 },
                 // 10-b[用户管理]会员卡系统
                 {
-                    path: 'client-card-list',
-                    name: 'client-card-list',
+                    path: 'user-card-list',
+                    name: 'user-card-list',
                     component: () => import('@/pages/manager/user/card-list')
+                },
+                // 10-c[用户管理]失信列表
+                {
+                    path: 'dishonesty-list',
+                    name: 'dishonesty-list',
+                    component: () => import('@/pages/manager/user/dishonesty-list')
                 },
                 // 11-a[门店管理]门店列表
                 {

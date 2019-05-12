@@ -54,7 +54,7 @@ export default {
         },
         userTypeModified() {
             let targetObj = USER_TYPE_MAP.filter(item => item.value === this.getUserInfoStore.userType)[0]
-            return targetObj.label || ''
+            return (targetObj && targetObj.label) || '未知身份'
         },
         ...mapGetters(['getIflogin', 'getUserInfoStore', 'getStoreListStore'])
     },
