@@ -38,7 +38,7 @@ export const deletePayment = data =>
 // 修改支付类型
 export const editPayment = data =>
     http({
-        url: `/api/payment/type/${data.typeId}`,
+        url: `/api/payment/type/${data.id}`,
         method: 'put',
         data
     })

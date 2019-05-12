@@ -1,5 +1,5 @@
 <template>
-    <u-layout class="pay-list" direction="v">
+    <u-layout class="pay-type-list" direction="v">
         <div class="top-wrapper">
             <u-layout>
                 <el-select v-model="searchParams.storeId" filterable placeholder="请选择门店">
@@ -31,9 +31,9 @@
                 <template slot-scope="{ row }">
                     <u-table-column width="2vw" label="" ellipse><el-checkbox v-model="row.checked"/></u-table-column>
                     <u-table-column width="12vw" label="支付类型名称" ellipse>{{ row.name || '-' }}</u-table-column>
-                    <u-table-column width="12vw" label="支付类型分组" ellipse>{{ row.groupId || '-' }}</u-table-column>
+                    <u-table-column width="12vw" label="支付类型分组" ellipse>{{ row.groupName || '-' }}</u-table-column>
                     <u-table-column width="12vw" label="结算价" ellipse>{{ row.prize }}</u-table-column>
-                    <u-table-column width="12vw" label="所属门店" ellipse> {{ row.storeId }} </u-table-column>
+                    <u-table-column width="12vw" label="所属门店" ellipse> {{ row.storeName }} </u-table-column>
                     <u-table-column width="12vw" label="使用状态" ellipse>
                         <el-switch v-model="row.status" @change="switchRow(row)" active-color="#13ce66" inactive-color="#ff4949"> </el-switch>
                     </u-table-column>
@@ -58,12 +58,12 @@
             </el-pagination>
         </u-layout>
 
-        <AUserinfoModal :visible="isOpenUserInfoModal" @close="closeUserInfoModal" />
+        <PPaymentTypeInfoModal :visible="isOpenPaymentTypeInfoModal" @close="closePaymentTypeModal" />
     </u-layout>
 </template>
 
 <script>
-import AUserinfoModal from '@/components/account/a-userinfo-modal'
+import PPaymentTypeInfoModal from '@/components/pay-type/p-payment-type-info-modal'
 import { USER_TYPE_MAP, MODIFY_MODAL_TYPE, CARD_TYPE_MAP } from '@/utils/config'
 import { getPaymentList, deletePayment, updatePaymentStatus } from '@/server/api'
 import { createNamespacedHelpers } from 'vuex'
@@ -90,15 +90,17 @@ const STATUS_LIST = [
 ]
 
 export default {
-    name: 'pay-list',
-    components: { AUserinfoModal },
+    name: 'pay-type-list',
+    components: { PPaymentTypeInfoModal },
     data() {
         return {
             searchParams: {
                 storeId: '',
+                storeName: '',
                 status: '', // 不传则启用、禁用都查。false:查禁用；true:查启用
                 name: '',
                 groupId: '',
+                groupName: '',
 
                 currentPage: 1,
                 pageSize: 50
@@ -106,7 +108,7 @@ export default {
 
             list: [],
 
-            isOpenUserInfoModal: false,
+            isOpenPaymentTypeInfoModal: false,
 
             USER_TYPE_MAP: [{ label: '所有用户', value: '' }].concat(USER_TYPE_MAP),
             OPERATION_TYPE,
@@ -141,8 +143,8 @@ export default {
     },
     methods: {
         addPatch() {
-            this.$bus.$emit('open-userinfo-modal', {}, MODIFY_MODAL_TYPE.ADD)
-            this.isOpenUserInfoModal = true
+            this.$bus.$emit('open-payment-type-info-modal', {}, MODIFY_MODAL_TYPE.ADD)
+            this.isOpenPaymentTypeInfoModal = true
         },
         updateRows(otype) {
             let params = this._fetchSelectedRows()
@@ -163,8 +165,6 @@ export default {
             }
         },
         _fetchSelectedRows() {
-            debugger
-
             let delList = this.list.filter(item => item.checked).map(item => item.id)
             console.log(delList)
             return delList
@@ -175,8 +175,8 @@ export default {
         editRow(row) {
             console.log(row)
 
-            this.$bus.$emit('open-userinfo-modal', row, MODIFY_MODAL_TYPE.EDIT)
-            this.isOpenUserInfoModal = true
+            this.$bus.$emit('open-payment-type-info-modal', row, MODIFY_MODAL_TYPE.EDIT)
+            this.isOpenPaymentTypeInfoModal = true
         },
         deleteRow(...ids) {
             this.$confirm(`是否删除所选支付类型 ？`).then(() =>
@@ -223,8 +223,8 @@ export default {
             this.searchParams.currentPage = val
             console.log(`当前页: ${val}`)
         },
-        closeUserInfoModal() {
-            this.isOpenUserInfoModal = false
+        closePaymentTypeModal() {
+            this.isOpenPaymentTypeInfoModal = false
             this._getList(false)
         }
     }
@@ -232,7 +232,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.pay-list {
+.pay-type-list {
     height: 100%;
     padding: 0 30px 40px;
 

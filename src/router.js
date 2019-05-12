@@ -30,15 +30,15 @@ export default new Router({
                 },
                 // 2-a[支付类型]类型列表
                 {
-                    path: 'pay-type-list',
-                    name: 'pay-type-list',
-                    component: () => import('@/pages/manager/pay-type/list')
+                    path: 'payment-type-list',
+                    name: 'payment-type-list',
+                    component: () => import('@/pages/manager/payment/type-list')
                 },
                 // 2-b[支付类型]分组列表
                 {
-                    path: 'pay-type-group-list',
-                    name: 'pay-type-group-list',
-                    component: () => import('@/pages/manager/pay-type/group-list')
+                    path: 'payment-group-list',
+                    name: 'payment-group-list',
+                    component: () => import('@/pages/manager/payment/group-list')
                 },
                 // 10-a[用户管理]用户列表
                 {

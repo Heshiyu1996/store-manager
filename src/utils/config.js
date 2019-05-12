@@ -1,6 +1,6 @@
 export const isDev = process.env.NODE_ENV === 'development'
 export const isMock = false
-export const rootURL = isDev ? (isMock ? '/' : 'http://localhost:8082') : '/'
+export const rootURL = isDev ? (isMock ? 'http://localhost:8002' : '/') : '/'
 
 /* 编辑模式，新增/编辑 */
 export const MODIFY_MODAL_TYPE = {
@@ -36,16 +36,16 @@ export const MENU_LIST_MANAGER = [
     },
     {
         subMenuInfo: {
-            value: 'pay-type',
+            value: 'payment',
             label: '支付类型'
         },
         subMenuItemList: [
             {
-                value: 'pay-type-list',
+                value: 'payment-type-list',
                 label: '支付类型'
             },
             {
-                value: 'pay-type-group-list',
+                value: 'payment-group-list',
                 label: '支付类型分组'
             }
         ]
