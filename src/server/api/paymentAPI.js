@@ -81,7 +81,7 @@ export const deletePaymentGroup = data =>
 // 修改支付类型分组
 export const editPaymentGroup = data =>
     http({
-        url: `/api/payment/group/${data.groupId}`,
+        url: `/api/payment/group/${data.id}`,
         method: 'put',
         data
     })

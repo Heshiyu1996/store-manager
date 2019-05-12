@@ -56,10 +56,10 @@ export default {
     },
     created() {
         this.$bus.$on('open-payment-type-info-modal', (typeDetail, isAdd) => {
+            this._getPaymentGroupList()
             this.type = isAdd
             this.form = this.type ? { status: true } : { ...typeDetail }
         })
-        this._getPaymentGroupList()
     },
     destroyed() {
         this.$bus.$off('open-payment-type-info-modal')

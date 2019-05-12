@@ -96,11 +96,8 @@ export default {
         return {
             searchParams: {
                 storeId: '',
-                storeName: '',
                 status: '', // 不传则启用、禁用都查。false:查禁用；true:查启用
                 name: '',
-                groupId: '',
-                groupName: '',
 
                 currentPage: 1,
                 pageSize: 50
