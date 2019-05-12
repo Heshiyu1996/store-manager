@@ -1,6 +1,6 @@
 <template>
     <nav class="u-navbar navbar fix-top">
-        <div class="left" @click="goHomePage">大笨象密室逃脱 | 管理平台</div>
+        <div class="left" @click="goHomePage"><u-icon name="slogan.png" class="slogan"></u-icon> | <span class="platform">管理平台</span></div>
         <div class="right">
             <u-layout v-if="getIflogin" class="user-wrapper" gap="s">
                 <el-tag size="mini" :user-type="getUserInfoStore.userType">{{ userTypeModified }}</el-tag>
@@ -173,6 +173,15 @@ export default {
         min-width: 300px;
         @include font-large(16px, $white);
         cursor: pointer;
+
+        .slogan {
+            width: 110px;
+            margin-right: 5px;
+        }
+
+        .platform {
+            margin-left: 5px;
+        }
     }
 
     .right {
