@@ -28,12 +28,14 @@ module.exports = {
         proxy: {
             '/api': {
                 // target: 'http://www.dbxyyxt.com/api',
-                target: 'http://192.168.1.5:8080',
+                // target: 'http://192.168.1.5:8080',
+                // target: 'http://localhost:8002',
+                target: 'http://129.204.183.7:17018',
                 changeOrigin: true,
-                ws: true,
-                pathRewrite: {
-                  '^/api': ''
-                }
+                ws: true
+                // pathRewrite: {
+                //   '^/api': ''
+                // }
             }
         }
     }

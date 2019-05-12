@@ -51,7 +51,7 @@ service.interceptors.response.use(
     response => {
         const res = response.data
         console.log(res)
-        if (res.code === 200) {
+        if (isMock || res.code === 200) {
             return res.data // 直接返回数据
         } else {
             !response.config.error && Vue.prototype.$message.error(res.message) // 错误统一报出
