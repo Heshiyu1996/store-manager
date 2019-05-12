@@ -3,13 +3,13 @@
         <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
             <template v-for="subMenu in MENU_LIST_MANAGER">
                 <template v-if="subMenu.subMenuItemList.length !== 0">
-                    <el-submenu :key="subMenu.id" :index="subMenu.subMenuInfo.value">
+                    <el-submenu :key="subMenu.id" :index="subMenu.subMenuInfo.value" :disabled="subMenu.subMenuInfo.disabled">
                         <template slot="title">{{ subMenu.subMenuInfo.label }}</template>
-                        <el-menu-item :index="item.value" v-for="item in subMenu.subMenuItemList" :key="item.id">{{ item.label }}</el-menu-item>
+                        <el-menu-item :index="item.value" v-for="item in subMenu.subMenuItemList" :key="item.id" :disabled="item.disabled">{{ item.label }}</el-menu-item>
                     </el-submenu>
                 </template>
                 <template v-else>
-                    <el-menu-item :key="subMenu.id" :index="subMenu.subMenuInfo.value">{{ subMenu.subMenuInfo.label }}</el-menu-item>
+                    <el-menu-item :key="subMenu.id" :index="subMenu.subMenuInfo.value" :disabled="subMenu.subMenuInfo.disabled">{{ subMenu.subMenuInfo.label }}</el-menu-item>
                 </template>
             </template>
         </el-menu>

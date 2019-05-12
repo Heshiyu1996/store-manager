@@ -13,7 +13,8 @@ export const MENU_LIST_MANAGER = [
     {
         subMenuInfo: {
             value: 'order',
-            label: '订单管理'
+            label: '订单管理',
+            disabled: true
         },
         subMenuItemList: [
             {
@@ -53,14 +54,16 @@ export const MENU_LIST_MANAGER = [
     {
         subMenuInfo: {
             value: 'theme',
-            label: '主题管理'
+            label: '主题管理',
+            disabled: true
         },
         subMenuItemList: []
     },
     {
         subMenuInfo: {
             value: 'room',
-            label: '密室统计'
+            label: '密室统计',
+            disabled: true
         },
         subMenuItemList: [
             {
@@ -76,14 +79,16 @@ export const MENU_LIST_MANAGER = [
     {
         subMenuInfo: {
             value: 'customer',
-            label: '客户来源'
+            label: '客户来源',
+            disabled: true
         },
         subMenuItemList: []
     },
     {
         subMenuInfo: {
             value: 'key',
-            label: '钥匙管理'
+            label: '钥匙管理',
+            disabled: true
         },
         subMenuItemList: []
     },
@@ -94,20 +99,23 @@ export const MENU_LIST_MANAGER = [
         },
         subMenuItemList: [
             {
-                value: 'material-location',
-                label: '库位管理'
+                value: 'house',
+                label: '仓库列表'
             },
             {
-                value: 'material-storage',
-                label: '库存管理'
+                value: 'item',
+                label: '物料列表',
+                disabled: true
             },
             {
-                value: 'material-output',
-                label: '出库单'
+                value: 'export',
+                label: '出库记录',
+                disabled: true
             },
             {
-                value: 'material-input',
-                label: '入库单'
+                value: 'import',
+                label: '入库记录',
+                disabled: true
             }
         ]
     },
@@ -122,7 +130,11 @@ export const MENU_LIST_MANAGER = [
                 label: '用户列表'
             },
             {
-                value: 'client-card-list',
+                value: 'dishonesty-list',
+                label: '失信列表'
+            },
+            {
+                value: 'user-card-list',
                 label: '会员卡系统'
             }
         ]
