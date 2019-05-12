@@ -220,9 +220,9 @@ export default {
             this.searchParams.currentPage = val
             console.log(`当前页: ${val}`)
         },
-        closePaymentTypeModal() {
+        closePaymentTypeModal(isSuccess) {
             this.isOpenPaymentTypeInfoModal = false
-            this._getList(false)
+            isSuccess && this._getList(false)
         }
     }
 }

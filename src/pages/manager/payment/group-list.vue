@@ -218,9 +218,9 @@ export default {
             this.searchParams.currentPage = val
             console.log(`当前页: ${val}`)
         },
-        closePaymentGroupInfoModal() {
+        closePaymentGroupInfoModal(isSuccess) {
             this.isOpenPaymentGroupInfoModal = false
-            this._getList(false)
+            isSuccess && this._getList(false)
         }
     }
 }
