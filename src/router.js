@@ -40,18 +40,24 @@ export default new Router({
                     name: 'payment-group-list',
                     component: () => import('@/pages/manager/payment/group-list')
                 },
+                // 6-钥匙管理
+                {
+                    path: 'key',
+                    name: 'key',
+                    component: () => import('@/pages/manager/key')
+                },
                 // 9-a[物料管理]仓库列表
                 {
                     path: 'house',
                     name: 'house',
                     component: () => import('@/pages/manager/material/house-list')
                 },
-                // // 9-b[物料管理]物料列表
-                // {
-                //     path: 'item',
-                //     name: 'item',
-                //     component: () => import('@/pages/manager/material/item-list')
-                // },
+                // 9-b[物料管理]库存列表
+                {
+                    path: 'item',
+                    name: 'item',
+                    component: () => import('@/pages/manager/material/item-list')
+                },
                 // // 9-c[物料管理]出库记录
                 // {
                 //     path: 'export',

@@ -87,8 +87,7 @@ export const MENU_LIST_MANAGER = [
     {
         subMenuInfo: {
             value: 'key',
-            label: '钥匙管理',
-            disabled: true
+            label: '钥匙管理'
         },
         subMenuItemList: []
     },
@@ -104,8 +103,7 @@ export const MENU_LIST_MANAGER = [
             },
             {
                 value: 'item',
-                label: '物料列表',
-                disabled: true
+                label: '库存列表'
             },
             {
                 value: 'export',
@@ -229,5 +227,26 @@ export const CARD_TYPE_MAP = [
     {
         label: '铜卡',
         value: 3
+    }
+]
+
+export const OPERATION_TYPE = {
+    DELETE: 1,
+    OPEN: 2,
+    CLOSE: 3
+}
+
+export const STATUS_LIST = [
+    {
+        value: '',
+        label: '所有状态'
+    },
+    {
+        value: true,
+        label: '启用'
+    },
+    {
+        value: false,
+        label: '禁用'
     }
 ]

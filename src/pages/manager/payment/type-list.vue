@@ -64,30 +64,11 @@
 
 <script>
 import PPaymentTypeInfoModal from '@/components/pay-type/p-payment-type-info-modal'
-import { MODIFY_MODAL_TYPE } from '@/utils/config'
+import { MODIFY_MODAL_TYPE, OPERATION_TYPE, STATUS_LIST } from '@/utils/config'
 import { getPaymentList, deletePayment, updatePaymentStatus } from '@/server/api'
 import { createNamespacedHelpers } from 'vuex'
 
 const { mapGetters } = createNamespacedHelpers('login')
-const OPERATION_TYPE = {
-    DELETE: 1,
-    OPEN: 2,
-    CLOSE: 3
-}
-const STATUS_LIST = [
-    {
-        value: '',
-        label: '所有状态'
-    },
-    {
-        value: true,
-        label: '启用'
-    },
-    {
-        value: false,
-        label: '禁用'
-    }
-]
 
 export default {
     name: 'pay-type-list',
