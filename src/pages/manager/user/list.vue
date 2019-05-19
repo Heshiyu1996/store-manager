@@ -26,7 +26,7 @@
                         {{ row.birthday | dateFormat }}
                     </u-table-column>
                     <u-table-column width="12vw" label="账号类型" ellipse>{{ _findUserType(row.userType) || '-' }}</u-table-column>
-                    <u-table-column width="12vw" label="所属门店" ellipse>{{ row.storeId || '-' }}</u-table-column>
+                    <u-table-column width="12vw" label="所属门店" ellipse>{{ row.storeName || '-' }}</u-table-column>
                     <u-table-column label="操作">
                         <u-layout v-show="_hasRight(row.userType)" direction="h">
                             <i class="icon el-icon-edit" @click="editRow(row)"></i> <i class="icon el-icon-delete" @click="deleteRow(row)"></i>
@@ -129,7 +129,8 @@ export default {
         },
         _findUserType(utype) {
             if (typeof utype === 'undefined') return '-'
-            return this.USER_TYPE_MAP.find(item => utype === item.value).label
+            let targetType = this.USER_TYPE_MAP.find(item => utype === item.value)
+            return (targetType && targetType.label) || '-'
         },
         _findCardType(ctype) {
             if (ctype === null || typeof ctype === 'undefined' || ctype === 0) return '-'
@@ -137,7 +138,6 @@ export default {
         },
         _hasRight(type) {
             if (typeof type === 'undefined') return false
-            console.log(this.getUserInfoStore.userType)
             return this.getUserInfoStore.userType > type
         },
         // pageSize大小

@@ -10,13 +10,13 @@
             <el-form-item v-if="!type" label="消费时间">
                 <u-label :text="form.flowTime | dateFormat" />
             </el-form-item>
-            <el-form-item label="消费/充值金额" class="record-type-wrapper">
+            <el-form-item label="金额" class="record-type-wrapper">
                 <el-select v-model="recordType" filterable placeholder="请选择记录类型">
                     <el-option v-for="item in RECORD_TYPE_MAP" :key="item.value" :label="item.label" :value="item.value"> </el-option>
                 </el-select>
-                <u-input v-model.number="form.amount" :regex="/^\d+$/g" placeholder="请输入消费/充值金额" />
+                <u-input v-model.number="form.amount" :placeholder="'请输入' + (isRecharge ? '充值' : '消费') + '金额'" />
             </el-form-item>
-            <el-form-item label="充值方式">
+            <el-form-item v-if="isRecharge" label="充值方式">
                 <el-select v-model="form.rechargeWay" filterable placeholder="请选择充值方式">
                     <el-option v-for="item in RECHARGE_TYPE_MAP" :key="item.value" :label="item.label" :value="item.value"> </el-option>
                 </el-select>
@@ -62,7 +62,13 @@ export default {
             recordType: 1,
 
             RECHARGE_TYPE_MAP,
+            RECORD_TYPE,
             RECORD_TYPE_MAP
+        }
+    },
+    computed: {
+        isRecharge() {
+            return this.recordType === RECORD_TYPE.RECHARGE
         }
     },
     created() {

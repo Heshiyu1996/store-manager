@@ -7,7 +7,7 @@
             </u-layout>
             <u-layout class="operation">
                 <el-tooltip class="item" effect="dark" content="添加" placement="top">
-                    <el-button type="primary" icon="el-icon-plus" circle @click="addPatch"></el-button>
+                    <el-button v-if="searchParams.cardId" type="primary" icon="el-icon-plus" circle @click="addPatch"></el-button>
                 </el-tooltip>
             </u-layout>
         </div>
@@ -21,7 +21,7 @@
                     <u-table-column width="14vw" label="消费/充值金额" ellipse>{{ row.amount }}</u-table-column>
                     <u-table-column width="14vw" label="余额" ellipse> {{ row.balance }} </u-table-column>
                     <u-table-column width="14vw" label="消费时间">
-                        {{ row.flowTime | dateFormat }}
+                        {{ row.flowTime | dateFormat('yyyy-MM-dd hh:mm:ss') }}
                     </u-table-column>
                     <u-table-column label="操作">
                         <u-layout direction="h">
@@ -87,7 +87,7 @@ export default {
             } else {
                 let [startTime, endTime] = val
                 this.searchParams.startTime = startTime.getTime()
-                this.searchParams.endTime = endTime.getTime()
+                this.searchParams.endTime = endTime.getTime() + 86399000
             }
             this._getList(true)
         }
