@@ -14,7 +14,7 @@ export const checkAccount = data =>
 // 登录
 export const signIn = data =>
     http({
-        url: `/api/user/signIn`,
+        url: `/api/user/signIn/${data.loginType}`,
         method: 'post',
         data
     })
@@ -31,6 +31,22 @@ export const signUp = data =>
 export const signOut = data =>
     http({
         url: `/api/user/signOut`,
+        method: 'post',
+        data
+    })
+
+// 获取注册验证码
+export const getSignupSmsCode = data =>
+    http({
+        url: `/api/user/signupSmsCode`,
+        method: 'post',
+        data
+    })
+
+// 获取登录验证码
+export const getSigninSmsCode = data =>
+    http({
+        url: `/api/user/signinSmsCode`,
         method: 'post',
         data
     })

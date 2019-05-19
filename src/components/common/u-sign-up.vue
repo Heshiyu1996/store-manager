@@ -29,14 +29,16 @@
                         <u-error :visible="!$v.form.realName.minLength" text="姓名不能少于2个字符" />
                     </el-form-item>
                     <el-form-item>
+                        <el-date-picker v-model="form.birthday" type="date" placeholder="请输入你的生日" size="medium"> </el-date-picker>
+                    </el-form-item>
+                    <el-form-item>
                         <u-input v-model="form.phone" :regex="/^[0-9\u4e00-\u9fa5]+$/g" maxLength="11" placeholder="请输入手机号" />
                         <u-error :visible="!$v.form.phone.required" text="手机必填" />
                         <u-error :visible="!$v.form.phone.isPhone" text="手机格式不正确" />
                     </el-form-item>
                     <el-form-item>
-                        <el-date-picker v-model="form.birthday" type="date" placeholder="请输入你的生日" size="medium"> </el-date-picker>
+                        <ASmsCodeInput v-model="form.smsCode" :phone="form.phone" :isCorrectPhone="!$v.form.phone.required || !$v.form.phone.isPhone" />
                     </el-form-item>
-
                     <el-form-item class="operation">
                         <el-button type="primary" @click="onSubmit" :disabled="$v.$invalid" round>注册</el-button>
                     </el-form-item>
@@ -47,11 +49,13 @@
 </template>
 
 <script>
+import ASmsCodeInput from '@/components/account/a-smsCode-input'
 import { required, helpers, minLength } from 'vuelidate/lib/validators'
 import { checkAccount, signUp } from '@/server/api'
 import { USER_TYPE } from '@/utils/config'
 
 export default {
+    components: { ASmsCodeInput },
     props: {},
     data() {
         return {
@@ -62,6 +66,7 @@ export default {
                 realName: '',
                 phone: '',
                 birthday: '',
+                smsCode: '',
                 userType: USER_TYPE.NORMAL
             },
 
@@ -134,17 +139,17 @@ export default {
 
         /deep/ .el-card__body {
             padding: 40px;
-            padding-top: 30px;
+            padding-top: 16px;
 
             .content {
                 .el-input,
                 .el-button,
                 input {
                     width: 320px;
-                    height: 40px;
+                    height: 34px;
                 }
                 .el-form-item {
-                    margin-bottom: 16px;
+                    margin-bottom: 12px;
                 }
             }
 
@@ -156,6 +161,10 @@ export default {
             .operation {
                 position: absolute;
                 bottom: 20px;
+
+                .el-form-item__content {
+                    line-height: 36px;
+                }
             }
         }
     }
