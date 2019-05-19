@@ -9,15 +9,15 @@
                     <el-option v-for="item in STATUS_LIST" :key="item.value" :label="item.label" :value="item.value"> </el-option>
                 </el-select>
                 <u-input v-model.trim="searchParams.name" maxLength="100" placeholder="请输入名字" searchIcon @key-press-enter="_getList" />
-                <u-input v-model.number="searchParams.telephone" maxLength="100" placeholder="请输入电话号码" searchIcon @key-press-enter="_getList" />
+                <u-input v-model="searchParams.telephone" maxLength="100" placeholder="请输入电话号码" searchIcon @key-press-enter="_getList" />
             </u-layout>
             <u-layout class="operation">
                 <el-tooltip class="item" effect="dark" content="添加" placement="top">
                     <el-button type="primary" icon="el-icon-plus" circle @click="addPatch"></el-button>
                 </el-tooltip>
-                <el-tooltip class="item" effect="dark" content="删除" placement="top">
+                <!-- <el-tooltip class="item" effect="dark" content="删除" placement="top">
                     <el-button type="warning" icon="el-icon-minus" circle @click="updateRows(OPERATION_TYPE.DELETE)"></el-button>
-                </el-tooltip>
+                </el-tooltip> -->
                 <!-- <el-tooltip class="item" effect="dark" content="启用" placement="top">
                     <el-button type="success" icon="el-icon-check" circle @click="updateRows(OPERATION_TYPE.OPEN)"></el-button>
                 </el-tooltip>
@@ -31,8 +31,8 @@
             <u-table ref="operationTable" :list="list" auto is-list>
                 <template slot-scope="{ row }">
                     <!-- <u-table-column width="2vw" label="" ellipse><el-checkbox v-model="row.checked"/></u-table-column> -->
-                    <u-table-column width="20vw" label="名称" ellipse>{{ row.name || '-' }}</u-table-column>
-                    <u-table-column width="20vw" label="电话" ellipse>{{ row.name || '-' }}</u-table-column>
+                    <u-table-column width="20vw" label="失信人" ellipse>{{ row.name || '-' }}</u-table-column>
+                    <u-table-column width="20vw" label="电话" ellipse>{{ row.telephone || '-' }}</u-table-column>
                     <u-table-column width="20vw" label="所属门店" ellipse> {{ row.storeName }} </u-table-column>
                     <u-table-column width="20vw" label="使用状态" ellipse>
                         <el-switch v-model="row.status" @change="switchRow(row)" active-color="#13ce66" inactive-color="#ff4949"> </el-switch>
@@ -177,7 +177,7 @@ export default {
         },
         deleteRow(...ids) {
             this.$confirm(`是否删除所选失信人 ？`).then(() =>
-                deleteDishonesty(ids).then(() => {
+                deleteDishonesty({ ids }).then(() => {
                     this.$message('删除成功')
                     this._getList(false)
                 })

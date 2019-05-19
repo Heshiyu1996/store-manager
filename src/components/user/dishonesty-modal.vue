@@ -4,11 +4,11 @@
             <el-form-item v-if="!type" label="失信人ID">
                 <u-label :text="form.id" />
             </el-form-item>
-            <el-form-item label="分组名称">
-                <u-input v-model="form.name" placeholder="请输入分组名称"> </u-input>
+            <el-form-item label="失信人">
+                <u-input v-model="form.name" placeholder="请输入失信人"> </u-input>
             </el-form-item>
             <el-form-item label="电话号码">
-                <u-input v-model.number="form.telephone" placeholder="请输入电话号码"> </u-input>
+                <u-input v-model="form.telephone" placeholder="请输入电话号码"> </u-input>
             </el-form-item>
             <el-form-item label="所属门店">
                 <el-select v-model="form.storeId" filterable placeholder="请选择所属门店">
@@ -25,7 +25,7 @@
 
 <script>
 import { CloseModalMixin, InvalidCheckMixin } from '@/components/common/mixins'
-import { addPaymentGroup, editPaymentGroup } from '@/server/api'
+import { addDishonesty, editDishonesty } from '@/server/api'
 import { MODIFY_MODAL_TYPE } from '@/utils/config'
 import { createNamespacedHelpers } from 'vuex'
 
@@ -41,6 +41,10 @@ export default {
             type: MODIFY_MODAL_TYPE.ADD,
 
             form: {
+                id: '',
+                name: '',
+                telephone: '',
+                storeId: '',
                 status: true
             }
         }
@@ -65,18 +69,18 @@ export default {
                 return
             }
 
-            this.type ? this._addPaymentGroup() : this._editPaymentGroup()
+            this.type ? this._addDishonesty() : this._editDishonesty()
         },
-        _addPaymentGroup() {
+        _addDishonesty() {
             let param = { ...this.form }
-            addPaymentGroup(param).then(() => {
+            addDishonesty(param).then(() => {
                 this.$message('新增成功')
                 this.closeModal(true)
             })
         },
-        _editPaymentGroup() {
+        _editDishonesty() {
             let param = { ...this.form }
-            editPaymentGroup(param).then(() => {
+            editDishonesty(param).then(() => {
                 this.$message('修改成功')
                 this.closeModal(true)
             })
