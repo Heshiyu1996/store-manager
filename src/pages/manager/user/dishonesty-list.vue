@@ -65,7 +65,7 @@
 <script>
 import UDishonestyModal from '@/components/user/dishonesty-modal'
 import { MODIFY_MODAL_TYPE } from '@/utils/config'
-import { getDishonestyList, deleteDishonesty, updatePaymentStatus } from '@/server/api'
+import { getDishonestyList, deleteDishonesty, updateDishonestyStatus } from '@/server/api'
 import { createNamespacedHelpers } from 'vuex'
 
 const { mapGetters } = createNamespacedHelpers('login')
@@ -153,7 +153,7 @@ export default {
                 case OPERATION_TYPE.CLOSE:
                     console.log('close', params)
                     var isOpen = otype === OPERATION_TYPE.OPEN
-                    updatePaymentStatus({ ids: params, status: isOpen }).then(() => {
+                    updateDishonestyStatus({ ids: params, status: isOpen }).then(() => {
                         this.$message(`${isOpen ? '启用' : '禁用'} 成功`)
                         this._getList(true)
                     })
