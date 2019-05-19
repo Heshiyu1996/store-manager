@@ -124,7 +124,7 @@ export const deleteDishonesty = data =>
     })
 
 // 批量启用/禁用（失信人）
-export const updatePaymentStatus = data =>
+export const updateDishonestyStatus = data =>
     http({
         url: `/api/dishonesty/status/update`,
         method: 'put',
