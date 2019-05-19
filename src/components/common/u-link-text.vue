@@ -10,7 +10,7 @@
 export default {
     props: {
         icon: { type: String, default: '' },
-        text: { type: String, default: '' },
+        text: { type: [String, Number] },
         disabled: { type: Boolean, default: false },
         tooltip: { type: String, default: '' }
     },

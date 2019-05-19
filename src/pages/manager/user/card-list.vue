@@ -93,6 +93,7 @@ export default {
         }
     },
     created() {
+        this.searchParams.cardId = this.$route.params.cardId
         this._getList(true)
     },
     methods: {

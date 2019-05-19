@@ -17,7 +17,13 @@
         <u-layout class="content-wrapper" direction="v">
             <u-table ref="operationTable" :list="userList" auto is-list>
                 <template slot-scope="{ row }">
-                    <u-table-column width="10vw" label="卡号" ellipse>{{ row.cardId || '-' }}</u-table-column>
+                    <u-table-column width="10vw" label="卡号" ellipse>
+                        <u-link-text
+                            :text="row.cardId || '-'"
+                            :disabled="!row.cardId || !_hasRight(row.userType)"
+                            @click="goConsumeDetail(row.cardId)"
+                        ></u-link-text>
+                    </u-table-column>
                     <u-table-column width="10vw" label="卡种" ellipse>{{ _findCardType(row.cardType) || '-' }}</u-table-column>
                     <u-table-column width="10vw" label="账号" ellipse>{{ row.account }}</u-table-column>
                     <u-table-column width="10vw" label="姓名" ellipse>{{ row.realName }}</u-table-column>
@@ -100,6 +106,9 @@ export default {
         this._getList(true)
     },
     methods: {
+        goConsumeDetail(cardId) {
+            this.$router.push({ name: 'user-card-list', params: { cardId } })
+        },
         addPatch() {
             this.isOpenAddUserModal = true
         },
