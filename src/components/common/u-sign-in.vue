@@ -64,6 +64,7 @@ export default {
             signIn(this.form).then(() => {
                 this.$message('登录成功')
                 this.actSetIfLogin(true)
+                this.$bus.$emit('getUserInfo')
             })
         },
         fogetPassword() {
