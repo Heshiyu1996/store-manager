@@ -1,5 +1,5 @@
 <template>
-    <u-layout class="user-list" direction="v">
+    <u-layout class="store-list" direction="v">
         <div class="top-wrapper">
             <u-layout class="operation">
                 <el-tooltip class="item" effect="dark" content="添加" placement="top">
@@ -45,7 +45,7 @@ import { getStoreList, deleteStore } from '@/server/api'
 import { MODIFY_MODAL_TYPE } from '@/utils/config'
 
 export default {
-    name: 'user-list',
+    name: 'store-list',
     components: { SStoreinfoModal },
     data() {
         return {
@@ -123,7 +123,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.user-list {
+.store-list {
     height: 100%;
     padding: 0 30px 40px;
 
