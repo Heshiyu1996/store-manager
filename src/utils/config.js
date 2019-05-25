@@ -53,9 +53,8 @@ export const MENU_LIST_MANAGER = [
     },
     {
         subMenuInfo: {
-            value: 'theme',
-            label: '主题管理',
-            disabled: true
+            value: 'theme-list',
+            label: '主题管理'
         },
         subMenuItemList: []
     },
@@ -78,15 +77,14 @@ export const MENU_LIST_MANAGER = [
     },
     {
         subMenuInfo: {
-            value: 'customer',
-            label: '客户来源',
-            disabled: true
+            value: 'customer-list',
+            label: '客户来源'
         },
         subMenuItemList: []
     },
     {
         subMenuInfo: {
-            value: 'key',
+            value: 'key-list',
             label: '钥匙管理'
         },
         subMenuItemList: []
