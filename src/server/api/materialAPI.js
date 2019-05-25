@@ -43,7 +43,7 @@ export const editMaterialHouse = data =>
         data
     })
 
-// 获取库存列表
+// 获取物料列表
 export const getMaterialItemList = data =>
     http({
         url: `/api/material/item/list`,
@@ -51,7 +51,7 @@ export const getMaterialItemList = data =>
         data
     })
 
-// 新建库存
+// 新建物料
 export const addMaterialItem = data =>
     http({
         url: `/api/material/item/add`,
@@ -59,7 +59,7 @@ export const addMaterialItem = data =>
         data
     })
 
-// 批量禁用/启用（库存）
+// 批量禁用/启用（物料）
 export const updateMaterialItemStatus = data =>
     http({
         url: `/api/material/item/status`,
@@ -67,18 +67,26 @@ export const updateMaterialItemStatus = data =>
         data
     })
 
-// 删除库存
+// 删除物料
 export const deleteMaterialItem = data =>
     http({
-        url: `/api/material/item/:itemId`,
+        url: `/api/material/item/delete`,
         method: 'delete',
         data
     })
 
-// 修改仓库信息
+// 修改物料信息
 export const editMaterialItem = data =>
     http({
         url: `/api/material/item/${data.id}`,
         method: 'put',
+        data
+    })
+
+// 获取预警物料列表
+export const getMaterialAlarmItemList = data =>
+    http({
+        url: `/api/material/item/alarmlist`,
+        method: 'post',
         data
     })

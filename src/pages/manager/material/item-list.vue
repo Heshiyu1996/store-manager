@@ -8,7 +8,7 @@
                 <el-select v-model="searchParams.status" placeholder="请选择使用状态">
                     <el-option v-for="item in STATUS_LIST" :key="item.value" :label="item.label" :value="item.value"> </el-option>
                 </el-select>
-                <u-input v-model.trim="searchParams.name" maxLength="100" placeholder="请输入仓库名称" searchIcon @key-press-enter="_getList" />
+                <u-input v-model.trim="searchParams.name" maxLength="100" placeholder="请输入物料名称" searchIcon @key-press-enter="_getList" />
             </u-layout>
             <u-layout class="operation">
                 <el-tooltip class="item" effect="dark" content="添加" placement="top">
@@ -26,6 +26,7 @@
             </u-layout>
         </div>
 
+        <el-alert v-if="alarmList" :title="alarmText" type="warning" close-text="知道了" show-icon />
         <u-layout class="content-wrapper" direction="v">
             <u-table ref="operationTable" :list="list" auto is-list>
                 <template slot-scope="{ row }">
@@ -58,21 +59,21 @@
             </el-pagination>
         </u-layout>
 
-        <MHouseInfoModal :visible="isOpenMaterialHouseInfoModal" @close="closeMaterialHouseInfoModal" />
+        <MItemInfoModal :visible="isOpenMaterialItemInfoModal" @close="closeMaterialItemInfoModal" />
     </u-layout>
 </template>
 
 <script>
-import MHouseInfoModal from '@/components/material/house-info-modal'
+import MItemInfoModal from '@/components/material/item-info-modal'
 import { MODIFY_MODAL_TYPE, OPERATION_TYPE, STATUS_LIST } from '@/utils/config'
-import { getMaterialItemList, deleteMaterialItem, updateMaterialItemStatus } from '@/server/api'
+import { getMaterialItemList, deleteMaterialItem, updateMaterialItemStatus, getMaterialAlarmItemList } from '@/server/api'
 import { createNamespacedHelpers } from 'vuex'
 
 const { mapGetters } = createNamespacedHelpers('login')
 
 export default {
     name: 'item-list',
-    components: { MHouseInfoModal },
+    components: { MItemInfoModal },
     data() {
         return {
             searchParams: {
@@ -85,8 +86,9 @@ export default {
             },
 
             list: [],
+            alarmList: [],
 
-            isOpenMaterialHouseInfoModal: false,
+            isOpenMaterialItemInfoModal: false,
 
             OPERATION_TYPE,
             STATUS_LIST
@@ -95,6 +97,9 @@ export default {
     computed: {
         storeListModified() {
             return [{ id: '', name: '所有门店' }].concat(this.getStoreListStore)
+        },
+        alarmText() {
+            return `预警物料：${this.alarmList.join('、')}`
         },
         ...mapGetters(['getUserInfoStore', 'getStoreListStore'])
     },
@@ -117,11 +122,17 @@ export default {
     },
     created() {
         this._getList(true)
+        this._getMaterialAlarmItemList()
     },
     methods: {
+        _getMaterialAlarmItemList() {
+            getMaterialAlarmItemList().then(data => {
+                this.alarmList = data || []
+            })
+        },
         addPatch() {
-            this.$bus.$emit('open-material-house-info-modal', {}, MODIFY_MODAL_TYPE.ADD)
-            this.isOpenMaterialHouseInfoModal = true
+            this.$bus.$emit('open-material-item-info-modal', {}, MODIFY_MODAL_TYPE.ADD)
+            this.isOpenMaterialItemInfoModal = true
         },
         updateRows(otype, id) {
             let params = id || this._fetchSelectedRows()
@@ -153,11 +164,11 @@ export default {
         editRow(row) {
             console.log(row)
 
-            this.$bus.$emit('open-material-house-info-modal', row, MODIFY_MODAL_TYPE.EDIT)
-            this.isOpenMaterialHouseInfoModal = true
+            this.$bus.$emit('open-material-item-info-modal', row, MODIFY_MODAL_TYPE.EDIT)
+            this.isOpenMaterialItemInfoModal = true
         },
         deleteRow(...ids) {
-            this.$confirm(`是否删除所选仓库 ？`).then(() =>
+            this.$confirm(`是否删除所选物料 ？`).then(() =>
                 deleteMaterialItem(ids).then(() => {
                     this.$message('删除成功')
                     this._getList(false)
@@ -184,8 +195,8 @@ export default {
             this.searchParams.currentPage = val
             console.log(`当前页: ${val}`)
         },
-        closeMaterialHouseInfoModal(isSuccess) {
-            this.isOpenMaterialHouseInfoModal = false
+        closeMaterialItemInfoModal(isSuccess) {
+            this.isOpenMaterialItemInfoModal = false
             isSuccess && this._getList(false)
         }
     }

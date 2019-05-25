@@ -96,22 +96,20 @@ export const MENU_LIST_MANAGER = [
         },
         subMenuItemList: [
             {
+                value: 'item',
+                label: '物料列表'
+            },
+            {
                 value: 'house',
                 label: '仓库列表'
             },
             {
-                value: 'item',
-                label: '库存列表'
-            },
-            {
                 value: 'export',
-                label: '出库记录',
-                disabled: true
+                label: '出库记录'
             },
             {
                 value: 'import',
-                label: '入库记录',
-                disabled: true
+                label: '入库记录'
             }
         ]
     },
