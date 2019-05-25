@@ -14,7 +14,12 @@
                             <u-error :visible="!$v.form.phone.isPhone" text="手机格式不正确" />
                         </el-form-item>
                         <el-form-item>
-                            <ASmsCodeInput v-model="form.smsCode" :phone="form.phone" :isCorrectPhone="!$v.form.phone.required || !$v.form.phone.isPhone" />
+                            <ASmsCodeInput
+                                v-model="form.smsCode"
+                                :phone="form.phone"
+                                :isCorrectPhone="!$v.form.phone.required || !$v.form.phone.isPhone"
+                                :isLogin="true"
+                            />
                         </el-form-item>
                     </template>
 

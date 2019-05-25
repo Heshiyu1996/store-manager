@@ -10,7 +10,7 @@
 
 <script>
 import { required } from 'vuelidate/lib/validators'
-import { getSignupSmsCode } from '@/server/api'
+import { getSignupSmsCode, getSigninSmsCode } from '@/server/api'
 
 const WAIT_TIME_CONFIG = 45
 
@@ -18,7 +18,8 @@ export default {
     props: {
         code: { type: Number },
         phone: { type: String, default: '188' },
-        isCorrectPhone: { type: Boolean, default: false }
+        isCorrectPhone: { type: Boolean, default: false },
+        isLogin: { type: Boolean, default: false }
     },
     data() {
         return {
@@ -51,10 +52,17 @@ export default {
             if (this.smsCodeButtonDisabled) return
 
             let param = { phone: this.phone }
-            getSignupSmsCode(param).then(() => {
-                this.$message('短信验证码已发送，请查收！')
-                this.countWaitTime()
-            })
+            this.isLogin &&
+                getSigninSmsCode(param).then(() => {
+                    this.$message('短信验证码已发送，请查收！')
+                    this.countWaitTime()
+                })
+
+            !this.isLogin &&
+                getSignupSmsCode(param).then(() => {
+                    this.$message('短信验证码已发送，请查收！')
+                    this.countWaitTime()
+                })
         },
         countWaitTime() {
             this.smsCodeWaitTime = WAIT_TIME_CONFIG
