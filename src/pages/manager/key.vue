@@ -113,6 +113,10 @@ export default {
         this._getList(true)
     },
     methods: {
+        switchRow(row) {
+            console.log(row)
+            this.updateRows(OPERATION_TYPE[row.status ? 'OPEN' : 'CLOSE'], [row.id])
+        },
         updateRows(otype, id) {
             let params = id || this._fetchSelectedRows()
             switch (otype) {
