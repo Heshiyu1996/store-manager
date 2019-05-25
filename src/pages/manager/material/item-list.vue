@@ -26,7 +26,7 @@
             </u-layout>
         </div>
 
-        <el-alert v-if="alarmList" :title="alarmText" type="warning" close-text="知道了" show-icon />
+        <el-alert v-if="alarmList.length" :title="alarmText" type="warning" close-text="知道了" show-icon />
         <u-layout class="content-wrapper" direction="v">
             <u-table ref="operationTable" :list="list" auto is-list>
                 <template slot-scope="{ row }">
