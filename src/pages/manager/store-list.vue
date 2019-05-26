@@ -43,6 +43,9 @@
 import SStoreinfoModal from '@/components/store/s-store-info-modal'
 import { getStoreList, deleteStore } from '@/server/api'
 import { MODIFY_MODAL_TYPE } from '@/utils/config'
+import { createNamespacedHelpers } from 'vuex'
+
+const { mapActions } = createNamespacedHelpers('login')
 
 export default {
     name: 'store-list',
@@ -97,6 +100,7 @@ export default {
                 .then(data => {
                     this.storeList = data.list || []
                     this.totalCount = data.totalCount || 0
+                    this.actSetStoreListStore(this.storeList)
                 })
                 .catch(e => console.log(e))
         },
@@ -117,7 +121,8 @@ export default {
         closeAddUserModal(isSuccess) {
             this.isOpenStoreInfoModal = false
             isSuccess && this._getList(false)
-        }
+        },
+        ...mapActions(['actSetStoreListStore'])
     }
 }
 </script>

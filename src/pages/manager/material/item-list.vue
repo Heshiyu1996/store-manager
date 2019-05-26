@@ -170,7 +170,7 @@ export default {
         },
         deleteRow(...ids) {
             this.$confirm(`是否删除所选物料 ？`).then(() =>
-                deleteMaterialItem(ids).then(() => {
+                deleteMaterialItem({ ids }).then(() => {
                     this.$message('删除成功')
                     this._getList(false)
                 })

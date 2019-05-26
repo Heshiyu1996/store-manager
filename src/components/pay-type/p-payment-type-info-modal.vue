@@ -75,7 +75,7 @@ export default {
             this.type ? this._addPayment() : this._editPayment()
         },
         _getPaymentGroupList() {
-            getPaymentGroupList().then(data => {
+            getPaymentGroupList({}).then(data => {
                 this.paymentGroupList = data.list || []
             })
         },

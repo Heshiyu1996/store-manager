@@ -158,7 +158,7 @@ export default {
         },
         deleteRow(...ids) {
             this.$confirm(`是否删除所选仓库 ？`).then(() =>
-                deleteMaterialHouse(ids).then(() => {
+                deleteMaterialHouse({ ids }).then(() => {
                     this.$message('删除成功')
                     this._getList(false)
                 })

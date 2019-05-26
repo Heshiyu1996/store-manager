@@ -158,7 +158,7 @@ export default {
         },
         deleteRow(...ids) {
             this.$confirm(`是否删除所选支付类型 ？`).then(() =>
-                deletePayment(ids).then(() => {
+                deletePayment({ ids }).then(() => {
                     this.$message('删除成功')
                     this._getList(false)
                 })

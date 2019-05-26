@@ -63,7 +63,7 @@
 <script>
 import PPaymentGroupInfoModal from '@/components/pay-type/p-payment-group-info-modal'
 import { MODIFY_MODAL_TYPE, OPERATION_TYPE, STATUS_LIST } from '@/utils/config'
-import { getPaymentGroupList, deletePayment, updatePaymentGroupStatus } from '@/server/api'
+import { getPaymentGroupList, deletePaymentGroup, updatePaymentGroupStatus } from '@/server/api'
 import { createNamespacedHelpers } from 'vuex'
 
 const { mapGetters } = createNamespacedHelpers('login')
@@ -156,7 +156,7 @@ export default {
         },
         deleteRow(...ids) {
             this.$confirm(`是否删除所选支付类型 ？`).then(() =>
-                deletePayment(ids).then(() => {
+                deletePaymentGroup({ ids }).then(() => {
                     this.$message('删除成功')
                     this._getList(false)
                 })
