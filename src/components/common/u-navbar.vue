@@ -34,6 +34,7 @@ import APasswordModal from '@/components/account/a-password-modal'
 import { signOut, getUserInfo, getStoreList } from '@/server/api'
 import { createNamespacedHelpers } from 'vuex'
 import { USER_TYPE, USER_TYPE_MAP } from '@/utils/config'
+import { isMock } from '@/utils/config'
 
 const { mapGetters, mapActions } = createNamespacedHelpers('login')
 
@@ -58,12 +59,6 @@ export default {
         },
         ...mapGetters(['getIflogin', 'getUserInfoStore', 'getStoreListStore'])
     },
-    watch: {
-        // TODO: 暂时注销，因为created加载一次就可以了
-        // getIflogin(val) {
-        //     val && this._getUserInfo()
-        // }
-    },
     created() {
         this._getUserInfo()
         this.$bus.$on('getUserInfo', () => this._getUserInfo())
@@ -73,19 +68,18 @@ export default {
     },
     methods: {
         _getUserInfo() {
-            getUserInfo().then(userInfo => {
-                this.actSetIfLogin(true)
-                this.actSetUserInfoStore({ ...userInfo })
-                if (this.isGM) {
-                    this._getStoreList()
-                }
+            getUserInfo()
+                .then(userInfo => {
+                    this.actSetIfLogin(true)
+                    this.actSetUserInfoStore({ ...userInfo })
+                    this.isGM && this._getStoreList()
 
-                if (this.$route.name === 'login') {
-                    this.$router.push(this.isGM ? { name: 'manager' } : { name: 'client' })
-                }
-            })
-            // TODO: 避免未登录状态下会跳到登录页
-            // .catch(() => this.$router.push({ name: 'login' }))
+                    if (this.$route.name === 'login') {
+                        this.$router.push(this.isGM ? { name: 'manager' } : { name: 'client' })
+                    }
+                })
+                // TODO: 避免未登录状态下会跳到登录页
+                .catch(() => !isMock && this.$router.push({ name: 'login' }))
         },
         _getStoreList() {
             getStoreList({ currentPage: 1 })
