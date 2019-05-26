@@ -16,17 +16,17 @@ export default new Router({
             component: () => import('@/pages/manager/index'),
             // redirect: { name: 'login' },
             children: [
-                // 1-a[订单管理]订单列表
+                // 1-a[订单管理]预约安排
                 {
-                    path: 'order-list',
-                    name: 'order-list',
-                    component: () => import('@/pages/manager/order/list')
+                    path: 'order-arrange-list',
+                    name: 'order-arrange-list',
+                    component: () => import('@/pages/manager/order/arrange-list')
                 },
-                // 1-b[订单管理]历史订单
+                // 1-b[订单管理]订单记录
                 {
-                    path: 'order-history',
-                    name: 'order-history',
-                    component: () => import('@/pages/manager/order/history')
+                    path: 'order-history-list',
+                    name: 'order-history-list',
+                    component: () => import('@/pages/manager/order/history-list')
                 },
                 // 2-a[支付类型]类型列表
                 {

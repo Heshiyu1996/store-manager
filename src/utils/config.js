@@ -13,25 +13,16 @@ export const MENU_LIST_MANAGER = [
     {
         subMenuInfo: {
             value: 'order',
-            label: '订单管理',
-            disabled: true
+            label: '订单管理'
         },
         subMenuItemList: [
             {
-                value: 'order-list',
-                label: '订单列表'
+                value: 'order-arrange-list',
+                label: '预约安排'
             },
             {
-                value: 'order-history',
+                value: 'order-history-list',
                 label: '历史订单'
-            },
-            {
-                value: 'order-delete',
-                label: '删除记录'
-            },
-            {
-                value: 'order-loss',
-                label: '流失单管理'
             }
         ]
     },
