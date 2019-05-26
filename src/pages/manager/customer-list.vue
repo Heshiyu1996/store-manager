@@ -30,7 +30,7 @@
                 <template slot-scope="{ row }">
                     <u-table-column width="2vw" label="" ellipse><el-checkbox v-model="row.checked"/></u-table-column>
                     <u-table-column width="16vw" label="来源名称" ellipse>{{ row.name || '-' }}</u-table-column>
-                    <u-table-column width="16vw" label="来源类别" ellipse>{{ row.sourceType || '-' }}</u-table-column>
+                    <u-table-column width="16vw" label="来源类别" ellipse>{{ SOURCE_TYPE_MAP[row.sourceType] || '-' }}</u-table-column>
                     <u-table-column width="16vw" label="所属门店" ellipse>{{ row.storeName || '-' }}</u-table-column>
                     <u-table-column width="12vw" label="使用状态" ellipse>
                         <el-switch v-model="row.status" @change="switchRow(row)" active-color="#13ce66" inactive-color="#ff4949"> </el-switch>
@@ -67,6 +67,10 @@ import { MODIFY_MODAL_TYPE, STATUS_LIST, OPERATION_TYPE } from '@/utils/config'
 import { createNamespacedHelpers } from 'vuex'
 
 const { mapGetters } = createNamespacedHelpers('login')
+const SOURCE_TYPE_MAP = {
+    1: '线上',
+    2: '线下'
+}
 
 export default {
     name: 'customer-list',
@@ -87,7 +91,8 @@ export default {
             isOpenCustomerInfoModal: false,
 
             STATUS_LIST,
-            OPERATION_TYPE
+            OPERATION_TYPE,
+            SOURCE_TYPE_MAP
         }
     },
     computed: {

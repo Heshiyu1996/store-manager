@@ -31,11 +31,12 @@
             <u-table ref="operationTable" :list="list" auto is-list>
                 <template slot-scope="{ row }">
                     <u-table-column width="2vw" label="" ellipse><el-checkbox v-model="row.checked"/></u-table-column>
-                    <u-table-column width="14vw" label="物料名称" ellipse>{{ row.name || '-' }}</u-table-column>
-                    <u-table-column width="14vw" label="库存数量" ellipse> {{ row.item_account }} </u-table-column>
-                    <u-table-column width="14vw" label="预警数量" ellipse> {{ row.alarm_account }} </u-table-column>
-                    <u-table-column width="14vw" label="仓库地址" ellipse> {{ row.house_address }} </u-table-column>
-                    <u-table-column width="14vw" label="使用状态" ellipse>
+                    <u-table-column width="12vw" label="物料名称" ellipse>{{ row.name || '-' }}</u-table-column>
+                    <u-table-column width="12vw" label="库存数量" ellipse> {{ row.itemAmount }} </u-table-column>
+                    <u-table-column width="12vw" label="预警数量" ellipse> {{ row.alarmAmount }} </u-table-column>
+                    <u-table-column width="12vw" label="所属仓库" ellipse> {{ row.houseName }} </u-table-column>
+                    <u-table-column width="12vw" label="仓库地址" ellipse> {{ row.houseAddress }} </u-table-column>
+                    <u-table-column width="12vw" label="使用状态" ellipse>
                         <el-switch v-model="row.status" @change="switchRow(row)" active-color="#13ce66" inactive-color="#ff4949"> </el-switch>
                     </u-table-column>
                     <u-table-column label="操作">

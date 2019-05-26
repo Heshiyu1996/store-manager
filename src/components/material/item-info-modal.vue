@@ -8,17 +8,17 @@
                 <u-input v-model="form.name" placeholder="请输入物料名称"> </u-input>
             </el-form-item>
             <el-form-item label="所属仓库">
-                <el-select v-model="form.house_id" filterable placeholder="请选择所属仓库">
+                <el-select v-model="form.houseId" filterable placeholder="请选择所属仓库">
                     <el-option v-for="item in materialHouseList" :key="item.value" :label="item.label" :value="item.value"> </el-option>
                 </el-select>
             </el-form-item>
             <el-form-item label="所属门店">
-                <el-select v-model="form.store_id" filterable placeholder="请选择所属门店">
+                <el-select v-model="form.storeId" filterable placeholder="请选择所属门店">
                     <el-option v-for="item in getStoreListStore" :key="item.id" :label="item.name" :value="item.id"> </el-option>
                 </el-select>
             </el-form-item>
             <el-form-item label="预警数量">
-                <u-input v-model="form.alarm_account" placeholder="请输入预警数量"> </u-input>
+                <u-input v-model="form.alarmAmount" placeholder="请输入预警数量"> </u-input>
             </el-form-item>
             <el-form-item label="使用状态">
                 <el-radio v-model="form.status" :label="true">启用</el-radio>
