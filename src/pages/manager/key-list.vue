@@ -29,12 +29,12 @@
             <u-table ref="operationTable" :list="list" auto is-list>
                 <template slot-scope="{ row }">
                     <u-table-column width="2vw" label="" ellipse><el-checkbox v-model="row.checked"/></u-table-column>
-                    <u-table-column width="26vw" label="钥匙编码" ellipse>{{ row.name || '-' }}</u-table-column>
-                    <u-table-column width="26vw" label="所属门店" ellipse>{{ row.storeName || '-' }}</u-table-column>
+                    <u-table-column width="22vw" label="钥匙编码" ellipse>{{ row.name || '-' }}</u-table-column>
+                    <u-table-column width="22vw" label="所属门店" ellipse>{{ row.storeName || '-' }}</u-table-column>
                     <u-table-column width="12vw" label="使用状态" ellipse>
                         <el-switch v-model="row.status" @change="switchRow(row)" active-color="#13ce66" inactive-color="#ff4949"> </el-switch>
                     </u-table-column>
-                    <u-table-column width="26vw" label="操作">
+                    <u-table-column width="22vw" label="操作">
                         <u-layout direction="h">
                             <i class="icon el-icon-edit" @click="editRow(row)"></i> <i class="icon el-icon-delete" @click="deleteRow(row.id)"></i>
                         </u-layout>
