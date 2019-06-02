@@ -33,6 +33,7 @@
             <br />
             <el-divider content-position="right">支付信息</el-divider>
             <el-form-item label="支付类型">
+                <PaymentInfoCard v-model="form.paymentList" :amount.sync="form.amount" :list="otherList['paymentList']"></PaymentInfoCard>
                 <!-- <u-table :list="otherList['paymentList']" auto is-list class="payment-wrapper">
                     <template slot-scope="{ row }">
                         <u-table-column width="200px" label="类型" ellipse>{{ row.name }}</u-table-column>
@@ -49,7 +50,7 @@
             <br />
 
             <el-form-item label="订单总金额">
-                <u-input v-model.number="form.amount" placeholder="请输入订单总金额" :disabled="hasStarted" />
+                <u-label :text="form.amount + ' 元'" />
             </el-form-item>
             <br />
             <div v-if="!hasStarted" class="before-started-info-wrapper">
@@ -79,6 +80,7 @@
 </template>
 
 <script>
+import PaymentInfoCard from '@/components/order/payment-info-card'
 import { CloseModalMixin, InvalidCheckMixin } from '@/components/common/mixins'
 import { addReserve, editReserve } from '@/server/api'
 import { MODIFY_MODAL_TYPE, ARRANGE_STATUS_MAP } from '@/utils/config'
@@ -87,6 +89,7 @@ import { createNamespacedHelpers } from 'vuex'
 const { mapGetters } = createNamespacedHelpers('login')
 
 export default {
+    components: { PaymentInfoCard },
     mixins: [CloseModalMixin, InvalidCheckMixin],
     props: {
         visible: { type: Boolean, default: false },
@@ -99,12 +102,8 @@ export default {
             form: {
                 id: '',
                 sourceType: 1,
-                paymentList: [
-                    {
-                        paymentType: 5,
-                        count: 2
-                    }
-                ]
+                paymentList: {},
+                amount: 0
             },
             num: 0,
 
