@@ -18,7 +18,7 @@ export const MENU_LIST_MANAGER = [
         subMenuItemList: [
             {
                 value: 'order-arrange-list',
-                label: '预约安排'
+                label: '预定安排'
             },
             {
                 value: 'order-history-list',
@@ -237,3 +237,9 @@ export const STATUS_LIST = [
         label: '禁用'
     }
 ]
+
+export const ARRANGE_STATUS_MAP = {
+    ARRANGED: 1,
+    STARTED: 2,
+    END: 3
+}

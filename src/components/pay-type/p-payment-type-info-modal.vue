@@ -8,7 +8,7 @@
                 <u-input v-model="form.name" placeholder="请输入支付类型名称"> </u-input>
             </el-form-item>
             <el-form-item label="结算价">
-                <u-input v-model.number="form.prize" :regex="/^\d+$/g" placeholder="请输入结算价" />
+                <u-input v-model.number="form.price" :regex="/^\d+$/g" placeholder="请输入结算价" />
             </el-form-item>
             <el-form-item label="所属门店">
                 <el-select v-model="form.storeId" filterable placeholder="请选择所属门店">

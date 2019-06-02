@@ -3,34 +3,42 @@ import http from '../http.js'
 /**
  * 订单管理
  */
-// 获取订单列表
-export const getKeyList = data =>
+// 获取安排列表
+export const getReserveList = data =>
     http({
-        url: `/api/key/list`,
+        url: `/api/order/arrange/list`,
         method: 'post',
         data
     })
 
-// 订单新增
-export const addKey = data =>
+// 新增预定
+export const addReserve = data =>
     http({
-        url: `/api/key/add`,
+        url: `/api/order/reserve/add`,
         method: 'post',
         data
     })
 
-// 订单删除
-export const deleteKey = data =>
+// 删除预定
+export const deleteReserve = data =>
     http({
-        url: `/api/key/delete`,
+        url: `/api/order/reserve/${data}`,
         method: 'delete',
         data
     })
 
-// 订单修改
-export const editKey = data =>
+// 修改预定
+export const editReserve = data =>
     http({
-        url: `/api/key/${data.id}`,
+        url: `/api/order/reserve/${data.id}`,
+        method: 'put',
+        data
+    })
+
+// 执行预定（即开始游戏）
+export const startReserve = data =>
+    http({
+        url: `/api/order/reserve/${data}/update`,
         method: 'put',
         data
     })
@@ -39,6 +47,14 @@ export const editKey = data =>
 export const getOrderHistoryList = data =>
     http({
         url: `/api/order/history/list`,
+        method: 'post',
+        data
+    })
+
+// 获取预定所需信息的列表
+export const getOrderOtherList = data =>
+    http({
+        url: `/api/order/reserve/other/list`,
         method: 'post',
         data
     })

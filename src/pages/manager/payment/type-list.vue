@@ -32,7 +32,7 @@
                     <u-table-column width="2vw" label="" ellipse><el-checkbox v-model="row.checked"/></u-table-column>
                     <u-table-column width="12vw" label="支付类型名称" ellipse>{{ row.name || '-' }}</u-table-column>
                     <u-table-column width="12vw" label="支付类型分组" ellipse>{{ row.groupName || '-' }}</u-table-column>
-                    <u-table-column width="12vw" label="结算价" ellipse>{{ row.prize }}</u-table-column>
+                    <u-table-column width="12vw" label="结算价" ellipse>{{ row.price }}</u-table-column>
                     <u-table-column width="12vw" label="所属门店" ellipse> {{ row.storeName }} </u-table-column>
                     <u-table-column width="12vw" label="使用状态" ellipse>
                         <el-switch v-model="row.status" @change="switchRow(row)" active-color="#13ce66" inactive-color="#ff4949"> </el-switch>

@@ -140,6 +140,9 @@ export default {
         transition: border-color 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
 
         &[disabled] {
+            color: #c0c4cc;
+            border-color: #e4e7ed;
+            background: $brand-disabled;
             cursor: not-allowed;
         }
 
