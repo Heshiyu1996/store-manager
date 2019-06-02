@@ -62,7 +62,7 @@ export const addMaterialItem = data =>
 // 批量禁用/启用（物料）
 export const updateMaterialItemStatus = data =>
     http({
-        url: `/api/material/item/status`,
+        url: `/api/material/item/status/update`,
         method: 'put',
         data
     })
@@ -88,5 +88,37 @@ export const getMaterialAlarmItemList = data =>
     http({
         url: `/api/material/item/alarmlist`,
         method: 'post',
+        data
+    })
+
+// 获取出库单列表
+export const getMaterialExportList = data =>
+    http({
+        url: `/api/material/export/list`,
+        method: 'post',
+        data
+    })
+
+// 新建出库记录
+export const addMaterialExport = data =>
+    http({
+        url: `/api/material/export/add`,
+        method: 'post',
+        data
+    })
+
+// 修改出库记录
+export const editMaterialExport = data =>
+    http({
+        url: `/api/material/export/${data.id}`,
+        method: 'put',
+        data
+    })
+
+// 删除出库单
+export const deleteMaterialExport = data =>
+    http({
+        url: `/api/material/export/${data}`,
+        method: 'delete',
         data
     })

@@ -70,12 +70,12 @@ export default new Router({
                     name: 'item',
                     component: () => import('@/pages/manager/material/item-list')
                 },
-                // // 9-c[物料管理]出库记录
-                // {
-                //     path: 'export',
-                //     name: 'export',
-                //     component: () => import('@/pages/manager/material/export-list')
-                // },
+                // 9-c[物料管理]出库记录
+                {
+                    path: 'export',
+                    name: 'export',
+                    component: () => import('@/pages/manager/material/export-list')
+                },
                 // // 9-d[物料管理]入库记录
                 // {
                 //     path: 'import',

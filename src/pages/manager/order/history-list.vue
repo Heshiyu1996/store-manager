@@ -18,14 +18,21 @@
             <u-table ref="operationTable" :list="list" auto is-list>
                 <template slot-scope="{ row }">
                     <u-table-column width="11vw" label="主题" ellipse>
-                        {{ row.theme || '-' }}
+                        {{ row.themeName || '-' }}
                     </u-table-column>
                     <u-table-column width="8vw" label="预约电话" ellipse>{{ row.phone || '-' }}</u-table-column>
                     <u-table-column width="11vw" label="预约时间" ellipse>{{ row.arrangeTime | dateFormat('yyyy-MM-dd hh:mm:ss') }}</u-table-column>
                     <u-table-column width="6vw" label="人数" ellipse>{{ row.arrangeNum || '-' }}</u-table-column>
                     <u-table-column width="6vw" label="实际支付金额" ellipse>{{ row.amount || '-' }}</u-table-column>
                     <u-table-column width="14vw" label="创建时间" ellipse>{{ row.createTime | dateFormat('yyyy-MM-dd hh:mm:ss') }}</u-table-column>
-                    <u-table-column width="14vw" label="删除时间" ellipse>{{ row.deleteTime | dateFormat('yyyy-MM-dd hh:mm:ss') }}</u-table-column>
+                    <u-table-column width="14vw" label="删除时间" ellipse>
+                        <template v-if="row.isDeleted">
+                            {{ row.deleteTime | dateFormat('yyyy-MM-dd hh:mm:ss') }}
+                        </template>
+                        <template v-else
+                            >-</template
+                        >
+                    </u-table-column>
                     <u-table-column width="4vw" label="游戏开始状态" ellipse>
                         <span v-if="row.isStarted" class="order-type" type="started">已开始</span>
                         <span v-else class="order-type" type="not-started">未开始</span>

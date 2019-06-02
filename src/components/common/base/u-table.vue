@@ -26,7 +26,7 @@
                     <slot :row="row" :rowIndex="index" />
                 </tr>
             </tbody>
-            <div v-else class="no-data">暂无数据记录</div>
+            <div v-else class="no-data">{{ emptyTip }}</div>
         </template>
     </table>
 </template>
@@ -40,7 +40,8 @@ export default {
         scroll: Boolean,
         isList: Boolean,
         hasLoading: { type: Boolean, default: false },
-        maxHeight: { type: String, default: '' } // xx vh || xx px
+        maxHeight: { type: String, default: '' }, // xx vh || xx px
+        emptyTip: { type: String, default: '暂无数据记录' }
     },
     data() {
         return {

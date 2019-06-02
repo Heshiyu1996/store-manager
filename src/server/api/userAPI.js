@@ -130,3 +130,11 @@ export const updateDishonestyStatus = data =>
         method: 'put',
         data
     })
+
+// 获取预定所需信息的列表
+export const getOtherList = data =>
+    http({
+        url: `/api/common/list`,
+        method: 'post',
+        data
+    })
