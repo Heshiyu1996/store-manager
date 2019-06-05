@@ -1,5 +1,5 @@
 <template>
-    <u-layout class="export-list" direction="v">
+    <u-layout class="import-list" direction="v">
         <div class="top-wrapper">
             <u-layout>
                 <el-select v-model="searchParams.storeId" filterable placeholder="请选择门店">
@@ -18,7 +18,7 @@
             <u-table ref="operationTable" :list="list" auto is-list :emptyTip="!searchParams.storeId ? '请选择指定门店后再进行查看~' : '该门店下暂无数据记录'">
                 <template slot-scope="{ row }">
                     <u-table-column width="14vw" label="物料名称" ellipse>{{ row.itemName || '-' }}</u-table-column>
-                    <u-table-column width="14vw" label="申请数量" ellipse> {{ row.itemName }} </u-table-column>
+                    <u-table-column width="14vw" label="申请数量" ellipse> {{ row.amount }} </u-table-column>
                     <u-table-column width="14vw" label="申请人员" ellipse>{{ row.applicantName || '-' }}</u-table-column>
                     <u-table-column width="14vw" label="所属仓库" ellipse>{{ row.houseName || '-' }}</u-table-column>
                     <u-table-column width="14vw" label="创建时间" ellipse> {{ row.createTime | dateFormat('yyyy-MM-dd hh:mm:ss') }} </u-table-column>
@@ -44,21 +44,21 @@
             </el-pagination>
         </u-layout>
 
-        <MExportInfoModal :visible="isOpenMaterialExportInfoModal" :otherList="otherList" @close="closeMaterialExportInfoModal" />
+        <MImportInfoModal :visible="isOpenMaterialImportInfoModal" :otherList="otherList" @close="closeMaterialImportInfoModal" />
     </u-layout>
 </template>
 
 <script>
-import MExportInfoModal from '@/components/material/export-info-modal'
+import MImportInfoModal from '@/components/material/import-info-modal'
 import { MODIFY_MODAL_TYPE, OPERATION_TYPE } from '@/utils/config'
-import { getMaterialExportList, deleteMaterialExport, getOtherList } from '@/server/api'
+import { getMaterialImportList, deleteMaterialImport, getOtherList } from '@/server/api'
 import { createNamespacedHelpers } from 'vuex'
 
 const { mapGetters } = createNamespacedHelpers('login')
 
 export default {
-    name: 'export-list',
-    components: { MExportInfoModal },
+    name: 'import-list',
+    components: { MImportInfoModal },
     data() {
         return {
             searchParams: {
@@ -70,9 +70,9 @@ export default {
             },
 
             list: [],
-            otherList: {},
+            otherList: [],
 
-            isOpenMaterialExportInfoModal: false,
+            isOpenMaterialImportInfoModal: false,
 
             OPERATION_TYPE
         }
@@ -102,20 +102,20 @@ export default {
         addPatch() {
             let noMaterial = this.otherList['materialItemList'] && !this.otherList['materialItemList'].length
             if (noMaterial) {
-                this.$message('该门店下物料为空，无法出库')
+                this.$message('该门店下物料为空，无法入库')
                 return
             }
             let { storeId } = this.searchParams
-            this.$bus.$emit('open-material-export-info-modal', { storeId }, MODIFY_MODAL_TYPE.ADD)
-            this.isOpenMaterialExportInfoModal = true
+            this.$bus.$emit('open-material-import-info-modal', { storeId }, MODIFY_MODAL_TYPE.ADD)
+            this.isOpenMaterialImportInfoModal = true
         },
         editRow(row) {
-            this.$bus.$emit('open-material-export-info-modal', row, MODIFY_MODAL_TYPE.EDIT)
-            this.isOpenMaterialExportInfoModal = true
+            this.$bus.$emit('open-material-import-info-modal', row, MODIFY_MODAL_TYPE.EDIT)
+            this.isOpenMaterialImportInfoModal = true
         },
         deleteRow(id) {
-            this.$confirm(`是否删除所选出库记录 ？`).then(() =>
-                deleteMaterialExport(id).then(() => {
+            this.$confirm(`是否删除所选入库记录 ？`).then(() =>
+                deleteMaterialImport(id).then(() => {
                     this.$message('删除成功')
                     this._getList(false)
                 })
@@ -124,7 +124,7 @@ export default {
         _getList(isNew) {
             isNew && (this.searchParams.currentPage = 1)
 
-            getMaterialExportList(this.searchParams).then(data => {
+            getMaterialImportList(this.searchParams).then(data => {
                 this.list = data.list || []
                 this.list.forEach(item => this.$set(item, 'checked', false))
                 this.totalCount = data.totalCount || 0
@@ -146,8 +146,8 @@ export default {
         handleCurrentChange(val) {
             this.searchParams.currentPage = val
         },
-        closeMaterialExportInfoModal(isSuccess) {
-            this.isOpenMaterialExportInfoModal = false
+        closeMaterialImportInfoModal(isSuccess) {
+            this.isOpenMaterialImportInfoModal = false
             isSuccess && this._getList(false)
         }
     }
@@ -155,7 +155,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.export-list {
+.import-list {
     height: 100%;
     padding: 0 30px 40px;
 

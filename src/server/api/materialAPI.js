@@ -122,3 +122,35 @@ export const deleteMaterialExport = data =>
         method: 'delete',
         data
     })
+
+// 获取入库单列表
+export const getMaterialImportList = data =>
+    http({
+        url: `/api/material/import/list`,
+        method: 'post',
+        data
+    })
+
+// 新建入库记录
+export const addMaterialImport = data =>
+    http({
+        url: `/api/material/import/add`,
+        method: 'post',
+        data
+    })
+
+// 修改入库记录
+export const editMaterialImport = data =>
+    http({
+        url: `/api/material/import/${data.id}`,
+        method: 'put',
+        data
+    })
+
+// 删除入库单
+export const deleteMaterialImport = data =>
+    http({
+        url: `/api/material/import/${data}`,
+        method: 'delete',
+        data
+    })

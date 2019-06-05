@@ -95,6 +95,7 @@ export default {
         },
         _editMaterialItem() {
             let param = { ...this.form }
+            delete param['itemAmount'] // 删除‘库存数量’
             editMaterialItem(param).then(() => {
                 this.$message('修改成功')
                 this.closeModal(true)

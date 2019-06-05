@@ -1,7 +1,7 @@
 <template>
-    <u-modal :visible="visible" :title="type ? '新增出库记录' : '编辑出库记录'" @before-close="submit" @close="closeModal" class="m-export-info-modal">
+    <u-modal :visible="visible" :title="type ? '新增入库记录' : '编辑入库记录'" @before-close="submit" @close="closeModal" class="m-import-info-modal">
         <el-form ref="form" :model="form" label-width="110px">
-            <el-form-item v-if="!type" label="出库记录ID">
+            <el-form-item v-if="!type" label="入库记录ID">
                 <u-label :text="form.id" />
             </el-form-item>
             <el-form-item label="所属门店">
@@ -31,7 +31,7 @@
 
 <script>
 import { CloseModalMixin, InvalidCheckMixin } from '@/components/common/mixins'
-import { addMaterialExport, editMaterialExport, getOtherList } from '@/server/api'
+import { addMaterialImport, editMaterialImport, getOtherList } from '@/server/api'
 import { MODIFY_MODAL_TYPE } from '@/utils/config'
 import { createNamespacedHelpers } from 'vuex'
 
@@ -56,7 +56,7 @@ export default {
         ...mapGetters(['getStoreListStore'])
     },
     created() {
-        this.$bus.$on('open-material-export-info-modal', (itemDetail, isAdd) => {
+        this.$bus.$on('open-material-import-info-modal', (itemDetail, isAdd) => {
             console.log(itemDetail)
             this.type = isAdd
             this.form = { ...itemDetail }
@@ -64,7 +64,7 @@ export default {
         })
     },
     destroyed() {
-        this.$bus.$off('open-material-export-info-modal')
+        this.$bus.$off('open-material-import-info-modal')
     },
     methods: {
         submit(e) {
@@ -74,7 +74,7 @@ export default {
                 return
             }
 
-            this.type ? this._addMaterialExport() : this._editMaterialExport()
+            this.type ? this._addMaterialImport() : this._editMaterialImport()
         },
         _getOtherList() {
             let { storeId } = this.form
@@ -82,16 +82,16 @@ export default {
                 this.otherList = data || {}
             })
         },
-        _addMaterialExport() {
+        _addMaterialImport() {
             let param = { ...this.form }
-            addMaterialExport(param).then(() => {
+            addMaterialImport(param).then(() => {
                 this.$message('新增成功')
                 this.closeModal(true)
             })
         },
-        _editMaterialExport() {
+        _editMaterialImport() {
             let param = { ...this.form }
-            editMaterialExport(param).then(() => {
+            editMaterialImport(param).then(() => {
                 this.$message('修改成功')
                 this.closeModal(true)
             })
@@ -101,7 +101,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.m-export-info-modal {
+.m-import-info-modal {
     /deep/ .u-modal-body {
         overflow-y: visible;
 
