@@ -18,7 +18,7 @@
             <u-table ref="operationTable" :list="list" auto is-list :emptyTip="!searchParams.storeId ? '请选择指定门店后再进行查看~' : '该门店下暂无数据记录'">
                 <template slot-scope="{ row }">
                     <u-table-column width="14vw" label="物料名称" ellipse>{{ row.itemName || '-' }}</u-table-column>
-                    <u-table-column width="14vw" label="申请数量" ellipse> {{ row.itemName }} </u-table-column>
+                    <u-table-column width="14vw" label="申请数量" ellipse> {{ row.amount }} </u-table-column>
                     <u-table-column width="14vw" label="申请人员" ellipse>{{ row.applicantName || '-' }}</u-table-column>
                     <u-table-column width="14vw" label="所属仓库" ellipse>{{ row.houseName || '-' }}</u-table-column>
                     <u-table-column width="14vw" label="创建时间" ellipse> {{ row.createTime | dateFormat('yyyy-MM-dd hh:mm:ss') }} </u-table-column>

@@ -76,12 +76,12 @@ export default new Router({
                     name: 'export',
                     component: () => import('@/pages/manager/material/export-list')
                 },
-                // // 9-d[物料管理]入库记录
-                // {
-                //     path: 'import',
-                //     name: 'import',
-                //     component: () => import('@/pages/manager/material/import-list')
-                // },
+                // 9-d[物料管理]入库记录
+                {
+                    path: 'import',
+                    name: 'import',
+                    component: () => import('@/pages/manager/material/import-list')
+                },
                 // 10-a[用户管理]用户列表
                 {
                     path: 'user-list',
