@@ -58,3 +58,11 @@ export const getOrderOtherList = data =>
         method: 'post',
         data
     })
+
+// 获取指定日期及门店的收款情况
+export const getIncomeList = data =>
+    http({
+        url: `/api/order/income/list`,
+        method: 'post',
+        data
+    })

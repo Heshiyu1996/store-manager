@@ -5,7 +5,7 @@
                 <el-select v-model="searchParams.storeId" filterable placeholder="请选择门店">
                     <el-option v-for="item in getStoreListStore" :key="item.id" :label="item.name" :value="item.id"> </el-option>
                 </el-select>
-                <el-date-picker v-model="searchParams.date" type="date" placeholder="请输入查询时间" size="medium"> </el-date-picker>
+                <el-date-picker v-model="searchParams.date" type="date" @change="_getIncomeList" placeholder="请输入查询时间" size="medium"> </el-date-picker>
             </u-layout>
             <u-layout v-if="searchParams.storeId" class="operation">
                 <el-tooltip class="item" effect="dark" content="添加" placement="top">
@@ -14,24 +14,28 @@
             </u-layout>
         </div>
         <u-layout class="content-wrapper" direction="v">
-            <u-table ref="operationTable" :list="list" auto is-list>
-                <template slot-scope="{ row }">
-                    <u-table-column label="时间" ellipse>
-                        {{ row.hour }}
-                    </u-table-column>
-                    <u-table-column v-for="theme in otherList['themeList']" :key="theme.id" :label="theme.name" width="18vw" ellipse>
-                        <ArrangeInfoCard
-                            :arrange-info="row[theme.id]"
-                            :theme-id="theme.id"
-                            :store-id="searchParams.storeId"
-                            @add-patch="(storeId, id) => addPatch(storeId, id)"
-                            @edit-row="editRow"
-                            @delete-row="deleteRow"
-                            @start-row="startRow"
-                        ></ArrangeInfoCard>
-                    </u-table-column>
-                </template>
-            </u-table>
+            <div>今日收款：{{ incomeText || '暂无' }}</div>
+
+            <div v-loading.body="loading">
+                <u-table v-if="!loading" ref="operationTable" :list="list" auto is-list>
+                    <template slot-scope="{ row }">
+                        <u-table-column label="时间" ellipse>
+                            {{ row.hour }}
+                        </u-table-column>
+                        <u-table-column v-for="theme in themeList" :key="theme.id" :label="theme.name" width="18vw" ellipse>
+                            <ArrangeInfoCard
+                                :arrange-info="row[theme.id]"
+                                :theme-id="theme.id"
+                                :store-id="searchParams.storeId"
+                                @add-patch="(storeId, id) => addPatch(storeId, id)"
+                                @edit-row="editRow"
+                                @delete-row="deleteRow"
+                                @start-row="startRow"
+                            ></ArrangeInfoCard>
+                        </u-table-column>
+                    </template>
+                </u-table>
+            </div>
         </u-layout>
 
         <ArrangeInfoModal :visible="isOpenArrangeInfoModal" :otherList="otherList" @close="closeArrangeInfoModal" />
@@ -41,11 +45,12 @@
 <script>
 import ArrangeInfoModal from '@/components/order/arrange-info-modal'
 import ArrangeInfoCard from '@/components/order/arrange-info-card'
-import { getReserveList, deleteReserve, startReserve, getOrderOtherList } from '@/server/api'
+import { getReserveList, deleteReserve, startReserve, getOtherList, getIncomeList } from '@/server/api'
 import { MODIFY_MODAL_TYPE, OPERATION_TYPE } from '@/utils/config'
 import { createNamespacedHelpers } from 'vuex'
 
 const { mapGetters } = createNamespacedHelpers('login')
+const WORD_HOUR_LIST = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 0, 1, 2, 3, 4]
 const IS_STARTED_MAP = [
     {
         value: '',
@@ -85,34 +90,46 @@ export default {
                 date: new Date(new Date().toLocaleDateString())
             },
             list: [],
-            themeList: [],
 
             otherList: {},
+            themeList: [],
+            incomeList: [],
 
             isOpenArrangeInfoModal: false,
+            loading: true,
 
             IS_STARTED_MAP,
             IS_DELETED_MAP,
-            OPERATION_TYPE
+            OPERATION_TYPE,
+            WORD_HOUR_LIST
         }
     },
     computed: {
+        incomeText() {
+            let text = Object.keys(this.incomeList).reduce((total, item) => total + `${item}：${this.incomeList[item]} `, '')
+            return text ? `${text}，合计：${this.incomeTotal}元` : '暂无'
+        },
         ...mapGetters(['getStoreListStore'])
     },
     watch: {
         'searchParams.storeId'() {
             this._getList()
             this._getOtherList()
+            this._getIncomeList()
         },
         'searchParams.date'() {
             this._getList()
         },
-        getStoreListStore(storeList) {
-            this.searchParams.storeId = (storeList && storeList[0].id) || ''
+        getStoreListStore: {
+            handler(storeList) {
+                this.searchParams.storeId = (storeList[0] && storeList[0].id) || ''
+            },
+            immediate: true
         }
     },
     methods: {
         addPatch(storeId, themeId) {
+            console.log(storeId, themeId)
             this.isOpenArrangeInfoModal = true
             this.$bus.$emit('open-arrange-info-modal', { storeId, themeId }, MODIFY_MODAL_TYPE.ADD)
         },
@@ -141,24 +158,53 @@ export default {
                 this.searchParams.date = this.searchParams.date.getTime()
                 return
             }
-            getReserveList(this.searchParams)
+            this.loading = true
+            // setTimeout(() => {
+            setTimeout(() => {
+                getReserveList(this.searchParams)
+                    .then(data => {
+                        console.log(data)
+                        this.list = data.list || []
+                        this._updateList()
+
+                        this.loading = false
+                        // this.totalCount = data.totalCount || 0
+                    })
+                    .catch(e => console.log(e))
+            }, 200)
+            // }, 122000)
+        },
+        _getOtherList() {
+            getOtherList(this.searchParams)
                 .then(data => {
-                    this.list = data.list || []
-                    this.totalCount = data.totalCount || 0
+                    this.themeList = []
+                    const { themeList } = data
+                    this.otherList = data || {}
+                    this.themeList = themeList
                 })
                 .catch(e => console.log(e))
         },
-        _getOtherList() {
-            getOrderOtherList(this.searchParams)
+        _getIncomeList() {
+            getIncomeList(this.searchParams)
                 .then(data => {
-                    this.otherList = data || {}
-                    console.log(this.otherList)
+                    this.incomeList = data.list || []
+                    this.incomeTotal = data.total || 0
                 })
                 .catch(e => console.log(e))
         },
         closeArrangeInfoModal(isSuccess) {
             this.isOpenArrangeInfoModal = false
             isSuccess && this._getList(false)
+        },
+        _updateList() {
+            let list = []
+            WORD_HOUR_LIST.forEach(hour => {
+                let existHour = this.list.filter(item => item.hour === hour),
+                    targetObj = existHour.length ? existHour[0] : { hour }
+
+                list.push(targetObj)
+            })
+            this.list = [...list]
         }
     }
 }

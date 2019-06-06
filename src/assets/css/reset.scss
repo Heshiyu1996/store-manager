@@ -166,3 +166,10 @@ a,
 a:hover {
     color: #666;
 }
+
+.el-loading-spinner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 400px;
+}

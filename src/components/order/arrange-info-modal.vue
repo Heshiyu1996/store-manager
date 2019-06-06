@@ -119,9 +119,9 @@ export default {
     created() {
         this.$bus.$on('open-arrange-info-modal', (arrangeDetail, isAdd) => {
             console.log(arrangeDetail)
+            let { storeId } = arrangeDetail
             this.type = isAdd
-            // this.form = this.type ? { ...arrangeDetail } :  {}
-            this.form = { ...this.form, ...arrangeDetail }
+            this.form = this.type ? { storeId } : { ...this.form, ...arrangeDetail }
             console.log(this.form)
         })
     },
