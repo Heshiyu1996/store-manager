@@ -17,24 +17,18 @@
         <u-layout class="content-wrapper" direction="v">
             <u-table ref="operationTable" :list="list" auto is-list>
                 <template slot-scope="{ row }">
-                    <u-table-column width="11vw" label="主题" ellipse>
-                        {{ row.themeName || '-' }}
-                    </u-table-column>
+                    <u-table-column width="11vw" label="主题" ellipse>{{ row.themeName || '-' }}</u-table-column>
                     <u-table-column width="8vw" label="预约电话" ellipse>{{ row.phone || '-' }}</u-table-column>
-                    <u-table-column width="11vw" label="预约时间" ellipse>{{ row.arrangeTime | dateFormat('yyyy-MM-dd hh:mm:ss') }}</u-table-column>
-                    <u-table-column width="6vw" label="人数" ellipse>{{ row.arrangeNum || '-' }}</u-table-column>
+                    <u-table-column width="14vw" label="预约时间" ellipse>{{ row.arrangeTime | dateFormat('yyyy-MM-dd hh:mm:ss') }}</u-table-column>
+                    <u-table-column width="2vw" label="人数" ellipse>{{ row.arrangeNum || '-' }}</u-table-column>
                     <u-table-column width="6vw" label="实际支付金额" ellipse>{{ row.amount || '-' }}</u-table-column>
                     <u-table-column width="14vw" label="创建时间" ellipse>{{ row.createTime | dateFormat('yyyy-MM-dd hh:mm:ss') }}</u-table-column>
                     <u-table-column width="14vw" label="删除时间" ellipse>
-                        <template v-if="row.isDeleted">
-                            {{ row.deleteTime | dateFormat('yyyy-MM-dd hh:mm:ss') }}
-                        </template>
-                        <template v-else
-                            >-</template
-                        >
+                        <span v-if="row.isDeleted">{{ row.deleteTime | dateFormat('yyyy-MM-dd hh:mm:ss') }}</span>
+                        {{ row.isDeleted && '-' }}
                     </u-table-column>
                     <u-table-column width="4vw" label="游戏开始状态" ellipse>
-                        <span v-if="row.isStarted" class="order-type" type="started">已开始</span>
+                        <span v-if="row.status >= ARRANGE_STATUS_MAP.STARTED" class="order-type" type="started">已开始</span>
                         <span v-else class="order-type" type="not-started">未开始</span>
                     </u-table-column>
                     <u-table-column width="4vw" label="订单状态" ellipse>
@@ -64,7 +58,7 @@
 <script>
 import KKeyinfoModal from '@/components/key/key-info-modal'
 import { getOrderHistoryList, deleteKey, updateKeyStatus } from '@/server/api'
-import { MODIFY_MODAL_TYPE, OPERATION_TYPE } from '@/utils/config'
+import { MODIFY_MODAL_TYPE, OPERATION_TYPE, ARRANGE_STATUS_MAP } from '@/utils/config'
 import { createNamespacedHelpers } from 'vuex'
 
 const { mapGetters } = createNamespacedHelpers('login')
@@ -118,6 +112,7 @@ export default {
 
             IS_STARTED_MAP,
             IS_DELETED_MAP,
+            ARRANGE_STATUS_MAP,
             OPERATION_TYPE
         }
     },
