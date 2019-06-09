@@ -1,5 +1,6 @@
 <template>
     <u-layout class="client-index" direction="v">
+        <u-navbar />
         <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
             <template v-for="subMenu in MENU_LIST_USER">
                 <template v-if="subMenu.subMenuItemList.length !== 0">
