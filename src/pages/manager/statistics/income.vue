@@ -2,7 +2,7 @@
     <u-layout class="statistic-income" direction="v">
         <div class="top-wrapper">
             <u-layout>
-                <el-select v-model="searchParams.storeIds[0]" filterable placeholder="请选择门店">
+                <el-select v-model="searchParams.storeIds" multiple :multiple-limit="1" filterable placeholder="请选择门店">
                     <el-option v-for="item in getStoreListStore" :key="item.id" :label="item.name" :value="item.id"> </el-option>
                 </el-select>
                 <el-date-picker v-model="rangeTime" type="daterange" range-separator="至" start-placeholder="起始日期" end-placeholder="结束日期" />
@@ -12,7 +12,7 @@
         <u-layout class="content-wrapper" direction="v">
             <el-divider content-position="left">收入统计</el-divider>
             <template v-if="bussinessData.rows && bussinessData.rows.length">
-                <ve-line :data="bussinessData" :settings="BUSSINESS_MAP" />
+                <ve-line :data="bussinessData" :settings="BUSSINESS_SETTING" />
                 <u-table ref="bussinessTable" :list="bussinessData.rows.concat(bussinessData.sum)" auto is-list>
                     <template slot-scope="{ row }">
                         <u-table-column width="20vw" label="日期" ellipse>{{ row.date }}</u-table-column>
@@ -82,13 +82,12 @@
 </template>
 
 <script>
-import { OPERATION_TYPE, STATUS_LIST } from '@/utils/config'
 import { getIncomeStatisticsList } from '@/server/api'
 import { createNamespacedHelpers } from 'vuex'
 
 const { mapGetters } = createNamespacedHelpers('login')
 
-const BUSSINESS_MAP = {
+const BUSSINESS_SETTING = {
     labelMap: {
         date: '日期',
         turnover: '营业额',
@@ -138,15 +137,13 @@ export default {
                 sum: []
             },
             searchParams: {
-                storeIds: []
+                storeIds: ''
             },
 
             dataSource: {},
             rangeTime: [Date.now(), Date.now()],
 
-            OPERATION_TYPE,
-            STATUS_LIST,
-            BUSSINESS_MAP,
+            BUSSINESS_SETTING,
             THEME_SETTING,
             PAYMENT_SETTING,
             CONSUME_SOURCE_SETTING
@@ -192,40 +189,22 @@ export default {
         ...mapGetters(['getUserInfoStore', 'getStoreListStore'])
     },
     watch: {
-        'searchParams.userType'() {
-            this._getList(false)
-        },
-        'searchParams.currentPage'() {
-            this._getList(false)
-        },
-        'searchParams.pageSize'() {
-            this._getList(true)
-        },
-        'searchParams.storeIds'() {
-            this._getList(true)
-        },
-        'searchParams.status'() {
-            this._getList(true)
+        'searchParams.storeIds'(val) {
+            val.length && this._getList()
         },
         rangeTime(val) {
             this._formatRangeTime(val)
-            this._getList(true)
+            this._getList()
         },
         getStoreListStore(val) {
             this.searchParams.storeIds = [val[0].id]
         }
     },
-    created() {
-        // this._getList(true)
-    },
     methods: {
-        _getList(isNew) {
-            isNew && (this.searchParams.currentPage = 1)
+        _getList() {
             this._formatRangeTime(this.rangeTime)
 
-            getIncomeStatisticsList(this.searchParams).then(data => {
-                this.dataSource = data || {}
-            })
+            getIncomeStatisticsList(this.searchParams).then(data => (this.dataSource = data || {}))
         },
         _formatRangeTime(date) {
             if (!date) {
@@ -255,6 +234,10 @@ export default {
         height: 40px;
         justify-content: space-between;
         align-items: center;
+
+        .el-select {
+            width: 350px;
+        }
 
         .el-button {
             margin-right: 0;
