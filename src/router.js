@@ -148,9 +148,9 @@ export default new Router({
             children: [
                 // 1-账号绑定
                 {
-                    path: 'sign-up',
-                    name: 'sign-up',
-                    component: () => import('@/pages/wx/sign-up'),
+                    path: 'sign-up-wx',
+                    name: 'sign-up-wx',
+                    component: () => import('@/pages/wx/sign-up-wx'),
                     meta: {
                         noAuth: true
                     }
