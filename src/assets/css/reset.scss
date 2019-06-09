@@ -68,6 +68,10 @@ abbr {
     border: 0;
 }
 
+html {
+    font-size: 625%;
+}
+
 i,
 cite,
 em,
@@ -172,4 +176,9 @@ a:hover {
     justify-content: center;
     align-items: center;
     height: 400px;
+}
+
+input,textarea {
+    border: 0; /* 方法1 */
+    -webkit-appearance: none; /* 方法2 */
 }

@@ -51,17 +51,16 @@ export const MENU_LIST_MANAGER = [
     },
     {
         subMenuInfo: {
-            value: 'room',
-            label: '密室统计',
-            disabled: true
+            value: 'statistics',
+            label: '密室统计'
         },
         subMenuItemList: [
             {
-                value: 'room-income',
+                value: 'statistics-income',
                 label: '收入统计'
             },
             {
-                value: 'room-order',
+                value: 'statistics-order',
                 label: '订单统计'
             }
         ]
@@ -242,4 +241,9 @@ export const ARRANGE_STATUS_MAP = {
     ARRANGED: 1,
     STARTED: 2,
     END: 3
+}
+
+export const WX_URL = {
+    PRE_FIX: 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx2528c0ee48d8f2d2&redirect_uri=https%3a%2f%2fwww.dbxyyxt.com%2f%23%2fwx%2f',
+    POST_FIX: '&response_type=code&scope=snsapi_base&state=1559805356000&connect_redirect=1#wechat_redirect'
 }

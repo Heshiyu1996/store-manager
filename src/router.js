@@ -46,6 +46,18 @@ export default new Router({
                     name: 'theme-list',
                     component: () => import('@/pages/manager/theme-list')
                 },
+                // 4-a[密室统计]收入统计
+                {
+                    path: 'statistics-income',
+                    name: 'statistics-income',
+                    component: () => import('@/pages/manager/statistics/income')
+                },
+                // 4-b[密室统计]订单统计
+                {
+                    path: 'statistics-order',
+                    name: 'statistics-order',
+                    component: () => import('@/pages/manager/statistics/order')
+                },
                 // 5-客户来源
                 {
                     path: 'customer-list',
@@ -127,6 +139,41 @@ export default new Router({
             path: '/login',
             name: 'login',
             component: () => import(/* webpackChunkName: "about" */ './pages/login.vue')
+        },
+        // 4-微信
+        {
+            path: '/wx',
+            name: 'wx',
+            component: () => import(/* webpackChunkName: "about" */ './pages/wx/index'),
+            children: [
+                // 1-账号绑定
+                {
+                    path: 'sign-up',
+                    name: 'sign-up',
+                    component: () => import('@/pages/wx/sign-up'),
+                    meta: {
+                        noAuth: true
+                    }
+                },
+                // 2-账号登录/注册
+                {
+                    path: 'bind-account',
+                    name: 'bind-account',
+                    component: () => import('@/pages/wx/bind-account'),
+                    meta: {
+                        noAuth: true
+                    }
+                },
+                // 3-查流水
+                {
+                    path: 'card-list',
+                    name: 'card-list',
+                    component: () => import('@/pages/wx/card-list'),
+                    meta: {
+                        noAuth: true
+                    }
+                }
+            ]
         }
     ]
 })
