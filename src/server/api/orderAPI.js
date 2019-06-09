@@ -66,3 +66,11 @@ export const getIncomeList = data =>
         method: 'post',
         data
     })
+
+// 获取要播放的音频
+export const getVoiceList = data =>
+    http({
+        url: `/api/voice/list`,
+        method: 'post',
+        data
+    })

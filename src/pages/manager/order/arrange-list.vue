@@ -14,7 +14,10 @@
             </u-layout>
         </div>
         <u-layout class="content-wrapper" direction="v">
+            <!-- <el-button style="float: right; padding: 3px 0" type="text" @click="_getVoiceList">获取音乐</el-button> -->
             <div>今日收款：{{ incomeText || '暂无' }}</div>
+            <!-- {{ voiceList }} -->
+            <div id="music"></div>
 
             <div v-loading.body="loading">
                 <u-table v-if="!loading" ref="operationTable" :list="list" auto is-list>
@@ -45,8 +48,9 @@
 <script>
 import ArrangeInfoModal from '@/components/order/arrange-info-modal'
 import ArrangeInfoCard from '@/components/order/arrange-info-card'
-import { getReserveList, deleteReserve, startReserve, getOtherList, getIncomeList } from '@/server/api'
+import { getReserveList, deleteReserve, startReserve, getOtherList, getIncomeList, getVoiceList } from '@/server/api'
 import { MODIFY_MODAL_TYPE, OPERATION_TYPE } from '@/utils/config'
+import { playMusic } from '@/utils/common'
 import { createNamespacedHelpers } from 'vuex'
 
 const { mapGetters } = createNamespacedHelpers('login')
@@ -94,9 +98,11 @@ export default {
             otherList: {},
             themeList: [],
             incomeList: [],
+            voiceList: [],
 
             isOpenArrangeInfoModal: false,
             loading: true,
+            pollingId: '',
 
             IS_STARTED_MAP,
             IS_DELETED_MAP,
@@ -106,8 +112,8 @@ export default {
     },
     computed: {
         incomeText() {
-            let text = Object.keys(this.incomeList).reduce((total, item) => total + `${item}：${this.incomeList[item]} `, '')
-            return text ? `${text}，合计：${this.incomeTotal}元` : '暂无'
+            let text = Object.keys(this.incomeList).reduce((total, item) => total + `${item}：${this.incomeList[item]} 、`, '')
+            return text ? `${text}合计：${this.incomeTotal}元` : '暂无'
         },
         ...mapGetters(['getStoreListStore'])
     },
@@ -120,12 +126,25 @@ export default {
         'searchParams.date'() {
             this._getList()
         },
+        // voiceList: {
+        //     handler(val) {
+        //         !!val.length && playMusic(val)
+        //     },
+        //     deep: true
+        // },
         getStoreListStore: {
             handler(storeList) {
                 this.searchParams.storeId = (storeList[0] && storeList[0].id) || ''
             },
             immediate: true
         }
+    },
+    mounted() {
+        this._getVoiceList()
+        playMusic(this.voiceList)
+    },
+    beforeDestroy() {
+        clearInterval(this.pollingId)
     },
     methods: {
         addPatch(storeId, themeId) {
@@ -152,6 +171,18 @@ export default {
                     this._getList()
                 })
             )
+        },
+        _getVoiceList() {
+            this.pollingId = setInterval(() => {
+                getVoiceList({ storeId: this.searchParams.storeId }).then(urls => {
+                    console.log(urls)
+
+                    if (!urls.length) return
+
+                    this.voiceList = this.voiceList.concat(urls)
+                    playMusic(this.voiceList)
+                })
+            }, 3000)
         },
         _getList() {
             if (typeof this.searchParams.date !== 'number') {
@@ -206,6 +237,29 @@ export default {
             })
             this.list = [...list]
         }
+
+        // playMusic(musicList) {
+        //     let myAudio = new Audio()
+        //     let src = musicList.shift()
+
+        //     myAudio.src = src
+        //     //将最后一个音乐添加到数组的开头，这样实现循环
+        //     // musicList.unshift(src)
+
+        //     //绑定音乐结束事件，当音乐播放完成后，将会触发playEndedHandler方法
+        //     myAudio.addEventListener('ended', playEndedHandler, false)
+        //     //播放当前音乐
+        //     document.getElementById('music').appendChild(myAudio)
+        //     //将循环播放关闭，如果开启，将不能触发playEndedHandler方法，只能进行单曲循环
+        //     myAudio.loop = false
+        //     myAudio.play()
+
+        //     function playEndedHandler() {
+        //         src = musicList.shift()
+        //         myAudio.src = src
+        //         myAudio.play()
+        //     }
+        // }
     }
 }
 </script>
@@ -227,6 +281,8 @@ export default {
     }
 
     .content-wrapper {
+        font-size: 12px;
+
         .u-table-column {
             line-height: 26px;
             height: auto;

@@ -24,7 +24,6 @@
                         <el-option v-for="item in group.children" :key="item.value" :label="item.label" :value="item.value"> </el-option>
                     </el-option-group>
                 </el-select>
-                <!-- <el-cascader v-model="form.sourceTypeTemp" :options="sourceTypeOptions" @change="handleSourceType"> </el-cascader> -->
             </el-form-item>
             <br />
 
@@ -93,7 +92,6 @@ export default {
 
             form: {
                 id: '',
-                sourceTypeTemp: [],
                 paymentList: {},
                 amount: 0
             },
@@ -157,8 +155,7 @@ export default {
             if (typeof this.form.arrangeTime !== 'number') {
                 this.form.arrangeTime = this.form.arrangeTime.getTime()
             }
-            let sourceType = this.form.sourceTypeTemp[this.form.sourceTypeTemp.length - 1]
-            let param = { ...this.form, sourceType }
+            let param = { ...this.form }
             addReserve(param).then(() => {
                 this.$message('新增成功')
                 this.closeModal(true)
