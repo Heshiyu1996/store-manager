@@ -32,6 +32,11 @@ body {
     font-size: 14px;
     line-height: 1.375;
 }
+@media screen and (min-width: 400px) {
+    body {
+        min-width: $content-width;
+    }
+}
 
 // /*定义滚动条高宽及背景
 //  高宽分别对应横竖滚动条的尺寸*/
