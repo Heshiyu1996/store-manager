@@ -2,7 +2,7 @@
     <u-layout class="statistic-order" direction="v">
         <div class="top-wrapper">
             <u-layout>
-                <el-select v-model="searchParams.storeIds" multiple :multiple-limit="3" filterable placeholder="请选择门店">
+                <el-select v-model="searchParams.storeIds" multiple :multiple-limit="5" filterable placeholder="请选择门店">
                     <el-option v-for="item in getStoreListStore" :key="item.id" :label="item.name" :value="item.id"> </el-option>
                 </el-select>
                 <el-date-picker v-model="rangeTime" type="daterange" range-separator="至" start-placeholder="起始日期" end-placeholder="结束日期" />
@@ -90,7 +90,7 @@ export default {
     },
     watch: {
         'searchParams.storeIds'(val) {
-            this._getList()
+            val.length && this._getList()
 
             this.orderColumns = ['date'].concat(val)
         },
@@ -98,12 +98,13 @@ export default {
             this._formatRangeTime(val)
             this._getList()
         },
-        getStoreListStore(val) {
-            this.searchParams.storeIds = [val[0].id]
-
-            let labelMap = {}
-            val.forEach(store => (labelMap[store.id] = store.name))
-            ORDER_SETTING.labelMap = { date: '日期', ...labelMap }
+        getStoreListStore: {
+            handler(val) {
+                let labelMap = {}
+                val.forEach(store => (labelMap[store.id] = store.name))
+                ORDER_SETTING.labelMap = { date: '日期', ...labelMap }
+            },
+            immediate: true
         }
     },
     methods: {
