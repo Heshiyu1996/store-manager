@@ -2,7 +2,7 @@
     <nav class="u-sign-in">
         <el-card class="sign-in-wrapper">
             <div slot="header" class="clearfix">
-                <span>用户登录</span>
+                <span>登录</span>
                 <el-button style="float: right; padding: 3px 0" type="text" @click="toggleBox">去注册</el-button>
             </div>
             <div class="content">
@@ -33,13 +33,13 @@
                             <u-error :visible="!$v.form.password.required" text="密码不能为空" />
                         </el-form-item>
                     </template>
-                    <el-form-item>
+                    <!-- <el-form-item>
                         <el-checkbox v-model="passwordMemory">记住密码</el-checkbox>
                         <u-link-text class="password-forget" text="忘记密码" @click="fogetPassword" />
-                    </el-form-item>
+                    </el-form-item> -->
 
                     <el-form-item class="operation">
-                        <el-button type="primary" @click="onSubmit" :disabled="$v.$invalid" round>登录</el-button>
+                        <el-button type="primary" @click="onSubmit" :disabled="$v.$invalid" round class="sign-in-btn">登录</el-button>
                     </el-form-item>
 
                     <el-form-item class="login-type-wrapper">

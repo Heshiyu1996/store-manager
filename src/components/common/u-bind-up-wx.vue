@@ -134,8 +134,6 @@ export default {
 
 <style lang="scss" scoped>
 .u-bind-up-wx {
-    position: absolute;
-    top: 56px;
     width: 100vw;
     height: 3rem;
 

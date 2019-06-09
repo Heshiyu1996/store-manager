@@ -5,9 +5,8 @@ export default {
         _getOpenId() {
             return new Promise((resolve, reject) => {
                 let openid = localStorage.getItem('openid')
-                if (openid) {
-                    return resolve(openid)
-                }
+                if (openid) return resolve(openid)
+
                 let str = location.href,
                     targetObj = /\?/g.exec(str)
                 if (!targetObj) {
@@ -25,7 +24,10 @@ export default {
                 })
 
                 getOpenId(param)
-                    .then(openid => resolve(openid))
+                    .then(openid => {
+                        localStorage.setItem('openid', openid)
+                        resolve(openid)
+                    })
                     .catch(err => reject(err))
             })
         },

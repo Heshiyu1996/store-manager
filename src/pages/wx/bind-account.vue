@@ -60,8 +60,6 @@ export default {
 
 <style lang="scss" scoped>
 .bind-account {
-    padding-top: 56px;
-
     .info-wrapper {
         padding: 20px;
     }
