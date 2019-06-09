@@ -1,24 +1,24 @@
 <template>
     <u-modal :visible="visible" :title="type ? '新增预定' : '编辑预定'" @before-close="submit" @close="closeModal" class="arrange-info-modal">
         <el-form ref="form" :inline="true" :model="form" label-width="110px">
-            <el-form-item label="所属门店">
+            <el-form-item label="所属门店" :rules="{ required: true }">
                 <el-select v-model="form.storeId" filterable disabled>
                     <el-option v-for="item in getStoreListStore" :key="item.id" :label="item.name" :value="item.id"> </el-option>
                 </el-select>
             </el-form-item>
             <br />
-            <el-form-item label="预定主题">
+            <el-form-item label="预定主题" :rules="{ required: true }">
                 <el-select v-model="form.themeId" filterable placeholder="请选择预定主题" :disabled="hasStarted">
                     <el-option v-for="item in otherList['themeList']" :key="item.id" :label="item.name" :value="item.id"> </el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item label="接待人员">
+            <el-form-item label="接待人员" :rules="{ required: true }">
                 <el-select v-model="form.receiverAccount" filterable placeholder="请选择接待人员">
                     <el-option v-for="item in otherList['staffList']" :key="item.account" :label="item.nickName" :value="item.account"> </el-option>
                 </el-select>
             </el-form-item>
             <el-divider content-position="right">客户信息</el-divider>
-            <el-form-item label="客户来源">
+            <el-form-item label="客户来源" :rules="{ required: true }">
                 <el-select v-model="form.sourceType" placeholder="请选择客户来源">
                     <el-option-group v-show="group.children.length" v-for="group in sourceTypeOptions" :key="group.label" :label="group.label">
                         <el-option v-for="item in group.children" :key="item.value" :label="item.label" :value="item.value"> </el-option>
@@ -27,10 +27,10 @@
             </el-form-item>
             <br />
 
-            <el-form-item label="预约时间" class="arrange-time-wrapper">
+            <el-form-item label="预约时间" class="arrange-time-wrapper" :rules="{ required: true }">
                 <el-date-picker v-model="form.arrangeTime" type="datetime" placeholder="请输入预约时间" size="medium" class="arrange-time"> </el-date-picker>
             </el-form-item>
-            <el-form-item label="预约电话">
+            <el-form-item label="预约电话" :rules="{ required: true }">
                 <u-input v-model="form.phone" :regex="/^[0-9\u4e00-\u9fa5]+$/g" maxLength="11" :disabled="hasStarted" placeholder="请输入预约电话" />
             </el-form-item>
             <br />
@@ -53,7 +53,7 @@
                     <el-switch v-model="form.isArrived"></el-switch>
                 </el-form-item>
                 <br />
-                <el-form-item label="钥匙编号">
+                <el-form-item label="钥匙编号" :rules="{ required: true }">
                     <el-select v-model="form.keyId" filterable placeholder="请选择钥匙编号">
                         <el-option v-for="item in otherList['keyList']" :key="item.id" :label="item.name" :value="item.id"> </el-option>
                     </el-select>

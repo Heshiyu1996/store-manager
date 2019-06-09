@@ -75,7 +75,7 @@ export default {
                     this.isGM && this._getStoreList()
 
                     if (this.$route.name === 'login') {
-                        this.$router.push(this.isGM ? { name: 'manager' } : { name: 'client' })
+                        this.$router.push(this.isGM ? { name: 'order-arrange-list' } : { name: 'client' })
                     }
                 })
                 // TODO: 避免未登录状态下会跳到登录页
