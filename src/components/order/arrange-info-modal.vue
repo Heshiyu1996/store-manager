@@ -19,8 +19,12 @@
             </el-form-item>
             <el-divider content-position="right">客户信息</el-divider>
             <el-form-item label="客户来源">
-                <el-radio v-model="form.sourceType" :label="1">线上</el-radio>
-                <el-radio v-model="form.sourceType" :label="2">线下</el-radio>
+                <el-select v-model="form.sourceType" placeholder="请选择客户来源">
+                    <el-option-group v-show="group.children.length" v-for="group in sourceTypeOptions" :key="group.label" :label="group.label">
+                        <el-option v-for="item in group.children" :key="item.value" :label="item.label" :value="item.value"> </el-option>
+                    </el-option-group>
+                </el-select>
+                <!-- <el-cascader v-model="form.sourceTypeTemp" :options="sourceTypeOptions" @change="handleSourceType"> </el-cascader> -->
             </el-form-item>
             <br />
 
@@ -34,18 +38,6 @@
             <el-divider content-position="right">支付信息</el-divider>
             <el-form-item label="支付类型">
                 <PaymentInfoCard v-model="form.paymentList" :amount.sync="form.amount" :list="otherList['paymentList']"></PaymentInfoCard>
-                <!-- <u-table :list="otherList['paymentList']" auto is-list class="payment-wrapper">
-                    <template slot-scope="{ row }">
-                        <u-table-column width="200px" label="类型" ellipse>{{ row.name }}</u-table-column>
-                        <u-table-column width="160px" label="人数" ellipse><el-input-number v-model="num" size="small"/></u-table-column>
-                    </template>
-                </u-table> -->
-                <!-- <div v-for="payment in otherList['paymentList']" :key="payment.id">
-                    <div class="payment-wrapper">
-                        {{ payment.name }}：<el-input-number v-model="form.paymentList" size="small"/>
-
-                    </div>
-                </div> -->
             </el-form-item>
             <br />
 
@@ -101,7 +93,7 @@ export default {
 
             form: {
                 id: '',
-                sourceType: 1,
+                sourceTypeTemp: [],
                 paymentList: {},
                 amount: 0
             },
@@ -111,6 +103,29 @@ export default {
         }
     },
     computed: {
+        sourceTypeOptions() {
+            let onlineGroup = {
+                label: '线上',
+                children: []
+            }
+            let offGroup = {
+                label: '线下',
+                children: []
+            }
+
+            let list = this.otherList['sourceList']
+            list &&
+                list.forEach(item => {
+                    let option = { value: item.id, label: item.name }
+
+                    if (item.sourceType === 2) {
+                        offGroup.children.push(option)
+                    } else {
+                        onlineGroup.children.push(option)
+                    }
+                })
+            return [onlineGroup, offGroup] || []
+        },
         hasStarted() {
             return this.form.status > ARRANGE_STATUS_MAP.ARRANGED
         },
@@ -142,7 +157,8 @@ export default {
             if (typeof this.form.arrangeTime !== 'number') {
                 this.form.arrangeTime = this.form.arrangeTime.getTime()
             }
-            let param = { ...this.form }
+            let sourceType = this.form.sourceTypeTemp[this.form.sourceTypeTemp.length - 1]
+            let param = { ...this.form, sourceType }
             addReserve(param).then(() => {
                 this.$message('新增成功')
                 this.closeModal(true)
@@ -154,6 +170,9 @@ export default {
                 this.$message('修改成功')
                 this.closeModal(true)
             })
+        },
+        handleSourceType(value) {
+            console.log(value)
         }
     }
 }
