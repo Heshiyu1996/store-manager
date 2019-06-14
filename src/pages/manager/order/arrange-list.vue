@@ -15,7 +15,10 @@
         </div>
         <u-layout class="content-wrapper" direction="v">
             <!-- <el-button style="float: right; padding: 3px 0" type="text" @click="_getVoiceList">获取音乐</el-button> -->
-            <div>今日收款：{{ incomeText || '暂无' }}</div>
+            <div>
+                <u-icon name="income" class="income-icon" />
+                <span>今日收款：{{ incomeText || '暂无' }}</span>
+            </div>
             <!-- {{ voiceList }} -->
             <div id="music"></div>
 
@@ -25,7 +28,7 @@
                         <u-table-column label="时间" ellipse>
                             {{ row.hour }}
                         </u-table-column>
-                        <u-table-column v-for="theme in themeList" :key="theme.id" :label="theme.name" width="18vw" ellipse>
+                        <u-table-column v-for="theme in themeList" :key="theme.id" :label="theme.name" width="200px" ellipse class="arrange-info-item">
                             <ArrangeInfoCard
                                 :arrange-info="row[theme.id]"
                                 :theme-id="theme.id"
@@ -283,9 +286,22 @@ export default {
     .content-wrapper {
         font-size: 12px;
 
+        .arrange-info-item {
+            // border-right: 1px dashed $border-color;
+            border-left: 1px dashed $border-color;
+
+            padding: 8px;
+        }
+
+        .income-icon {
+            width: 18px;
+            height: 18px;
+        }
+
         .u-table-column {
             line-height: 26px;
             height: auto;
+
             // max-height: 120px;
         }
 

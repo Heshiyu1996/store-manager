@@ -2,26 +2,36 @@
     <div class="arrange-info-card">
         <div v-if="arrangeInfo">
             <div v-if="arrangeInfo.status === ARRANGE_STATUS_MAP.ARRANGED">
-                人数：{{ arrangeInfo.arrangeNum }} 电话：{{ arrangeInfo.phone }}<br />
+                <i class="green-light" />
+
+                <div class="top">
+                    <div class="icon-wrapper"><u-icon name="person" class="icon" />{{ arrangeInfo.arrangeNum }}</div>
+                    <div class="icon-wrapper"><u-icon name="phone" class="icon" />{{ arrangeInfo.phone }}<br /></div>
+                </div>
                 预约时间：{{ arrangeInfo.arrangeTime | dateFormat('yyyy-MM-dd hh:mm:ss') }}<br />
-                是否到店：{{ arrangeInfo.isArrived }}<br />
-                是否付款：{{ arrangeInfo.isPaid }}<br />
-                <span class="btn" @click="editRow">编辑预定</span> | <span class="btn" @click="deleteRow">删除预定</span><br />
-                <el-button type="danger" @click="startRow" size="mini">开始游戏</el-button>
+
+                <el-tag size="mini" :class="{ ifArrived: true, disabled: !arrangeInfo.isArrived }">到店</el-tag>
+                <el-tag size="mini" :class="{ ifPaid: true, disabled: !arrangeInfo.isPaid }">付款</el-tag>
+                <br />
+
+                <u-icon name="edit" class="icon" @click="editRow" /> | <u-icon name="remove" class="icon" @click="deleteRow" /> |
+                <el-button type="danger" @click="startRow" size="mini" class="start-btn">开始游戏</el-button>
             </div>
+
             <div v-if="arrangeInfo.status === ARRANGE_STATUS_MAP.STARTED">
-                人数：{{ arrangeInfo.arrangeNum }} 电话：{{ arrangeInfo.phone }}<br />
+                <i class="red-light" />
+                <u-icon name="person" class="icon" />{{ arrangeInfo.arrangeNum }} <u-icon name="phone" class="icon" />{{ arrangeInfo.phone }}<br />
                 开始时间：{{ arrangeInfo.startTime | dateFormat('yyyy-MM-dd hh:mm:ss') }}<br />
                 结束时间：{{ arrangeInfo.endTime | dateFormat('yyyy-MM-dd hh:mm:ss') }}<br />
-                <div class="btn" @click="deleteRow">删除预定</div>
-                <div class="btn" @click="editRow">备注</div>
+
+                <u-icon name="edit" class="icon" @click="editRow" /> | <u-icon name="remove" class="icon" @click="deleteRow" />
             </div>
             <div v-if="arrangeInfo.status === ARRANGE_STATUS_MAP.END">
-                <div @click="deleteRow">删除预定</div>
+                <u-icon name="remove" class="icon" @click="deleteRow" />
             </div>
         </div>
         <div v-else>
-            <el-button type="primary" @click="addPatch" size="mini">+</el-button>
+            <el-button type="primary" @click="addPatch" size="mini" class="add-btn">添加预定</el-button>
         </div>
     </div>
 </template>
@@ -75,16 +85,76 @@ export default {
 <style lang="scss" scoped>
 .arrange-info-card {
     display: flex;
+    position: relative;
     min-width: 182px;
-    min-height: 158px;
+    min-height: 130px;
     justify-content: center;
     align-items: center;
-    padding: 8px;
-    border: 1px dashed $normal-color-s;
+    padding: 6px;
+    margin-right: 8px;
     text-align: center;
+
+    .green-light,
+    .red-light {
+        display: inline-block;
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        top: 4px;
+        right: 4px;
+        border-radius: 10px;
+        // transition: all .3s ease;
+    }
+
+    .green-light {
+        background: green;
+    }
+
+    .red-light {
+        background: red;
+    }
+
+    .top {
+        display: flex;
+        justify-content: space-between;
+
+        .icon-wrapper {
+            display: inline-block;
+        }
+    }
+
+    .start-btn {
+        padding: 3px 5px;
+    }
+
+    .ifArrived {
+        background: orange;
+        color: white;
+    }
+
+    .ifPaid {
+        background: purple;
+        color: white;
+    }
+
+    .ifArrived,
+    .ifPaid {
+        border: 0;
+        margin-left: 8px;
+
+        &.disabled {
+            background: $tip-color-s;
+            border: 1px solid $brand-disabled;
+            color: $brand-disabled;
+        }
+    }
 
     .btn {
         cursor: pointer;
+    }
+
+    .add-btn {
+        padding: 6px 10px;
     }
 }
 </style>
