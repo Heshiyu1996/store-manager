@@ -37,6 +37,7 @@ export default {
 
     &[disabled] {
         cursor: not-allowed;
+        opacity: .2;
     }
 
     img {

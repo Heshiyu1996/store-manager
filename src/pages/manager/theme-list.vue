@@ -32,12 +32,18 @@
                     <u-table-column width="16vw" label="主题名称" ellipse>{{ row.name || '-' }}</u-table-column>
                     <u-table-column width="16vw" label="游戏时长" ellipse>{{ row.duration || '-' }}</u-table-column>
                     <u-table-column width="16vw" label="所属门店" ellipse>{{ row.storeName || '-' }}</u-table-column>
-                    <u-table-column width="12vw" label="使用状态" ellipse>
+                    <u-table-column width="2vw" label="10分钟音频" ellipse>
+                        <u-icon :disabled="!row.url10" name="play" class="icon" @click="_playMusic(row.url10)" />
+                    </u-table-column>
+                    <u-table-column width="2vw" label="结束音频" ellipse>
+                        <u-icon :disabled="!row.url0" name="play" class="icon" @click="_playMusic(row.url0)" />
+                    </u-table-column>
+                    <u-table-column width="4vw" label="使用状态" ellipse>
                         <el-switch v-model="row.status" @change="switchRow(row)" active-color="#13ce66" inactive-color="#ff4949"> </el-switch>
                     </u-table-column>
-                    <u-table-column width="26vw" label="操作">
+                    <u-table-column width="12vw" label="操作">
                         <u-layout direction="h">
-                            <i class="icon el-icon-edit" @click="editRow(row)"></i> <i class="icon el-icon-delete" @click="deleteRow(row.id)"></i>
+                            <i class="icon el-icon-edit" @click="editRow(row)" /> <i class="icon el-icon-delete" @click="deleteRow(row.id)" />
                         </u-layout>
                     </u-table-column>
                 </template>
@@ -57,6 +63,8 @@
         </u-layout>
 
         <TThemeinfoModal :visible="isOpenThemeInfoModal" @close="closeThemeInfoModal" />
+
+        <div id="music"></div>
     </u-layout>
 </template>
 
@@ -65,6 +73,7 @@ import TThemeinfoModal from '@/components/theme/theme-info-modal'
 import { getThemeList, deleteTheme, updateThemeStatus } from '@/server/api'
 import { MODIFY_MODAL_TYPE, STATUS_LIST, OPERATION_TYPE } from '@/utils/config'
 import { createNamespacedHelpers } from 'vuex'
+import { playMusic } from '@/utils/common'
 
 const { mapGetters } = createNamespacedHelpers('login')
 
@@ -114,6 +123,9 @@ export default {
         this._getList(true)
     },
     methods: {
+        _playMusic(url) {
+            playMusic([url])
+        },
         switchRow(row) {
             console.log(row)
             this.updateRows(OPERATION_TYPE[row.status ? 'OPEN' : 'CLOSE'], [row.id])
@@ -205,7 +217,6 @@ export default {
     .content-wrapper {
         .icon {
             font-size: 20px;
-            cursor: pointer;
         }
 
         .el-pagination {
