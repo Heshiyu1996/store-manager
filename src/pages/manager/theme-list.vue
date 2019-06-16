@@ -42,8 +42,9 @@
                         <el-switch v-model="row.status" @change="switchRow(row)" active-color="#13ce66" inactive-color="#ff4949"> </el-switch>
                     </u-table-column>
                     <u-table-column width="12vw" label="操作">
-                        <u-layout direction="h">
+                        <u-layout direction="h" class="operation">
                             <i class="icon el-icon-edit" @click="editRow(row)" /> <i class="icon el-icon-delete" @click="deleteRow(row.id)" />
+                            <i class="icon el-icon-upload" @click="uploadRow(row)" />
                         </u-layout>
                     </u-table-column>
                 </template>
@@ -63,6 +64,7 @@
         </u-layout>
 
         <TThemeinfoModal :visible="isOpenThemeInfoModal" @close="closeThemeInfoModal" />
+        <TThemeuploadModal :visible="isOpenThemeUploadModal" @close="closeThemeUploadModal" />
 
         <div id="music"></div>
     </u-layout>
@@ -70,6 +72,7 @@
 
 <script>
 import TThemeinfoModal from '@/components/theme/theme-info-modal'
+import TThemeuploadModal from '@/components/theme/theme-upload-modal'
 import { getThemeList, deleteTheme, updateThemeStatus } from '@/server/api'
 import { MODIFY_MODAL_TYPE, STATUS_LIST, OPERATION_TYPE } from '@/utils/config'
 import { createNamespacedHelpers } from 'vuex'
@@ -79,7 +82,7 @@ const { mapGetters } = createNamespacedHelpers('login')
 
 export default {
     name: 'theme-list',
-    components: { TThemeinfoModal },
+    components: { TThemeinfoModal, TThemeuploadModal },
     data() {
         return {
             searchParams: {
@@ -94,6 +97,7 @@ export default {
             list: [],
 
             isOpenThemeInfoModal: false,
+            isOpenThemeUploadModal: false,
 
             STATUS_LIST,
             OPERATION_TYPE
@@ -155,6 +159,12 @@ export default {
             this.isOpenThemeInfoModal = true
             this.$bus.$emit('open-theme-info-modal', {}, MODIFY_MODAL_TYPE.ADD)
         },
+        uploadRow(row) {
+            console.log(row)
+
+            this.$bus.$emit('open-theme-upload-modal', row)
+            this.isOpenThemeUploadModal = true
+        },
         editRow(row) {
             console.log(row)
 
@@ -193,6 +203,10 @@ export default {
         closeThemeInfoModal(isSuccess) {
             this.isOpenThemeInfoModal = false
             isSuccess && this._getList(false)
+        },
+        closeThemeUploadModal(isSuccess) {
+            this.isOpenThemeUploadModal = false
+            isSuccess && this._getList(false)
         }
     }
 }
@@ -215,8 +229,15 @@ export default {
     }
 
     .content-wrapper {
-        .icon {
-            font-size: 20px;
+        .operation {
+            .icon {
+                font-size: 20px;
+                cursor: pointer;
+
+                &[disable='disabled'] {
+                    cursor: not-allowed;
+                }
+            }
         }
 
         .el-pagination {

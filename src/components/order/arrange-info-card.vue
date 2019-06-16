@@ -3,11 +3,7 @@
         <div v-if="arrangeInfo">
             <div v-if="arrangeInfo.status === ARRANGE_STATUS_MAP.ARRANGED">
                 <i class="green-light" />
-
-                <div class="top">
-                    <div class="icon-wrapper"><u-icon name="person" class="icon" />{{ arrangeInfo.arrangeNum }}</div>
-                    <div class="icon-wrapper"><u-icon name="phone" class="icon" />{{ arrangeInfo.phone }}<br /></div>
-                </div>
+                <u-icon name="person" class="icon" />{{ arrangeInfo.arrangeNum }} | <u-icon name="phone" class="icon" />{{ arrangeInfo.phone }}<br />
                 预约时间：{{ arrangeInfo.arrangeTime | dateFormat('yyyy-MM-dd hh:mm:ss') }}<br />
 
                 <el-tag size="mini" :class="{ ifArrived: true, disabled: !arrangeInfo.isArrived }">到店</el-tag>
@@ -20,7 +16,7 @@
 
             <div v-if="arrangeInfo.status === ARRANGE_STATUS_MAP.STARTED">
                 <i class="red-light" />
-                <u-icon name="person" class="icon" />{{ arrangeInfo.arrangeNum }} <u-icon name="phone" class="icon" />{{ arrangeInfo.phone }}<br />
+                <u-icon name="person" class="icon" />{{ arrangeInfo.arrangeNum }} | <u-icon name="phone" class="icon" />{{ arrangeInfo.phone }}<br />
                 开始时间：{{ arrangeInfo.startTime | dateFormat('yyyy-MM-dd hh:mm:ss') }}<br />
                 结束时间：{{ arrangeInfo.endTime | dateFormat('yyyy-MM-dd hh:mm:ss') }}<br />
 
@@ -112,15 +108,6 @@ export default {
 
     .red-light {
         background: red;
-    }
-
-    .top {
-        display: flex;
-        justify-content: space-between;
-
-        .icon-wrapper {
-            display: inline-block;
-        }
     }
 
     .start-btn {
