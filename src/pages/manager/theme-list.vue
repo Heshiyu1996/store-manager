@@ -30,7 +30,7 @@
                 <template slot-scope="{ row }">
                     <u-table-column width="2vw" label="" ellipse><el-checkbox v-model="row.checked"/></u-table-column>
                     <u-table-column width="16vw" label="主题名称" ellipse>{{ row.name || '-' }}</u-table-column>
-                    <u-table-column width="16vw" label="游戏时长" ellipse>{{ row.duration || '-' }}</u-table-column>
+                    <u-table-column width="16vw" label="游戏时长（分钟）" ellipse>{{ row.duration || '-' }}</u-table-column>
                     <u-table-column width="16vw" label="所属门店" ellipse>{{ row.storeName || '-' }}</u-table-column>
                     <u-table-column width="2vw" label="10分钟音频" ellipse>
                         <u-icon :disabled="!row.url10" name="play" class="icon" @click="_playMusic(row.url10)" />

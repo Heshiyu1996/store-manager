@@ -6,8 +6,8 @@
                 <u-icon name="person" class="icon" />{{ arrangeInfo.arrangeNum }} | <u-icon name="phone" class="icon" />{{ arrangeInfo.phone }}<br />
                 预约时间：{{ arrangeInfo.arrangeTime | dateFormat('yyyy-MM-dd hh:mm:ss') }}<br />
 
-                <el-tag size="mini" :class="{ ifArrived: true, disabled: !arrangeInfo.isArrived }">到店</el-tag>
-                <el-tag size="mini" :class="{ ifPaid: true, disabled: !arrangeInfo.isPaid }">付款</el-tag>
+                <span size="mini" :class="{ ifPaid: true, disabled: !arrangeInfo.isPaid }">付款</span> | 
+                <span size="mini" :class="{ ifArrived: true, disabled: !arrangeInfo.isArrived }">到达</span>
                 <br />
 
                 <u-icon name="edit" class="icon" @click="editRow" /> | <u-icon name="remove" class="icon" @click="deleteRow" /> |
@@ -114,25 +114,22 @@ export default {
         padding: 3px 5px;
     }
 
-    .ifArrived {
-        background: orange;
-        color: white;
-    }
-
-    .ifPaid {
-        background: purple;
-        color: white;
-    }
-
     .ifArrived,
     .ifPaid {
         border: 0;
-        margin-left: 8px;
+        margin: 0 8px;
+        @include font-normal(12px, $normal-color-m);
+
+        &:before {
+            content: '已'
+        }
 
         &.disabled {
-            background: $tip-color-s;
-            border: 1px solid $brand-disabled;
-            color: $brand-disabled;
+            @include font-normal(12px, $tip-color-s);
+
+            &:before {
+                content: '未'
+            }
         }
     }
 

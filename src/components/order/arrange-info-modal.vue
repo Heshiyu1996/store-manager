@@ -2,59 +2,66 @@
     <u-modal :visible="visible" :title="type ? '新增预定' : '编辑预定'" @before-close="submit" @close="closeModal" class="arrange-info-modal">
         <el-form ref="form" :inline="true" :model="form" label-width="110px">
             <el-form-item label="所属门店" :rules="{ required: true }">
-                <el-select v-model="form.storeId" filterable disabled>
+                <el-select v-model="form.storeId" filterable disabled size="mini">
                     <el-option v-for="item in getStoreListStore" :key="item.id" :label="item.name" :value="item.id"> </el-option>
                 </el-select>
             </el-form-item>
-            <br />
             <el-form-item label="预定主题" :rules="{ required: true }">
-                <el-select v-model="form.themeId" filterable placeholder="请选择预定主题" :disabled="hasStarted">
+                <el-select v-model="form.themeId" filterable placeholder="请选择预定主题" disabled size="mini">
                     <el-option v-for="item in otherList['themeList']" :key="item.id" :label="item.name" :value="item.id"> </el-option>
                 </el-select>
             </el-form-item>
             <el-form-item label="接待人员" :rules="{ required: true }">
-                <el-select v-model="form.receiverAccount" filterable placeholder="请选择接待人员">
+                <el-select v-model="form.receiverAccount" filterable placeholder="请选择接待人员" size="mini">
                     <el-option v-for="item in otherList['staffList']" :key="item.account" :label="item.nickName" :value="item.account"> </el-option>
                 </el-select>
             </el-form-item>
             <el-divider content-position="right">客户信息</el-divider>
             <el-form-item label="客户来源" :rules="{ required: true }">
-                <el-select v-model="form.sourceType" placeholder="请选择客户来源">
+                <el-select v-model="form.sourceType" placeholder="请选择客户来源" size="mini">
                     <el-option-group v-show="group.children.length" v-for="group in sourceTypeOptions" :key="group.label" :label="group.label">
                         <el-option v-for="item in group.children" :key="item.value" :label="item.label" :value="item.value"> </el-option>
                     </el-option-group>
                 </el-select>
             </el-form-item>
-            <br />
-
-            <el-form-item label="预约时间" class="arrange-time-wrapper" :rules="{ required: true }">
-                <el-date-picker v-model="form.arrangeTime" type="datetime" placeholder="请输入预约时间" size="medium" class="arrange-time"> </el-date-picker>
-            </el-form-item>
             <el-form-item label="预约电话" :rules="{ required: true }">
-                <u-input v-model="form.phone" :regex="/^[0-9\u4e00-\u9fa5]+$/g" maxLength="11" :disabled="hasStarted" placeholder="请输入预约电话" />
+                <u-input
+                    v-model="form.phone"
+                    :regex="/^[0-9\u4e00-\u9fa5]+$/g"
+                    maxLength="11"
+                    :disabled="hasStarted"
+                    placeholder="请输入预约电话"
+                    size="mini"
+                />
+            </el-form-item>
+            <br />
+            <el-form-item label="预定场次" :rules="{ required: true }">
+                <el-select v-model="form.themeId" filterable placeholder="请选择预定场次" :disabled="hasStarted" size="mini">
+                    <el-option v-for="item in otherList['themeList']" :key="item.id" :label="item.name" :value="item.id"> </el-option>
+                </el-select>
+            </el-form-item>
+
+            <el-form-item label="预约时间" class="arrange-time-wrapper">
+                <el-date-picker v-model="form.arrangeTime" type="datetime" placeholder="请输入预约时间" size="mini" class="arrange-time" />
+                <!-- {{ form.arrangeTime || '（根据预定场次自动推算）' }} -->
             </el-form-item>
             <br />
             <el-divider content-position="right">支付信息</el-divider>
             <el-form-item label="支付类型">
-                <PaymentInfoCard v-model="form.paymentList" :amount.sync="form.amount" :list="otherList['paymentList']"></PaymentInfoCard>
-            </el-form-item>
-            <br />
-
-            <el-form-item label="订单总金额">
-                <u-label :text="form.amount + ' 元'" />
+                <PaymentInfoCard v-model="form.paymentList" :amount.sync="form.amount" :list="otherList['paymentList']"></PaymentInfoCard> <br />
+                总计：{{ form.amount }} 元
             </el-form-item>
             <br />
             <div v-if="!hasStarted" class="before-started-info-wrapper">
                 <el-form-item label="是否付款">
                     <el-switch v-model="form.isPaid"></el-switch>
                 </el-form-item>
-                <br />
                 <el-form-item label="是否到店">
                     <el-switch v-model="form.isArrived"></el-switch>
                 </el-form-item>
                 <br />
                 <el-form-item label="钥匙编号" :rules="{ required: true }">
-                    <el-select v-model="form.keyId" filterable placeholder="请选择钥匙编号">
+                    <el-select v-model="form.keyId" filterable placeholder="请选择钥匙编号" size="mini">
                         <el-option v-for="item in otherList['keyList']" :key="item.id" :label="item.name" :value="item.id"> </el-option>
                     </el-select>
                 </el-form-item>
@@ -127,6 +134,9 @@ export default {
         hasStarted() {
             return this.form.status > ARRANGE_STATUS_MAP.ARRANGED
         },
+        maxSessionCount() {
+            return this.otherList['themeList']
+        },
         ...mapGetters(['getStoreListStore'])
     },
     created() {
@@ -181,7 +191,11 @@ export default {
         overflow-y: scroll;
 
         .el-form {
-            width: 680px;
+            width: 900px;
+
+            .el-form-item {
+                margin-bottom: 4px;
+            }
 
             .payment-wrapper {
                 width: 500px;
@@ -200,13 +214,18 @@ export default {
             }
 
             .u-input {
-                width: 193px;
+                width: 172px;
+                height: 28px;
             }
 
             .textarea {
                 width: 506px;
                 height: 130px;
             }
+        }
+
+        .el-divider--horizontal {
+            margin: 12px 0;
         }
 
         .u-error {
