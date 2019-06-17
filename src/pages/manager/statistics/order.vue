@@ -59,7 +59,7 @@ export default {
             orderColumns: [],
 
             dataSource: {},
-            rangeTime: [Date.now(), Date.now()],
+            rangeTime: [new Date(new Date().toLocaleDateString()).getTime(), new Date(new Date().toLocaleDateString()).getTime() + 86399000],
 
             ORDER_SETTING
         }

@@ -141,7 +141,7 @@ export default {
             },
 
             dataSource: {},
-            rangeTime: [Date.now(), Date.now()],
+            rangeTime: [new Date(new Date().toLocaleDateString()).getTime(), new Date(new Date().toLocaleDateString()).getTime() + 86399000],
 
             BUSSINESS_SETTING,
             THEME_SETTING,
