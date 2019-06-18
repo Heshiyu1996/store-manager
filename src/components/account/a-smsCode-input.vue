@@ -1,7 +1,7 @@
 <template>
     <div class="a-smsCode-input">
         <div class="smsCode-wrapper">
-            <u-input v-model="smsCode" placeholder="请输入手机验证码" class="smsCode-input" />
+            <u-input v-model="smsCode" @keypress.enter="onSubmit" placeholder="请输入手机验证码" class="smsCode-input" />
             <el-button :disabled="smsCodeButtonDisabled" @click="getSmsCode" plain class="smsCode-button">{{ smsCodeButtonText }}</el-button>
         </div>
         <u-error :visible="!$v.smsCode.required" text="请输入手机验证码" />
@@ -74,6 +74,9 @@ export default {
                         clearInterval(this.waitTimerID)
                     }
                 }, 1000)
+        },
+        onSubmit() {
+            this.$emit('onEnterPress')
         }
     }
 }

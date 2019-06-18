@@ -59,13 +59,6 @@ export default {
         },
         ...mapGetters(['getIflogin', 'getUserInfoStore', 'getStoreListStore'])
     },
-    created() {
-        this._getUserInfo()
-        this.$bus.$on('getUserInfo', () => this._getUserInfo())
-    },
-    beforeDestroy() {
-        this.$bus.$off('getUserInfo')
-    },
     methods: {
         _getUserInfo() {
             getUserInfo()

@@ -9,7 +9,13 @@
                 <el-form ref="form" :model="form">
                     <template v-if="form.loginType === LOGIN_TYPE.BY_PHONE">
                         <el-form-item>
-                            <u-input v-model="form.phone" :regex="/^[0-9\u4e00-\u9fa5]+$/g" maxLength="11" placeholder="请输入手机号" />
+                            <u-input
+                                v-model="form.phone"
+                                :regex="/^[0-9\u4e00-\u9fa5]+$/g"
+                                @keypress.enter="onSubmit"
+                                maxLength="11"
+                                placeholder="请输入手机号"
+                            />
                             <u-error :visible="!$v.form.phone.required" text="手机必填" />
                             <u-error :visible="!$v.form.phone.isPhone" text="手机格式不正确" />
                         </el-form-item>
@@ -19,17 +25,24 @@
                                 :phone="form.phone"
                                 :isCorrectPhone="!$v.form.phone.required || !$v.form.phone.isPhone"
                                 :isLogin="true"
+                                @onEnterPress="onSubmit"
                             />
                         </el-form-item>
                     </template>
 
                     <template v-else>
                         <el-form-item>
-                            <u-input v-model.trim="form.account" :regex="/^[a-zA-Z0-9\u4e00-\u9fa5]+$/g" maxLength="100" placeholder="请输入账号" />
+                            <u-input
+                                v-model.trim="form.account"
+                                :regex="/^[a-zA-Z0-9\u4e00-\u9fa5]+$/g"
+                                @keypress.enter="onSubmit"
+                                maxLength="100"
+                                placeholder="请输入账号"
+                            />
                             <u-error :visible="!$v.form.account.required" text="账号不能为空" />
                         </el-form-item>
                         <el-form-item>
-                            <u-input v-model.trim="form.password" maxLength="100" placeholder="请输入密码" type="password" @keypress.enter="onSubmit" />
+                            <u-input v-model.trim="form.password" @keypress.enter="onSubmit" maxLength="100" placeholder="请输入密码" type="password" />
                             <u-error :visible="!$v.form.password.required" text="密码不能为空" />
                         </el-form-item>
                     </template>
@@ -129,7 +142,7 @@ export default {
             signIn(this.form).then(() => {
                 this.$message('登录成功')
                 this.actSetIfLogin(true)
-                this.$bus.$emit('getUserInfo')
+                this.$router.push({ name: 'manager' })
             })
         },
         fogetPassword() {
