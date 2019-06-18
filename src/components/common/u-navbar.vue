@@ -59,6 +59,9 @@ export default {
         },
         ...mapGetters(['getIflogin', 'getUserInfoStore', 'getStoreListStore'])
     },
+    created() {
+        this._getUserInfo()
+    },
     methods: {
         _getUserInfo() {
             getUserInfo()
