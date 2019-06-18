@@ -6,7 +6,7 @@
                 <u-icon name="person" class="icon" />{{ arrangeInfo.arrangeNum }} | <u-icon name="phone" class="icon" />{{ arrangeInfo.phone }}<br />
                 预约时间：{{ arrangeInfo.arrangeTime | dateFormat('yyyy-MM-dd hh:mm:ss') }}<br />
 
-                <span size="mini" :class="{ ifPaid: true, disabled: !arrangeInfo.isPaid }">付款</span> | 
+                <span size="mini" :class="{ ifPaid: true, disabled: !arrangeInfo.isPaid }">付款</span> |
                 <span size="mini" :class="{ ifArrived: true, disabled: !arrangeInfo.isArrived }">到达</span>
                 <br />
 
@@ -121,14 +121,14 @@ export default {
         @include font-normal(12px, $normal-color-m);
 
         &:before {
-            content: '已'
+            content: '已';
         }
 
         &.disabled {
             @include font-normal(12px, $tip-color-s);
 
             &:before {
-                content: '未'
+                content: '未';
             }
         }
     }

@@ -7,19 +7,12 @@
                 </el-select>
                 <el-date-picker v-model="searchParams.date" type="date" @change="_getIncomeList" placeholder="请输入查询时间" size="medium"> </el-date-picker>
             </u-layout>
-            <u-layout v-if="searchParams.storeId" class="operation">
-                <el-tooltip class="item" effect="dark" content="添加" placement="top">
-                    <el-button type="primary" icon="el-icon-plus" circle @click="addPatch(searchParams.storeId)"></el-button>
-                </el-tooltip>
-            </u-layout>
         </div>
         <u-layout class="content-wrapper" direction="v">
-            <!-- <el-button style="float: right; padding: 3px 0" type="text" @click="_getVoiceList">获取音乐</el-button> -->
             <div>
                 <u-icon name="income" class="income-icon" />
                 <span>今日收款：{{ incomeText || '暂无' }}</span>
             </div>
-            <!-- {{ voiceList }} -->
             <div id="music"></div>
 
             <div v-loading.body="loading">
@@ -33,7 +26,7 @@
                                 :arrange-info="row[theme.id]"
                                 :theme-id="theme.id"
                                 :store-id="searchParams.storeId"
-                                @add-patch="(storeId, id) => addPatch(storeId, id)"
+                                @add-patch="(storeId, themeId) => addPatch(storeId, themeId, row.hour)"
                                 @edit-row="editRow"
                                 @delete-row="deleteRow"
                                 @start-row="startRow"
@@ -150,10 +143,10 @@ export default {
         clearInterval(this.pollingId)
     },
     methods: {
-        addPatch(storeId, themeId) {
-            console.log(storeId, themeId)
+        addPatch(storeId, themeId, hour) {
+            const { date } = this.searchParams
             this.isOpenArrangeInfoModal = true
-            this.$bus.$emit('open-arrange-info-modal', { storeId, themeId }, MODIFY_MODAL_TYPE.ADD)
+            this.$bus.$emit('open-arrange-info-modal', { storeId, themeId, hour, date }, MODIFY_MODAL_TYPE.ADD)
         },
         editRow(row) {
             this.$bus.$emit('open-arrange-info-modal', row, MODIFY_MODAL_TYPE.EDIT)
@@ -193,7 +186,6 @@ export default {
                 return
             }
             this.loading = true
-            // setTimeout(() => {
             setTimeout(() => {
                 getReserveList(this.searchParams)
                     .then(data => {
@@ -202,11 +194,9 @@ export default {
                         this._updateList()
 
                         this.loading = false
-                        // this.totalCount = data.totalCount || 0
                     })
                     .catch(e => console.log(e))
             }, 200)
-            // }, 122000)
         },
         _getOtherList() {
             getOtherList(this.searchParams)
@@ -240,29 +230,6 @@ export default {
             })
             this.list = [...list]
         }
-
-        // playMusic(musicList) {
-        //     let myAudio = new Audio()
-        //     let src = musicList.shift()
-
-        //     myAudio.src = src
-        //     //将最后一个音乐添加到数组的开头，这样实现循环
-        //     // musicList.unshift(src)
-
-        //     //绑定音乐结束事件，当音乐播放完成后，将会触发playEndedHandler方法
-        //     myAudio.addEventListener('ended', playEndedHandler, false)
-        //     //播放当前音乐
-        //     document.getElementById('music').appendChild(myAudio)
-        //     //将循环播放关闭，如果开启，将不能触发playEndedHandler方法，只能进行单曲循环
-        //     myAudio.loop = false
-        //     myAudio.play()
-
-        //     function playEndedHandler() {
-        //         src = musicList.shift()
-        //         myAudio.src = src
-        //         myAudio.play()
-        //     }
-        // }
     }
 }
 </script>

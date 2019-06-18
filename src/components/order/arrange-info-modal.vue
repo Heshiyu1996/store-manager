@@ -35,21 +35,23 @@
                 />
             </el-form-item>
             <br />
-            <el-form-item label="预定场次" :rules="{ required: true }">
-                <el-select v-model="form.themeId" filterable placeholder="请选择预定场次" :disabled="hasStarted" size="mini">
-                    <el-option v-for="item in otherList['themeList']" :key="item.id" :label="item.name" :value="item.id"> </el-option>
+            <el-form-item label="预定时间" :rules="{ required: true }">
+                <el-select v-model="form.arrangeTime" filterable placeholder="请选择预定时间" :disabled="hasStarted" size="mini">
+                    <el-option v-for="item in list" :key="item" :label="item| dateFormat('yyyy-MM-dd hh:mm:ss')" :value="item"> </el-option>
                 </el-select>
+                <span class="arrange-time-tip">({{ form.hour }}点附近的预约时间)</span>
             </el-form-item>
 
-            <el-form-item label="预约时间" class="arrange-time-wrapper">
-                <el-date-picker v-model="form.arrangeTime" type="datetime" placeholder="请输入预约时间" size="mini" class="arrange-time" />
-                <!-- {{ form.arrangeTime || '（根据预定场次自动推算）' }} -->
-            </el-form-item>
+            <!-- <el-form-item label="预约时间" class="arrange-time-wrapper"> -->
+                <!-- <el-date-picker v-model="form.arrangeTime" type="datetime" placeholder="请输入预约时间" size="mini" class="arrange-time" /> -->
+                <!-- {{ form.arrangeTime | dateFormat('yyyy-MM-dd hh:mm:ss') }} -->
+            <!-- </el-form-item> -->
             <br />
             <el-divider content-position="right">支付信息</el-divider>
             <el-form-item label="支付类型">
                 <PaymentInfoCard v-model="form.paymentList" :amount.sync="form.amount" :list="otherList['paymentList']"></PaymentInfoCard> <br />
-                总计：{{ form.amount }} 元
+                <span class="sum-tip">总计：{{ form.amount }} 元</span>
+                
             </el-form-item>
             <br />
             <div v-if="!hasStarted" class="before-started-info-wrapper">
@@ -80,7 +82,7 @@
 <script>
 import PaymentInfoCard from '@/components/order/payment-info-card'
 import { CloseModalMixin, InvalidCheckMixin } from '@/components/common/mixins'
-import { addReserve, editReserve } from '@/server/api'
+import { addReserve, editReserve, getArrangeTime } from '@/server/api'
 import { MODIFY_MODAL_TYPE, ARRANGE_STATUS_MAP } from '@/utils/config'
 import { createNamespacedHelpers } from 'vuex'
 
@@ -99,11 +101,14 @@ export default {
 
             form: {
                 id: '',
+                themeId: '',
                 paymentList: {},
-                amount: 0
+                amount: 0,
+                date: 0
             },
             num: 0,
 
+            list: [],
             ARRANGE_STATUS_MAP
         }
     },
@@ -141,11 +146,10 @@ export default {
     },
     created() {
         this.$bus.$on('open-arrange-info-modal', (arrangeDetail, isAdd) => {
-            console.log(arrangeDetail)
-            let { storeId } = arrangeDetail
             this.type = isAdd
-            this.form = this.type ? { storeId } : { ...this.form, ...arrangeDetail }
+            this.form = this.type ? { ...arrangeDetail } : { ...this.form, ...arrangeDetail }
             console.log(this.form)
+            this._getArrangeTime()
         })
     },
     destroyed() {
@@ -180,6 +184,11 @@ export default {
         },
         handleSourceType(value) {
             console.log(value)
+        },
+        _getArrangeTime() {
+            getArrangeTime(this.form).then(data => {
+                this.list = data.list || []
+            })
         }
     }
 }
@@ -211,6 +220,17 @@ export default {
                 .arrange-time {
                     width: 193px;
                 }
+            }
+
+            .arrange-time-tip,
+            .sum-tip {
+                margin-left: 8px;
+                @include font-normal(12px, $normal-color-s);
+            }
+            
+            .sum-tip {
+
+                @include font-normal(12px, $primary-color);
             }
 
             .u-input {
