@@ -10,6 +10,13 @@
             <el-form-item label="游戏时长">
                 <u-input v-model.number="form.duration" placeholder="请输入游戏时长（单位：分）" />
             </el-form-item>
+            <el-form-item label="间隔时长">
+                <u-input v-model.number="form.interval" placeholder="请输入间隔时长（单位：分）" />
+            </el-form-item>
+            <el-form-item label="首场时间">
+                <u-input v-model.number="form.firstSession.hour" placeholder="请输入" class="first-session" />小时
+                <u-input v-model.number="form.firstSession.minute" placeholder="请输入" class="first-session" />分
+            </el-form-item>
 
             <el-form-item label="所属门店">
                 <el-select v-model="form.storeId" filterable placeholder="请选择所属门店">
@@ -45,7 +52,11 @@ export default {
                 id: '',
                 name: '',
                 storeId: '',
-                status: true
+                status: true,
+                firstSession: {
+                    hour: '',
+                    minute: ''
+                }
             }
         }
     },
@@ -55,7 +66,7 @@ export default {
     created() {
         this.$bus.$on('open-theme-info-modal', (keyDetail, isAdd) => {
             this.type = isAdd
-            this.form = this.type ? { status: true } : { ...keyDetail }
+            this.form = this.type ? { status: true, firstSession: {} } : { ...keyDetail, firstSession: {} }
         })
     },
     destroyed() {
@@ -96,6 +107,15 @@ export default {
 
         .el-form {
             width: 468px;
+
+            .first-session {
+                width: 80px;
+                margin-right: 8px;
+
+                &:nth-child(2) {
+                    margin-left: 8px;
+                }
+            }
 
             .record-type-wrapper {
                 .el-select {

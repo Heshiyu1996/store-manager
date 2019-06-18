@@ -29,9 +29,13 @@
             <u-table ref="operationTable" :list="list" auto is-list>
                 <template slot-scope="{ row }">
                     <u-table-column width="2vw" label="" ellipse><el-checkbox v-model="row.checked"/></u-table-column>
-                    <u-table-column width="16vw" label="主题名称" ellipse>{{ row.name || '-' }}</u-table-column>
-                    <u-table-column width="16vw" label="游戏时长（分钟）" ellipse>{{ row.duration || '-' }}</u-table-column>
-                    <u-table-column width="16vw" label="所属门店" ellipse>{{ row.storeName || '-' }}</u-table-column>
+                    <u-table-column width="10vw" label="主题名称" ellipse>{{ row.name || '-' }}</u-table-column>
+                    <u-table-column width="9vw" label="游戏时长（分钟）" ellipse>{{ row.duration || '-' }}</u-table-column>
+                    <u-table-column width="9vw" label="间隔时长（分钟）" ellipse>{{ row.interval || '-' }}</u-table-column>
+                    <u-table-column width="9vw" label="首场时间" ellipse
+                        >{{ (row.firstSession && row.firstSession.hour) || '-' }}时 {{ (row.firstSession && row.firstSession.minute) || '-' }}分</u-table-column
+                    >
+                    <u-table-column width="10vw" label="所属门店" ellipse>{{ row.storeName || '-' }}</u-table-column>
                     <u-table-column width="2vw" label="10分钟音频" ellipse>
                         <u-icon :disabled="!row.url10" name="play" class="icon" @click="_playMusic(row.url10)" />
                     </u-table-column>

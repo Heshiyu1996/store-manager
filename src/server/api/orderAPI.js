@@ -74,3 +74,11 @@ export const getVoiceList = data =>
         method: 'post',
         data
     })
+
+// 根据主题ID、日期、小时查询可预约时间
+export const getArrangeTime = data =>
+    http({
+        url: `/api/order/reserve/arrangetime/list`,
+        method: 'post',
+        data
+    })
