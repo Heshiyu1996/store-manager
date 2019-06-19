@@ -61,18 +61,22 @@ export const fetchCookieValue = key => {
     return cookiesObject[key] || ''
 }
 
-export const playMusic = musicList => {
-    let myAudio = new Audio()
+export const playMusic = (musicList, idSelector) => {
+    let myAudio = new Audio(),
+        targetNode = document.getElementById(idSelector)
+
+    targetNode.childNodes.length && targetNode.removeChild(targetNode.firstChild)
+    document.getElementById(idSelector).appendChild(myAudio)
+
     let src = musicList.shift()
 
     myAudio.src = src
+    myAudio.controls = true
     //将最后一个音乐添加到数组的开头，这样实现循环
-    // musicList.unshift(src)
 
     //绑定音乐结束事件，当音乐播放完成后，将会触发playEndedHandler方法
     myAudio.addEventListener('ended', playEndedHandler, false)
     //播放当前音乐
-    document.getElementById('music').appendChild(myAudio)
     //将循环播放关闭，如果开启，将不能触发playEndedHandler方法，只能进行单曲循环
     myAudio.loop = false
     myAudio.play()
@@ -82,4 +86,5 @@ export const playMusic = musicList => {
         myAudio.src = src
         myAudio.play()
     }
+    return myAudio
 }

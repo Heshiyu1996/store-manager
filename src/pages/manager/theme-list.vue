@@ -8,7 +8,15 @@
                 <el-select v-model="searchParams.status" placeholder="请选择使用状态">
                     <el-option v-for="item in STATUS_LIST" :key="item.value" :label="item.label" :value="item.value"> </el-option>
                 </el-select>
-                <u-input v-model.trim="searchParams.name" maxLength="100" placeholder="请输入主题名称" searchIcon @key-press-enter="_getList" />
+                <u-input
+                    v-model.trim="searchParams.name"
+                    maxLength="100"
+                    placeholder="请输入主题名称"
+                    searchIcon
+                    @key-press-enter="_getList"
+                    class="name-input"
+                />
+                <div id="music" />
             </u-layout>
             <u-layout class="operation">
                 <el-tooltip class="item" effect="dark" content="添加" placement="top">
@@ -69,8 +77,6 @@
 
         <TThemeinfoModal :visible="isOpenThemeInfoModal" @close="closeThemeInfoModal" />
         <TThemeuploadModal :visible="isOpenThemeUploadModal" @close="closeThemeUploadModal" />
-
-        <div id="music"></div>
     </u-layout>
 </template>
 
@@ -132,7 +138,7 @@ export default {
     },
     methods: {
         _playMusic(url) {
-            playMusic([url])
+            playMusic([url], 'music')
         },
         switchRow(row) {
             console.log(row)
@@ -226,6 +232,21 @@ export default {
         height: 40px;
         justify-content: space-between;
         align-items: center;
+
+        .name-input {
+            width: 220px;
+        }
+
+        /deep/ #music {
+            position: absolute;
+            top: 118px;
+            left: 680px;
+            z-index: 2;
+
+            audio {
+                height: 35px;
+            }
+        }
 
         .el-button {
             margin-right: 0;

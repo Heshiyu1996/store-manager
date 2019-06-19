@@ -1,7 +1,7 @@
 import http from '../http.js'
 
 /**
- * 钥匙管理
+ * 主题管理
  */
 // 获取主题列表
 export const getThemeList = data =>
@@ -40,5 +40,21 @@ export const updateThemeStatus = data =>
     http({
         url: `/api/theme/status/update`,
         method: 'put',
+        data
+    })
+
+// 音频上传
+export const uploadVoice = data =>
+    http({
+        url: `/api/voice/upload`,
+        method: 'post',
+        data
+    })
+
+// 音频保存
+export const saveVoice = data =>
+    http({
+        url: `/api/voice/save`,
+        method: 'post',
         data
     })

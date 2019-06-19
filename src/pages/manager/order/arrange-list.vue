@@ -13,7 +13,7 @@
                 <u-icon name="income" class="income-icon" />
                 <span>今日收款：{{ incomeText || '暂无' }}</span>
             </div>
-            <div id="music"></div>
+            <div id="musicArrange"></div>
 
             <div v-loading.body="loading">
                 <u-table v-if="!loading" ref="operationTable" :list="list" auto is-list>
@@ -137,7 +137,7 @@ export default {
     },
     mounted() {
         this._getVoiceList()
-        playMusic(this.voiceList)
+        playMusic(this.voiceList, 'musicArrange')
     },
     beforeDestroy() {
         clearInterval(this.pollingId)
@@ -176,7 +176,7 @@ export default {
                     if (!urls.length) return
 
                     this.voiceList = this.voiceList.concat(urls)
-                    playMusic(this.voiceList)
+                    playMusic(this.voiceList, 'musicArrange')
                 })
             }, 3000)
         },
@@ -252,6 +252,10 @@ export default {
 
     .content-wrapper {
         font-size: 12px;
+
+        #musicArrange {
+            display: none;
+        }
 
         .arrange-info-item {
             // border-right: 1px dashed $border-color;
