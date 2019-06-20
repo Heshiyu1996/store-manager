@@ -1,7 +1,7 @@
 <template>
     <u-layout class="arrange-list" direction="v">
         <div class="top-wrapper">
-            <u-layout class="filter">
+            <u-layout class="filter" gap="s">
                 <el-select v-model="searchParams.storeId" filterable placeholder="请选择门店">
                     <el-option v-for="item in getStoreListStore" :key="item.id" :label="item.name" :value="item.id"> </el-option>
                 </el-select>
@@ -16,12 +16,12 @@
             <div id="musicArrange"></div>
 
             <div v-loading.body="loading">
-                <u-table v-if="!loading" ref="operationTable" :list="list" auto is-list>
+                <u-table v-if="!loading" ref="operationTable" :list="list" auto is-list scroll>
                     <template slot-scope="{ row }">
                         <u-table-column label="时间" ellipse>
                             {{ row.hour }}
                         </u-table-column>
-                        <u-table-column v-for="theme in themeList" :key="theme.id" :label="theme.name" width="200px" ellipse class="arrange-info-item">
+                        <u-table-column v-for="theme in themeList" :key="theme.id" :label="theme.name" width="185px" ellipse class="arrange-info-item">
                             <ArrangeInfoCard
                                 :arrange-info="row[theme.id]"
                                 :theme-id="theme.id"
@@ -245,6 +245,10 @@ export default {
         justify-content: space-between;
         align-items: center;
 
+        /deep/ input {
+            height: 36px;
+        }
+
         .el-button {
             margin-right: 0;
         }
@@ -261,7 +265,7 @@ export default {
             // border-right: 1px dashed $border-color;
             border-left: 1px dashed $border-color;
 
-            padding: 8px;
+            padding: 0;
         }
 
         .income-icon {

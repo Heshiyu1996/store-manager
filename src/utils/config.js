@@ -240,7 +240,8 @@ export const STATUS_LIST = [
 export const ARRANGE_STATUS_MAP = {
     ARRANGED: 1,
     STARTED: 2,
-    END: 3
+    END: 3,
+    IS_ENDING: 4
 }
 
 export const WX_URL = {
