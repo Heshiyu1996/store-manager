@@ -2,7 +2,7 @@
     <div class="arrange-info-card">
         <div v-if="arrangeInfo">
             <div v-if="arrangeInfo.status === ARRANGE_STATUS_MAP.ARRANGED">
-                <i class="green-light" />
+                <i class="green-light">待开始</i>
                 <u-icon name="person" class="icon" />{{ arrangeInfo.arrangeNum }} | <u-icon name="phone" class="icon" />{{ arrangeInfo.phone }}<br />
                 预约时间：{{ arrangeInfo.arrangeTime | dateFormat('yyyy-MM-dd hh:mm:ss') }}<br />
 
@@ -14,16 +14,16 @@
                 <el-button type="danger" @click="startRow" size="mini" class="start-btn">开始游戏</el-button>
             </div>
 
-            <div v-if="arrangeInfo.status === ARRANGE_STATUS_MAP.STARTED">
-                <i class="red-light" />
+            <div v-if="isStarted || isEnding || isEnded">
+                <i v-if="isStarted" class="started-light">执行中</i>
+                <i v-if="isEnding" class="ending-light">即将结束</i>
+                <i v-if="isEnded" class="ended-light">已结束</i>
+
                 <u-icon name="person" class="icon" />{{ arrangeInfo.arrangeNum }} | <u-icon name="phone" class="icon" />{{ arrangeInfo.phone }}<br />
                 开始时间：{{ arrangeInfo.startTime | dateFormat('yyyy-MM-dd hh:mm:ss') }}<br />
                 结束时间：{{ arrangeInfo.endTime | dateFormat('yyyy-MM-dd hh:mm:ss') }}<br />
 
                 <u-icon name="edit" class="icon" @click="editRow" /> | <u-icon name="remove" class="icon" @click="deleteRow" />
-            </div>
-            <div v-if="arrangeInfo.status === ARRANGE_STATUS_MAP.END">
-                <u-icon name="remove" class="icon" @click="deleteRow" />
             </div>
         </div>
         <div v-else>
@@ -55,6 +55,15 @@ export default {
         }
     },
     computed: {
+        isStarted() {
+            return this.arrangeInfo.status === ARRANGE_STATUS_MAP.STARTED
+        },
+        isEnded() {
+            return this.arrangeInfo.status === ARRANGE_STATUS_MAP.END
+        },
+        isEnding() {
+            return this.arrangeInfo.status === ARRANGE_STATUS_MAP.IS_ENDING
+        },
         ...mapGetters(['getStoreListStore'])
     },
     created() {},
@@ -91,14 +100,18 @@ export default {
     text-align: center;
 
     .green-light,
-    .red-light {
+    .started-light,
+    .ending-light,
+    .ended-light {
         display: inline-block;
         position: absolute;
-        width: 10px;
-        height: 10px;
-        top: 4px;
-        right: 4px;
-        border-radius: 10px;
+        width: 50px;
+        height: 20px;
+        line-height: 20px;
+        top: 0px;
+        right: -5px;
+        border-radius: 10px 0 0 10px;
+        color: white;
         // transition: all .3s ease;
     }
 
@@ -106,8 +119,16 @@ export default {
         background: green;
     }
 
-    .red-light {
+    .started-light {
+        background: orange;
+    }
+
+    .ending-light {
         background: red;
+    }
+
+    .ended-light {
+        background: #333;
     }
 
     .start-btn {

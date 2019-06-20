@@ -3,7 +3,9 @@
         <u-table ref="operationTable" :list="list" auto is-list>
             <template slot-scope="{ row }">
                 <u-table-column width="200px" label="类型" ellipse>{{ row.name }}</u-table-column>
-                <u-table-column width="200px" label="数量" ellipse> <el-input-number v-model="paymentData[row.id]" size="mini"/></u-table-column>
+                <u-table-column width="200px" label="数量" ellipse>
+                    <el-input-number :disabled="disabled" v-model="paymentData[row.id]" size="mini"
+                /></u-table-column>
             </template>
         </u-table>
     </div>
@@ -14,7 +16,8 @@ export default {
     props: {
         list: { type: Array, default: () => [] },
         value: { type: Object, default: () => {} },
-        amount: { type: Number, default: 0 }
+        amount: { type: Number, default: 0 },
+        disabled: { type: Boolean, default: false }
     },
     data() {
         return {

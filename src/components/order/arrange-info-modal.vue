@@ -12,13 +12,13 @@
                 </el-select>
             </el-form-item>
             <el-form-item label="接待人员" :rules="{ required: true }">
-                <el-select v-model="form.receiverAccount" filterable placeholder="请选择接待人员" size="mini">
+                <el-select v-model="form.receiverAccount" :disabled="hasEnded" filterable placeholder="请选择接待人员" size="mini">
                     <el-option v-for="item in otherList['staffList']" :key="item.account" :label="item.nickName" :value="item.account"> </el-option>
                 </el-select>
             </el-form-item>
             <el-divider content-position="right">客户信息</el-divider>
             <el-form-item label="客户来源" :rules="{ required: true }">
-                <el-select v-model="form.sourceType" placeholder="请选择客户来源" size="mini">
+                <el-select v-model="form.sourceType" :disabled="hasEnded" placeholder="请选择客户来源" size="mini">
                     <el-option-group v-show="group.children.length" v-for="group in sourceTypeOptions" :key="group.label" :label="group.label">
                         <el-option v-for="item in group.children" :key="item.value" :label="item.label" :value="item.value"> </el-option>
                     </el-option-group>
@@ -29,51 +29,51 @@
                     v-model="form.phone"
                     :regex="/^[0-9\u4e00-\u9fa5]+$/g"
                     maxLength="11"
-                    :disabled="hasStarted"
+                    :disabled="hasStarted || hasEnded"
                     placeholder="请输入预约电话"
                     size="mini"
                 />
             </el-form-item>
             <br />
-            <el-form-item label="预定时间" :rules="{ required: true }">
+            <!-- <el-form-item label="预定时间" :rules="{ required: true }">
                 <el-select v-model="form.arrangeTime" filterable placeholder="请选择预定时间" :disabled="hasStarted" size="mini">
-                    <el-option v-for="item in list" :key="item" :label="item| dateFormat('yyyy-MM-dd hh:mm:ss')" :value="item"> </el-option>
+                    <el-option v-for="item in list" :key="item" :label="item | dateFormat('yyyy-MM-dd hh:mm:ss')" :value="item"> </el-option>
                 </el-select>
                 <span class="arrange-time-tip">({{ form.hour }}点附近的预约时间)</span>
-            </el-form-item>
+            </el-form-item> -->
 
-            <!-- <el-form-item label="预约时间" class="arrange-time-wrapper"> -->
+            <el-form-item label="预约时间" class="arrange-time-wrapper">
                 <!-- <el-date-picker v-model="form.arrangeTime" type="datetime" placeholder="请输入预约时间" size="mini" class="arrange-time" /> -->
-                <!-- {{ form.arrangeTime | dateFormat('yyyy-MM-dd hh:mm:ss') }} -->
-            <!-- </el-form-item> -->
+                {{ form.arrangeTime | dateFormat('yyyy-MM-dd hh:mm:ss') }}
+            </el-form-item>
             <br />
             <el-divider content-position="right">支付信息</el-divider>
             <el-form-item label="支付类型">
-                <PaymentInfoCard v-model="form.paymentList" :amount.sync="form.amount" :list="otherList['paymentList']"></PaymentInfoCard> <br />
+                <PaymentInfoCard :disabled="hasEnded" v-model="form.paymentList" :amount.sync="form.amount" :list="otherList['paymentList']"></PaymentInfoCard>
+                <br />
                 <span class="sum-tip">总计：{{ form.amount }} 元</span>
-                
             </el-form-item>
             <br />
             <div v-if="!hasStarted" class="before-started-info-wrapper">
                 <el-form-item label="是否付款">
-                    <el-switch v-model="form.isPaid"></el-switch>
+                    <el-switch v-model="form.isPaid" :disabled="hasEnded"></el-switch>
                 </el-form-item>
                 <el-form-item label="是否到店">
-                    <el-switch v-model="form.isArrived"></el-switch>
+                    <el-switch v-model="form.isArrived" :disabled="hasEnded"></el-switch>
                 </el-form-item>
                 <br />
                 <el-form-item label="钥匙编号" :rules="{ required: true }">
-                    <el-select v-model="form.keyId" filterable placeholder="请选择钥匙编号" size="mini">
+                    <el-select v-model="form.keyId" :disabled="hasEnded" filterable placeholder="请选择钥匙编号" size="mini">
                         <el-option v-for="item in otherList['keyList']" :key="item.id" :label="item.name" :value="item.id"> </el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="押金">
-                    <u-input v-model.number="form.deposit" placeholder="请输入押金" />
+                    <u-input v-model.number="form.deposit" :disabled="hasEnded" placeholder="请输入押金" />
                 </el-form-item>
             </div>
             <br />
             <el-form-item label="备注">
-                <u-input v-model="form.remark" placeholder="请输入备注" type="textarea"> </u-input>
+                <u-input v-model="form.remark" :disabled="hasEnded" placeholder="请输入备注" type="textarea"> </u-input>
             </el-form-item>
         </el-form>
     </u-modal>
@@ -137,7 +137,10 @@ export default {
             return [onlineGroup, offGroup] || []
         },
         hasStarted() {
-            return this.form.status > ARRANGE_STATUS_MAP.ARRANGED
+            return this.form.status === ARRANGE_STATUS_MAP.STARTED
+        },
+        hasEnded() {
+            return this.form.status === ARRANGE_STATUS_MAP.END
         },
         maxSessionCount() {
             return this.otherList['themeList']
@@ -227,9 +230,8 @@ export default {
                 margin-left: 8px;
                 @include font-normal(12px, $normal-color-s);
             }
-            
-            .sum-tip {
 
+            .sum-tip {
                 @include font-normal(12px, $primary-color);
             }
 
