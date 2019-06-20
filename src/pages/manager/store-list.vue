@@ -30,7 +30,7 @@
                 :page-sizes="[10, 50, 100]"
                 :page-size="searchParams.pageSize"
                 layout="total, sizes, prev, pager, next, jumper"
-                :total="storeList.length"
+                :total="searchParams.totalCount"
             >
             </el-pagination>
         </u-layout>
@@ -54,7 +54,8 @@ export default {
         return {
             searchParams: {
                 currentPage: 1,
-                pageSize: 50
+                pageSize: 10,
+                totalCount: 0
             },
 
             storeList: [],
@@ -99,7 +100,7 @@ export default {
             getStoreList(this.searchParams)
                 .then(data => {
                     this.storeList = data.list || []
-                    this.totalCount = data.totalCount || 0
+                    this.searchParams.totalCount = data.totalCount || 0
                     this.actSetStoreListStore(this.storeList)
                 })
                 .catch(e => console.log(e))
@@ -107,12 +108,10 @@ export default {
         // pageSize大小
         handleSizeChange(val) {
             this.searchParams.pageSize = val
-            console.log(`每页 ${val} 条`)
         },
         // currentPage翻页
         handleCurrentChange(val) {
             this.searchParams.currentPage = val
-            console.log(`当前页: ${val}`)
         },
         closeStoreInfoModal(isSuccess) {
             this.isOpenStoreInfoModal = false

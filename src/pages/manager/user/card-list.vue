@@ -39,7 +39,7 @@
                 :page-sizes="[10, 50, 100]"
                 :page-size="searchParams.pageSize"
                 layout="total, sizes, prev, pager, next, jumper"
-                :total="consumeList.length"
+                :total="searchParams.totalCount"
             >
             </el-pagination>
         </u-layout>
@@ -61,7 +61,8 @@ export default {
             searchParams: {
                 cardId: '',
                 currentPage: 1,
-                pageSize: 50
+                pageSize: 10,
+                totalCount: 0
             },
             rangeTime: [],
 
@@ -121,18 +122,16 @@ export default {
 
             getConsumeList(this.searchParams).then(data => {
                 this.consumeList = data.list || []
-                this.totalCount = data.totalCount || 0
+                this.searchParams.totalCount = data.totalCount || 0
             })
         },
         // pageSize大小
         handleSizeChange(val) {
             this.searchParams.pageSize = val
-            console.log(`每页 ${val} 条`)
         },
         // currentPage翻页
         handleCurrentChange(val) {
             this.searchParams.currentPage = val
-            console.log(`当前页: ${val}`)
         },
         closeConsumeModal() {
             this.isOpenConsumeModal = false

@@ -49,7 +49,7 @@
                 :page-sizes="[10, 50, 100]"
                 :page-size="searchParams.pageSize"
                 layout="total, sizes, prev, pager, next, jumper"
-                :total="userList.length"
+                :total="searchParams.totalCount"
             >
             </el-pagination>
         </u-layout>
@@ -74,10 +74,11 @@ export default {
     data() {
         return {
             searchParams: {
-                currentPage: 1,
-                pageSize: 50,
                 userType: '', // 不传该字段则查全部；按照账号类型搜：0普通用户、1~5依次代表：店员、副店、店长、区域管理员、老板
-                name: ''
+                name: '',
+                currentPage: 1,
+                pageSize: 10,
+                totalCount: 0
             },
 
             userList: [],
@@ -133,7 +134,7 @@ export default {
 
             getUserList(this.searchParams).then(data => {
                 this.userList = data.userList || []
-                this.totalCount = data.totalCount || 0
+                this.searchParams.totalCount = data.totalCount || 0
             })
         },
         _findUserType(utype) {
@@ -152,12 +153,10 @@ export default {
         // pageSize大小
         handleSizeChange(val) {
             this.searchParams.pageSize = val
-            console.log(`每页 ${val} 条`)
         },
         // currentPage翻页
         handleCurrentChange(val) {
             this.searchParams.currentPage = val
-            console.log(`当前页: ${val}`)
         },
         closeUserInfoModal(isSuccess) {
             this.isOpenUserInfoModal = false

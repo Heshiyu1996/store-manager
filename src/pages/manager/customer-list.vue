@@ -51,7 +51,7 @@
                 :page-sizes="[10, 50, 100]"
                 :page-size="searchParams.pageSize"
                 layout="total, sizes, prev, pager, next, jumper"
-                :total="list.length"
+                :total="searchParams.totalCount"
             >
             </el-pagination>
         </u-layout>
@@ -83,7 +83,8 @@ export default {
                 name: '',
 
                 currentPage: 1,
-                pageSize: 50
+                pageSize: 10,
+                totalCount: 0
             },
 
             list: [],
@@ -169,19 +170,17 @@ export default {
                 .then(data => {
                     this.list = data.list || []
                     this.list.forEach(item => this.$set(item, 'checked', false))
-                    this.totalCount = data.totalCount || 0
+                    this.searchParams.totalCount = data.totalCount || 0
                 })
                 .catch(e => console.log(e))
         },
         // pageSize大小
         handleSizeChange(val) {
             this.searchParams.pageSize = val
-            console.log(`每页 ${val} 条`)
         },
         // currentPage翻页
         handleCurrentChange(val) {
             this.searchParams.currentPage = val
-            console.log(`当前页: ${val}`)
         },
         closeCustomerInfoModal(isSuccess) {
             this.isOpenCustomerInfoModal = false

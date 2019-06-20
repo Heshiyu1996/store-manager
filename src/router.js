@@ -14,7 +14,7 @@ export default new Router({
             path: '/manager',
             name: 'manager',
             component: () => import('@/pages/manager/index'),
-            // redirect: { name: 'login' },
+            redirect: { name: 'order-arrange-list' },
             children: [
                 // 1-a[订单管理]预约安排
                 {
@@ -98,7 +98,7 @@ export default new Router({
                 {
                     path: 'user-list',
                     name: 'user-list',
-                    component: () => import('@/pages/manager/user/list')
+                    component: () => import('@/pages/manager/user/user-list')
                 },
                 // 10-b[用户管理]会员卡系统
                 {
