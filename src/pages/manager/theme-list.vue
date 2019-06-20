@@ -70,7 +70,7 @@
                 :page-sizes="[10, 50, 100]"
                 :page-size="searchParams.pageSize"
                 layout="total, sizes, prev, pager, next, jumper"
-                :total="totalCount"
+                :total="searchParams.totalCount"
             >
             </el-pagination>
         </u-layout>

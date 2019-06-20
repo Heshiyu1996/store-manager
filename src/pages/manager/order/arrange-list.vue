@@ -7,7 +7,7 @@
                 </el-select>
                 <el-date-picker v-model="searchParams.date" type="date" @change="_getIncomeList" placeholder="请输入查询时间" size="medium"> </el-date-picker>
 
-                <el-popover placement="right" width="400" trigger="hover" class="income-hover-btn">
+                <el-popover :disabled="!incomeTotal" placement="right" width="350" trigger="hover" class="income-hover-btn">
                     <u-table ref="incomeTable" :list="incomeList" auto is-list scroll class="income-table">
                         <template slot-scope="{ row }">
                             <u-table-column width="160px" label="支付类型" ellipse>{{ row.name }}</u-table-column>
@@ -286,6 +286,7 @@ export default {
             }
 
             .income-btn {
+                height: 38px;
                 background: #ffb62f;
                 @include font-normal(14px, white, true);
                 animation: name 1s infinite;
