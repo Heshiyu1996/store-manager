@@ -62,7 +62,7 @@
                     <el-switch v-model="form.isArrived" :disabled="hasEnded"></el-switch>
                 </el-form-item>
                 <br />
-                <el-form-item label="钥匙编号" :rules="{ required: true }">
+                <el-form-item label="钥匙编号">
                     <el-select v-model="form.keyId" :disabled="hasEnded" filterable placeholder="请选择钥匙编号" size="mini">
                         <el-option v-for="item in otherList['keyList']" :key="item.id" :label="item.name" :value="item.id"> </el-option>
                     </el-select>
