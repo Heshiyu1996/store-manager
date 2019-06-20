@@ -6,13 +6,23 @@
                     <el-option v-for="item in getStoreListStore" :key="item.id" :label="item.name" :value="item.id"> </el-option>
                 </el-select>
                 <el-date-picker v-model="searchParams.date" type="date" @change="_getIncomeList" placeholder="请输入查询时间" size="medium"> </el-date-picker>
+
+                <el-popover placement="right" width="400" trigger="hover" class="income-hover-btn">
+                    <u-table ref="incomeTable" :list="incomeList" auto is-list scroll class="income-table">
+                        <template slot-scope="{ row }">
+                            <u-table-column width="160px" label="支付类型" ellipse>{{ row.name }}</u-table-column>
+                            <u-table-column width="160px" label="收入" ellipse>{{ row.income }}</u-table-column>
+                        </template>
+                    </u-table>
+
+                    <el-button slot="reference" class="income-btn">
+                        <u-icon name="income" class="income-icon" />
+                        <span>{{ incomeTotal ? `今日收款：${incomeTotal} 元` : '今日暂无收入，请加油吧！' }}</span>
+                    </el-button>
+                </el-popover>
             </u-layout>
         </div>
         <u-layout class="content-wrapper" direction="v">
-            <div>
-                <u-icon name="income" class="income-icon" />
-                <span>今日收款：{{ incomeText || '暂无' }}</span>
-            </div>
             <div id="musicArrange"></div>
 
             <div v-loading.body="loading">
@@ -249,6 +259,48 @@ export default {
             height: 36px;
         }
 
+        .income-hover-btn {
+            width: 200px;
+
+            .income-icon {
+                width: 18px;
+                height: 18px;
+                margin-right: 4px;
+            }
+            @keyframes name {
+                0% {
+                    opacity: 1;
+                }
+                25% {
+                    opacity: 0.7;
+                }
+                50% {
+                    opacity: 0.5;
+                }
+                75% {
+                    opacity: 0.7;
+                }
+                100% {
+                    opacity: 1;
+                }
+            }
+
+            .income-btn {
+                background: #ffb62f;
+                @include font-normal(14px, white, true);
+                animation: name 1s infinite;
+
+                &:hover {
+                    opacity: 0.8;
+                }
+
+                &:active {
+                    opacity: 0.6;
+                    border-color: white;
+                }
+            }
+        }
+
         .el-button {
             margin-right: 0;
         }
@@ -262,22 +314,14 @@ export default {
         }
 
         .arrange-info-item {
-            // border-right: 1px dashed $border-color;
             border-left: 1px dashed $border-color;
 
             padding: 0;
         }
 
-        .income-icon {
-            width: 18px;
-            height: 18px;
-        }
-
         .u-table-column {
             line-height: 26px;
             height: auto;
-
-            // max-height: 120px;
         }
 
         .icon {
