@@ -100,13 +100,7 @@ export default new Router({
                     name: 'user-list',
                     component: () => import('@/pages/manager/user/user-list')
                 },
-                // 10-b[用户管理]会员卡系统
-                {
-                    path: 'user-card-list',
-                    name: 'user-card-list',
-                    component: () => import('@/pages/manager/user/card-list')
-                },
-                // 10-c[用户管理]失信列表
+                // 10-b[用户管理]失信列表
                 {
                     path: 'dishonesty-list',
                     name: 'dishonesty-list',
@@ -117,6 +111,18 @@ export default new Router({
                     path: 'store-list',
                     name: 'store-list',
                     component: () => import('@/pages/manager/store-list')
+                },
+                // 12-a[会员卡系统]会员卡列表
+                {
+                    path: 'card-list',
+                    name: 'card-list',
+                    component: () => import('@/pages/manager/card/card-list')
+                },
+                // 12-b[会员卡系统]消费记录
+                {
+                    path: 'consumption-list',
+                    name: 'consumption-list',
+                    component: () => import('@/pages/manager/card/consumption-list')
                 }
             ]
         },

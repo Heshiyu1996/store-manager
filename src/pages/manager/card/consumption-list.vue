@@ -1,5 +1,5 @@
 <template>
-    <u-layout class="card-list" direction="v">
+    <u-layout class="consumption-list" direction="v">
         <div class="top-wrapper">
             <u-layout>
                 <el-date-picker v-model="rangeTime" type="daterange" range-separator="至" start-placeholder="起始日期" end-placeholder="结束日期" />
@@ -54,7 +54,7 @@ import { getConsumeList, deleteConsume } from '@/server/api'
 import { RECHARGE_TYPE_MAP, MODIFY_MODAL_TYPE } from '@/utils/config'
 
 export default {
-    name: 'card-list',
+    name: 'consumption-list',
     components: { UConsumeModal },
     data() {
         return {
@@ -146,7 +146,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.card-list {
+.consumption-list {
     height: 100%;
     padding: 0 30px 40px;
 

@@ -1,5 +1,5 @@
 export const isDev = process.env.NODE_ENV === 'development'
-export const isMock = false
+export const isMock = true
 export const rootURL = isDev ? (isMock ? 'http://localhost:8002' : '/') : '/'
 
 /* 编辑模式，新增/编辑 */
@@ -116,10 +116,6 @@ export const MENU_LIST_MANAGER = [
             {
                 value: 'dishonesty-list',
                 label: '失信列表'
-            },
-            {
-                value: 'user-card-list',
-                label: '会员卡系统'
             }
         ]
     },
@@ -129,6 +125,22 @@ export const MENU_LIST_MANAGER = [
             label: '门店管理'
         },
         subMenuItemList: []
+    },
+    {
+        subMenuInfo: {
+            value: 'card',
+            label: '会员卡系统'
+        },
+        subMenuItemList: [
+            {
+                value: 'card-list',
+                label: '会员卡列表'
+            },
+            {
+                value: 'consumption-list',
+                label: '消费记录'
+            }
+        ]
     }
 ]
 
