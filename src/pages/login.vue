@@ -1,6 +1,6 @@
 <template>
-    <div class="login">
-        <u-navbar />
+    <div class="login" :style="{ backgroundImage: `url(${bgImg})` }">
+        <!-- <u-navbar /> -->
         <transition name="el-zoom-in-center" mode="out-in">
             <u-sign-in v-if="showSignIn" @toggle="toggleBox" />
             <u-sign-up v-else @toggle="toggleBox" />
@@ -13,7 +13,8 @@ export default {
     name: 'login',
     data() {
         return {
-            showSignIn: true
+            showSignIn: true,
+            bgImg: require('@/assets/img/bg.png')
         }
     },
     created() {
@@ -38,9 +39,12 @@ export default {
 <style lang="scss" scoped>
 .login {
     display: flex;
+    position: absolute;
     justify-content: center;
     align-items: center;
+    top: 0;
     height: 100%;
-    background: $border-color;
+    width: 100%;
+    background-size: 100% 100%;
 }
 </style>

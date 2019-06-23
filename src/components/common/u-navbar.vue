@@ -156,7 +156,7 @@ export default {
     height: 56px;
     margin-bottom: 20px;
     padding: 0 40px;
-    border: 1px solid transparent;
+    // border: 1px solid transparent;
     border-width: 0 0 1px;
     background: $normal-color-m;
     border-color: $border-color;
