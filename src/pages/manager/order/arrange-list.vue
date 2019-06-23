@@ -219,7 +219,7 @@ export default {
 <style lang="scss" scoped>
 .arrange-list {
     height: 100%;
-    padding: 0 30px 40px;
+    padding: 0 30px 20px;
 
     .top-wrapper {
         display: flex;
@@ -265,6 +265,10 @@ export default {
 
     .content-wrapper {
         font-size: 12px;
+
+        /deep/ tbody {
+            max-height: 62vh;
+        }
 
         #musicArrange {
             display: none;

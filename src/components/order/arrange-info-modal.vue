@@ -53,6 +53,7 @@
                             maxLength="11"
                             placeholder="请输入会员卡"
                             size="mini"
+                            disabled
                             @blur="getCardInfo(form.cardId)"
                             @keypress.enter="getCardInfo(form.cardId)"
                         />
@@ -61,10 +62,11 @@
                             maxLength="11"
                             placeholder="请输入消费金额"
                             size="mini"
+                            disabled
                             @change="addAmount(form.cardConsumption)"
                         />
                     </div>
-                    <div class="card-info">卡号：[123]；卡内余额：123 元；所属人：贺世宇</div>
+                    <div class="card-info">卡号：[xxx]；卡内余额：xxx 元；所属人：xxx</div>
                 </div>
                 <span class="sum-tip">总计：{{ form.amount }} 元</span>
             </el-form-item>
@@ -220,14 +222,15 @@ export default {
         _getArrangeTime() {
             getArrangeTime(this.form).then(data => {
                 // this.list = data.list || []
-                this.list = [this.form.arrangeTime, ...data.list] || []
+                console.log(this.form.arrangeTime)
+                this.list = this.form.arrangeTime ? [this.form.arrangeTime, ...data.list] : [...data.list] || []
             })
-        },
-
-        addAmount(cardConsumption) {
-            console.log(cardConsumption)
-            typeof cardConsumption === 'number' && (this.form.amount = this.form.amount + cardConsumption)
         }
+
+        // addAmount(cardConsumption) {
+        //     console.log(cardConsumption)
+        //     typeof cardConsumption === 'number' && (this.form.amount = this.form.amount + cardConsumption)
+        // }
     }
 }
 </script>
@@ -314,7 +317,7 @@ export default {
                     display: block;
                     height: 20px;
                     line-height: 20px;
-                    content: '会员卡消费';
+                    content: '会员卡消费（暂不可用）';
                     @include font-normal(12px, $tip-color-m);
                 }
 
