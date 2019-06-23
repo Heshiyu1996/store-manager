@@ -21,6 +21,11 @@
                     <el-option v-for="item in RECHARGE_TYPE_MAP" :key="item.value" :label="item.label" :value="item.value"> </el-option>
                 </el-select>
             </el-form-item>
+            <el-form-item v-if="isRecharge" label="操作门店">
+                <el-select v-model="form.storeId" filterable>
+                    <el-option v-for="item in getStoreListStore" :key="item.id" :label="item.name" :value="item.id"> </el-option>
+                </el-select>
+            </el-form-item>
             <el-form-item label="流水描述">
                 <u-input v-model="form.flowDesc" placeholder="请输入流水描述" type="textarea"> </u-input>
             </el-form-item>
@@ -32,6 +37,9 @@
 import { CloseModalMixin, InvalidCheckMixin } from '@/components/common/mixins'
 import { addConsume, editConsume } from '@/server/api'
 import { RECHARGE_TYPE_MAP, MODIFY_MODAL_TYPE } from '@/utils/config'
+import { createNamespacedHelpers } from 'vuex'
+
+const { mapGetters } = createNamespacedHelpers('login')
 
 const RECORD_TYPE = {
     CONSUME: 1,
@@ -69,7 +77,8 @@ export default {
     computed: {
         isRecharge() {
             return this.recordType === RECORD_TYPE.RECHARGE
-        }
+        },
+        ...mapGetters(['getStoreListStore'])
     },
     created() {
         this.$bus.$on('open-consume-modal', (consumeDetail, isAdd) => {
@@ -147,7 +156,7 @@ export default {
             }
 
             .textarea {
-                height: 130px;
+                height: 100px;
             }
         }
 

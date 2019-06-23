@@ -1,5 +1,5 @@
 export const isDev = process.env.NODE_ENV === 'development'
-export const isMock = true
+export const isMock = false
 export const rootURL = isDev ? (isMock ? 'http://localhost:8002' : '/') : '/'
 
 /* 编辑模式，新增/编辑 */

@@ -15,11 +15,12 @@
         <u-layout class="content-wrapper" direction="v">
             <u-table ref="operationTable" :list="consumeList" auto is-list>
                 <template slot-scope="{ row }">
-                    <u-table-column width="14vw" label="流水ID" ellipse>{{ row.id || '-' }}</u-table-column>
-                    <u-table-column width="14vw" label="充值方式" ellipse>{{ _findRechargeTxt(row.rechargeWay) || '-' }}</u-table-column>
-                    <u-table-column width="14vw" label="流水描述" ellipse>{{ row.flowDesc }}</u-table-column>
-                    <u-table-column width="14vw" label="消费/充值金额" ellipse>{{ row.amount }}</u-table-column>
-                    <u-table-column width="14vw" label="余额" ellipse> {{ row.balance }} </u-table-column>
+                    <u-table-column width="10vw" label="流水ID" ellipse>{{ row.id || '-' }}</u-table-column>
+                    <u-table-column width="10vw" label="充值方式" ellipse>{{ _findRechargeTxt(row.rechargeWay) || '-' }}</u-table-column>
+                    <u-table-column width="10vw" label="流水描述" ellipse>{{ row.flowDesc }}</u-table-column>
+                    <u-table-column width="10vw" label="消费/充值金额" ellipse>{{ row.amount }}</u-table-column>
+                    <u-table-column width="10vw" label="余额" ellipse> {{ row.balance }} </u-table-column>
+                    <u-table-column width="10vw" label="操作门店" ellipse> {{ row.storeName }} </u-table-column>
                     <u-table-column width="14vw" label="消费时间">
                         {{ row.flowTime | dateFormat('yyyy-MM-dd hh:mm:ss') }}
                     </u-table-column>
