@@ -2,23 +2,38 @@
     <u-modal :visible="visible" title="上传音频" @before-close="submit" @close="closeModal" class="theme-upload-modal">
         <el-form ref="form" :model="form" label-width="110px">
             <div id="musicInner" />
-            <el-form-item label="文件上传">
-                <el-upload class="upload-demo" drag :action="uploadURL" :headers="uploadData" :data="uploadParams" multiple>
-                    <i class="el-icon-upload"></i>
-                    <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-                    <div class="el-upload__tip" slot="tip">只能上传MP3文件，且不超过5M</div>
-                </el-upload>
+            <el-form-item label="当前主题">
+                <u-label :text="form.themeName" />
             </el-form-item>
-            <el-button @click="test">上传好了</el-button>
-
-            <el-form-item v-if="tempUrl" label="试听">
-                <u-icon :disabled="!tempUrl" name="play" class="icon" @click="_playMusic(tempUrl, $event)" />
-            </el-form-item>
-            <el-form-item v-if="tempUrl" label="上传类别">
+            <el-form-item label="上传类别">
                 <el-radio v-model="form.type" :label="10">10分钟音频</el-radio>
                 <u-icon :disabled="!url10" name="play" class="icon" @click="_playMusic(url10)" />
                 <br />
                 <el-radio v-model="form.type" :label="0">结束音频</el-radio> <u-icon :disabled="!url0" name="play" class="icon" @click="_playMusic(url0)" />
+            </el-form-item>
+            <el-form-item label="文件上传">
+                <el-upload
+                    class="upload-demo"
+                    drag
+                    :action="uploadURL"
+                    :headers="uploadData"
+                    :data="uploadParams"
+                    :limit="1"
+                    :before-upload="beforeUpload"
+                    :on-success="getUrl"
+                    :on-exceed="handleExceed"
+                    :on-remove="handleRemove"
+                    multiple
+                >
+                    <i class="el-icon-upload"></i>
+                    <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+                    <div class="el-upload__tip" slot="tip">只能上传MP3文件，且不超过2M</div>
+                </el-upload>
+            </el-form-item>
+            <!-- <el-button @click="test">上传好了</el-button> -->
+
+            <el-form-item v-if="form.tempUrl" label="试听">
+                <u-icon :disabled="!form.tempUrl" name="play" class="icon" @click="_playMusic(form.tempUrl, $event)" />
             </el-form-item>
         </el-form>
     </u-modal>
@@ -44,13 +59,12 @@ export default {
         return {
             form: {
                 themeId: 0,
-                type: 10
+                type: 10,
+                tempUrl: ''
             },
 
             url0: '',
             url10: '',
-
-            tempUrl: '',
 
             uploadData: {
                 sessionId: fetchCookieValue('ZZH_ELP_SESS')
@@ -75,8 +89,8 @@ export default {
     },
     created() {
         this.$bus.$on('open-theme-upload-modal', themeDetail => {
-            let { id: themeId, url0, url10 } = themeDetail
-            this.form = { ...this.form, themeId }
+            let { id: themeId, name: themeName, url0, url10 } = themeDetail
+            this.form = { ...this.form, themeId, themeName }
             this.url0 = url0
             this.url10 = url10
         })
@@ -85,28 +99,59 @@ export default {
         this.$bus.$off('open-theme-upload-modal')
     },
     methods: {
-        test() {
-            this.tempUrl = 'http://www.51mp3ring.com/51mp3ring_com3/at200911116232599996.mp3'
-        },
         submit(e) {
             e.preventDefault()
             if (!e.ok) {
-                this.closeModal()
-                return
+                if (this.form.tempUrl) {
+                    this.$confirm(`现在离开音频不会保存，确定离开吗？`)
+                        .then(() => {
+                            this.closeModal()
+                            return
+                        })
+                        .catch(() => {
+                            return
+                        })
+                } else {
+                    this.closeModal()
+                    return
+                }
             }
 
             this._saveTheme()
         },
         _saveTheme() {
-            let param = { ...this.form, url: this.tempUrl }
+            let param = { ...this.form, url: this.form.tempUrl }
             console.log(param)
             saveVoice(param).then(() => {
                 this.$message('保存成功')
                 this.closeModal(true)
             })
         },
+
         _playMusic(url) {
             playMusic([url], 'musicInner')
+        },
+
+        getUrl(response) {
+            console.log(response)
+            this.form.tempUrl = response.data || ''
+        },
+
+        beforeUpload(file) {
+            const isMP3 = file.type === 'audio/mp3'
+            const isLt2M = file.size / 1024 / 1024 < 2
+
+            !isMP3 && this.$message.error('上传的音频格式只能是 MP3 格式，请检查')
+            !isLt2M && this.$message.error('上传的音频大小不能超过 2MB，请检查')
+            return isMP3 && isLt2M
+        },
+
+        handleExceed() {
+            this.$message.error('目前最多只能上传一个音频（若需替换，请清空后再上传）')
+        },
+
+        handleRemove() {
+            this.form.tempUrl = ''
         }
     }
 }
