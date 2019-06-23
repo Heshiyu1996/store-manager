@@ -34,11 +34,11 @@ export default {
         },
         paymentData: {
             handler(val) {
-                let amount = Object.keys(this.paymentData).reduce((total, paymentType) => {
+                let paymentSum = Object.keys(this.paymentData).reduce((total, paymentType) => {
                     let targetPrice = this.list.filter(item => item.id === Number(paymentType))[0]['price']
                     return total + this.paymentData[paymentType] * targetPrice
-                }, 0)
-                this.$emit('update:amount', Number(amount.toFixed(2)))
+                }, this.amount)
+                this.$emit('update:amount', Number(paymentSum.toFixed(2)))
                 this.$emit('input', val)
             },
             immediate: true,

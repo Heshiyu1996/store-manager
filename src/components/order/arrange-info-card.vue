@@ -73,7 +73,7 @@ export default {
             this.$emit('add-patch', this.storeId, this.themeId)
         },
         editRow() {
-            this.$emit('edit-row', this.arrangeInfo)
+            this.$emit('edit-row', { ...this.arrangeInfo, storeId: this.storeId, themeId: this.themeId })
         },
         deleteRow() {
             let { id } = this.arrangeInfo

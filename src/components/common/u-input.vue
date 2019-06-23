@@ -103,7 +103,6 @@ export default {
 .u-input {
     display: inline-block;
     position: relative;
-    align-items: center;
     height: $component-height;
     width: 320px;
     height: 40px;

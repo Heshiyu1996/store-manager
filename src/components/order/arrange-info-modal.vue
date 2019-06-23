@@ -35,23 +35,37 @@
                     size="mini"
                 />
             </el-form-item>
-            <br />
-            <!-- <el-form-item label="预定时间" :rules="{ required: true }">
+            <el-form-item label="预定时间" :rules="{ required: true }">
                 <el-select v-model="form.arrangeTime" filterable placeholder="请选择预定时间" :disabled="hasStarted" size="mini">
-                    <el-option v-for="item in list" :key="item" :label="item | dateFormat('yyyy-MM-dd hh:mm:ss')" :value="item"> </el-option>
+                    <el-option v-for="(item, index) in list" :key="item + index" :label="item | dateFormat('yyyy-MM-dd hh:mm:ss')" :value="item"> </el-option>
                 </el-select>
                 <span class="arrange-time-tip">({{ form.hour }}点附近的预约时间)</span>
-            </el-form-item> -->
-
-            <el-form-item label="预约时间" class="arrange-time-wrapper">
-                <!-- <el-date-picker v-model="form.arrangeTime" type="datetime" placeholder="请输入预约时间" size="mini" class="arrange-time" /> -->
-                {{ form.arrangeTime | dateFormat('yyyy-MM-dd hh:mm:ss') }}
             </el-form-item>
             <br />
             <el-divider content-position="left">Step3: 支付信息</el-divider>
-            <el-form-item label="支付类型">
+            <el-form-item label="支付类型" vtop>
                 <PaymentInfoCard :disabled="hasEnded" v-model="form.paymentList" :amount.sync="form.amount" :list="otherList['paymentList']"></PaymentInfoCard>
-                <br />
+                <div class="card-consumption-wrapper">
+                    <div class="consumption-content">
+                        <u-input
+                            v-model.number="form.cardId"
+                            :regex="/^[0-9\u4e00-\u9fa5]+$/g"
+                            maxLength="11"
+                            placeholder="请输入会员卡"
+                            size="mini"
+                            @blur="getCardInfo(form.cardId)"
+                            @keypress.enter="getCardInfo(form.cardId)"
+                        />
+                        <u-input
+                            v-model.number="form.cardConsumption"
+                            maxLength="11"
+                            placeholder="请输入消费金额"
+                            size="mini"
+                            @change="addAmount(form.cardConsumption)"
+                        />
+                    </div>
+                    <div class="card-info">卡号：[123]；卡内余额：123 元；所属人：贺世宇</div>
+                </div>
                 <span class="sum-tip">总计：{{ form.amount }} 元</span>
             </el-form-item>
             <br />
@@ -106,7 +120,9 @@ export default {
                 themeId: '',
                 paymentList: {},
                 amount: 0,
-                date: 0
+                date: 0,
+                cardId: null,
+                cardConsumption: null
             },
             num: 0,
 
@@ -149,6 +165,13 @@ export default {
         },
         ...mapGetters(['getStoreListStore'])
     },
+    watch: {
+        // 'form.cardConsumption'(val, oldVal) {
+        //     console.log(val, oldVal)
+        //     oldVal && (this.form.amount = this.form.amount - oldVal)
+        //     val && (this.form.amount = this.form.amount + val)
+        // }
+    },
     created() {
         this.$bus.$on('open-arrange-info-modal', (arrangeDetail, isAdd) => {
             this.type = isAdd
@@ -170,6 +193,7 @@ export default {
 
             this.type ? this._addReserve() : this._editReserve()
         },
+
         _addReserve() {
             if (typeof this.form.arrangeTime !== 'number') {
                 this.form.arrangeTime = this.form.arrangeTime.getTime()
@@ -180,6 +204,7 @@ export default {
                 this.closeModal(true)
             })
         },
+
         _editReserve() {
             let param = { ...this.form }
             editReserve(param).then(() => {
@@ -187,13 +212,21 @@ export default {
                 this.closeModal(true)
             })
         },
-        handleSourceType(value) {
-            console.log(value)
+
+        getCardInfo(cardId) {
+            console.log(cardId)
         },
+
         _getArrangeTime() {
             getArrangeTime(this.form).then(data => {
-                this.list = data.list || []
+                // this.list = data.list || []
+                this.list = [this.form.arrangeTime, ...data.list] || []
             })
+        },
+
+        addAmount(cardConsumption) {
+            console.log(cardConsumption)
+            typeof cardConsumption === 'number' && (this.form.amount = this.form.amount + cardConsumption)
         }
     }
 }
@@ -210,6 +243,12 @@ export default {
 
             .el-form-item {
                 margin-bottom: 4px;
+
+                &[vtop] {
+                    .el-form-item__label {
+                        line-height: 1;
+                    }
+                }
             }
 
             .payment-wrapper {
@@ -234,6 +273,12 @@ export default {
                 @include font-normal(12px, $normal-color-s);
             }
 
+            .arrange-time-tip {
+                position: absolute;
+                top: 25px;
+                left: 0;
+            }
+
             .sum-tip {
                 @include font-normal(12px, $primary-color);
             }
@@ -246,6 +291,38 @@ export default {
             .textarea {
                 width: 506px;
                 height: 130px;
+            }
+
+            .card-consumption-wrapper {
+                padding: 6px 8px;
+                margin-top: -17px;
+                border: 1px dashed $border-color;
+
+                .consumption-content {
+                    height: 38px;
+
+                    .u-input {
+                        width: 130px;
+
+                        &:last-child {
+                            margin-left: 74px;
+                        }
+                    }
+                }
+
+                &:before {
+                    display: block;
+                    height: 20px;
+                    line-height: 20px;
+                    content: '会员卡消费';
+                    @include font-normal(12px, $tip-color-m);
+                }
+
+                .card-info {
+                    height: 20px;
+                    line-height: 20px;
+                    @include font-normal(12px, $tip-color-s);
+                }
             }
         }
 

@@ -37,7 +37,7 @@
                                 :theme-id="theme.id"
                                 :store-id="searchParams.storeId"
                                 @add-patch="(storeId, themeId) => addPatch(storeId, themeId, row.hour)"
-                                @edit-row="editRow"
+                                @edit-row="arrangeDetail => editRow(arrangeDetail, row.hour)"
                                 @delete-row="deleteRow"
                                 @start-row="startRow"
                             ></ArrangeInfoCard>
@@ -129,8 +129,9 @@ export default {
             this.isOpenArrangeInfoModal = true
             this.$bus.$emit('open-arrange-info-modal', { storeId, themeId, hour, date }, MODIFY_MODAL_TYPE.ADD)
         },
-        editRow(row) {
-            this.$bus.$emit('open-arrange-info-modal', row, MODIFY_MODAL_TYPE.EDIT)
+        editRow(arrangeDetail, hour) {
+            const { date } = this.searchParams
+            this.$bus.$emit('open-arrange-info-modal', { ...arrangeDetail, hour, date }, MODIFY_MODAL_TYPE.EDIT)
             this.isOpenArrangeInfoModal = true
         },
         deleteRow(id) {
