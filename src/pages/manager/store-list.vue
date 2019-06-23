@@ -10,10 +10,12 @@
         <u-layout class="content-wrapper" direction="v">
             <u-table ref="operationTable" :list="storeList" auto is-list>
                 <template slot-scope="{ row }">
-                    <u-table-column width="18vw" label="id" ellipse>{{ row.id || '-' }}</u-table-column>
                     <u-table-column width="18vw" label="门店名称" ellipse>{{ row.name || '-' }}</u-table-column>
                     <u-table-column width="18vw" label="电话" ellipse>{{ row.telephone || '-' }}</u-table-column>
-                    <u-table-column width="18vw" label="地址" ellipse>{{ row.address || '-' }}</u-table-column>
+                    <u-table-column width="18vw" label="所在省/市" ellipse>{{
+                        (row.area && `${CodeToText[row.area[0]]}${CodeToText[row.area[1]]}`) || '-'
+                    }}</u-table-column>
+                    <u-table-column width="18vw" label="详细地址" ellipse>{{ row.address || '-' }}</u-table-column>
                     <u-table-column width="18vw" label="操作">
                         <u-layout direction="h">
                             <i class="icon el-icon-edit" @click="editRow(row)"></i> <i class="icon el-icon-delete" @click="deleteRow(row)"></i>
@@ -40,6 +42,7 @@
 </template>
 
 <script>
+import { CodeToText } from 'element-china-area-data'
 import SStoreinfoModal from '@/components/store/s-store-info-modal'
 import { getStoreList, deleteStore } from '@/server/api'
 import { MODIFY_MODAL_TYPE } from '@/utils/config'
@@ -59,6 +62,7 @@ export default {
             },
 
             storeList: [],
+            CodeToText: CodeToText,
 
             isOpenStoreInfoModal: false
         }

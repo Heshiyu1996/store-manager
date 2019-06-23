@@ -1,23 +1,24 @@
 <template>
     <u-modal :visible="visible" :title="type ? '新增门店' : '编辑门店'" @before-close="submit" @close="closeModal" class="s-store-modal">
         <el-form ref="form" :model="form" label-width="110px">
-            <el-form-item v-if="!type" label="门店ID">
-                <u-label :text="form.id" />
-            </el-form-item>
             <el-form-item label="门店名称">
                 <u-input v-model="form.name" placeholder="请输入门店名称"> </u-input>
             </el-form-item>
             <el-form-item label="电话">
                 <u-input v-model="form.telephone" :regex="/^\d+$/g" placeholder="请输入门店电话" />
             </el-form-item>
-            <el-form-item label="地址">
-                <u-input v-model="form.address" placeholder="请输入门店地址"> </u-input>
+            <el-form-item label="省/市">
+                <el-cascader v-model="form.area" size="large" :options="cityAreaOptions" />
+            </el-form-item>
+            <el-form-item label="详细地址">
+                <u-input v-model="form.address" placeholder="请输入门店详细地址"> </u-input>
             </el-form-item>
         </el-form>
     </u-modal>
 </template>
 
 <script>
+import { provinceAndCityData } from 'element-china-area-data'
 import { CloseModalMixin, InvalidCheckMixin } from '@/components/common/mixins'
 import { addStore, editStore } from '@/server/api'
 import { RECHARGE_TYPE_MAP, MODIFY_MODAL_TYPE } from '@/utils/config'
@@ -47,8 +48,11 @@ export default {
         return {
             type: MODIFY_MODAL_TYPE.ADD,
 
-            form: {},
+            form: {
+                area: []
+            },
             recordType: 1,
+            cityAreaOptions: provinceAndCityData,
 
             RECHARGE_TYPE_MAP,
             RECORD_TYPE_MAP
