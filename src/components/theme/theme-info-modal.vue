@@ -1,21 +1,18 @@
 <template>
     <u-modal :visible="visible" :title="type ? '新增主题' : '编辑主题'" @before-close="submit" @close="closeModal" class="key-info-modal">
         <el-form ref="form" :model="form" label-width="110px">
-            <el-form-item v-if="!type" label="主题ID">
-                <u-label :text="form.id" />
-            </el-form-item>
             <el-form-item label="主题名称">
                 <u-input v-model="form.name" placeholder="请输入主题名称"> </u-input>
             </el-form-item>
             <el-form-item label="游戏时长">
-                <u-input v-model.number="form.duration" placeholder="请输入游戏时长（单位：分）" />
+                <u-input v-model.number="form.duration" :regex="/^\d+$/g" placeholder="请输入游戏时长（单位：分）" />
             </el-form-item>
             <el-form-item label="间隔时长">
-                <u-input v-model.number="form.interval" placeholder="请输入间隔时长（单位：分）" />
+                <u-input v-model.number="form.interval" :regex="/^\d+$/g" placeholder="请输入间隔时长（单位：分）" />
             </el-form-item>
             <el-form-item label="首场时间">
-                <u-input v-model.number="form.firstSession.hour" placeholder="请输入" class="first-session" />小时
-                <u-input v-model.number="form.firstSession.minute" placeholder="请输入" class="first-session" />分
+                <u-input v-model.number="form.firstSession.hour" :regex="/^\d+$/g" placeholder="请输入" class="first-session" />时
+                <u-input v-model.number="form.firstSession.minute" :regex="/^\d+$/g" placeholder="请输入" class="first-session" />分
             </el-form-item>
 
             <el-form-item label="所属门店">
@@ -64,9 +61,9 @@ export default {
         ...mapGetters(['getStoreListStore'])
     },
     created() {
-        this.$bus.$on('open-theme-info-modal', (keyDetail, isAdd) => {
+        this.$bus.$on('open-theme-info-modal', (themeDetail, isAdd) => {
             this.type = isAdd
-            this.form = this.type ? { status: true, firstSession: {} } : { ...keyDetail, firstSession: {} }
+            this.form = this.type ? { status: true, firstSession: {} } : { ...themeDetail }
         })
     },
     destroyed() {

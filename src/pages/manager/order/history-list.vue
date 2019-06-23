@@ -5,8 +5,8 @@
                 <el-select v-model="searchParams.storeId" filterable placeholder="请选择门店">
                     <el-option v-for="item in storeListModified" :key="item.id" :label="item.name" :value="item.id"> </el-option>
                 </el-select>
-                <el-select v-model="searchParams.isStarted" placeholder="请选择订单开始状态">
-                    <el-option v-for="item in IS_STARTED_MAP" :key="item.value" :label="item.label" :value="item.value"> </el-option>
+                <el-select v-model="searchParams.status" placeholder="请选择订单开始状态">
+                    <el-option v-for="item in STATUS_MAP" :key="item.value" :label="item.label" :value="item.value"> </el-option>
                 </el-select>
                 <el-select v-model="searchParams.isDeleted" placeholder="请选择订单删除状态">
                     <el-option v-for="item in IS_DELETED_MAP" :key="item.value" :label="item.label" :value="item.value"> </el-option>
@@ -25,11 +25,11 @@
                     <u-table-column width="14vw" label="创建时间" ellipse>{{ row.createTime | dateFormat('yyyy-MM-dd hh:mm:ss') }}</u-table-column>
                     <u-table-column width="14vw" label="删除时间" ellipse>
                         <span v-if="row.isDeleted">{{ row.deleteTime | dateFormat('yyyy-MM-dd hh:mm:ss') }}</span>
-                        {{ row.isDeleted && '-' }}
+                        {{ !row.isDeleted ? '-' : '' }}
                     </u-table-column>
                     <u-table-column width="4vw" label="游戏开始状态" ellipse>
-                        <span v-if="row.status >= ARRANGE_STATUS_MAP.STARTED" class="order-type" type="started">已开始</span>
-                        <span v-else class="order-type" type="not-started">未开始</span>
+                        <span v-if="row.status >= ARRANGE_STATUS_MAP.STARTED" class="order-type" type="started">{{ _findStatusText(row.status) }}</span>
+                        <span v-else class="order-type" type="not-started">{{ _findStatusText(row.status) }}</span>
                     </u-table-column>
                     <u-table-column width="4vw" label="订单状态" ellipse>
                         <span v-if="row.isDeleted" class="order-type" type="deleted">已删除</span>
@@ -62,18 +62,27 @@ import { MODIFY_MODAL_TYPE, OPERATION_TYPE, ARRANGE_STATUS_MAP } from '@/utils/c
 import { createNamespacedHelpers } from 'vuex'
 
 const { mapGetters } = createNamespacedHelpers('login')
-const IS_STARTED_MAP = [
+
+const STATUS_MAP = [
     {
         value: '',
         label: '全部'
     },
     {
-        value: true,
-        label: '已开始'
+        value: 1,
+        label: '未开始'
     },
     {
-        value: false,
-        label: '未开始'
+        value: 2,
+        label: '进行中'
+    },
+    {
+        value: 4,
+        label: '即将结束'
+    },
+    {
+        value: 3,
+        label: '已结束'
     }
 ]
 const IS_DELETED_MAP = [
@@ -98,7 +107,7 @@ export default {
         return {
             searchParams: {
                 storeId: '',
-                isStarted: '',
+                status: '',
                 isDeleted: '',
                 name: '',
 
@@ -110,7 +119,7 @@ export default {
 
             isOpenKeyInfoModal: false,
 
-            IS_STARTED_MAP,
+            STATUS_MAP,
             IS_DELETED_MAP,
             ARRANGE_STATUS_MAP,
             OPERATION_TYPE
@@ -132,7 +141,7 @@ export default {
         'searchParams.storeId'() {
             this._getList(true)
         },
-        'searchParams.isStarted'() {
+        'searchParams.status'() {
             this._getList(true)
         },
         'searchParams.isDeleted'() {
@@ -196,6 +205,9 @@ export default {
                     this.totalCount = data.totalCount || 0
                 })
                 .catch(e => console.log(e))
+        },
+        _findStatusText(status) {
+            return STATUS_MAP.find(item => item.value === status).label || ''
         },
         // pageSize大小
         handleSizeChange(val) {

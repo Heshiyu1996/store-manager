@@ -4,7 +4,7 @@
             <template slot-scope="{ row }">
                 <u-table-column width="200px" label="类型" ellipse>{{ row.name }}</u-table-column>
                 <u-table-column width="200px" label="数量" ellipse>
-                    <el-input-number :disabled="disabled" v-model="paymentData[row.id]" size="mini"
+                    <el-input-number :disabled="disabled" v-model="paymentData[row.id]" size="mini" :min="0"
                 /></u-table-column>
             </template>
         </u-table>
@@ -51,15 +51,29 @@ export default {
 <style lang="scss" scoped>
 .payment-info-card {
     display: inline-block;
-    width: 400px;
-    /deep/ .u-table th {
-        padding: 0;
-        padding-left: 22px;
-    }
+    width: 420px;
+    /deep/ .u-table {
+        border: 1px dashed $border-color;
 
-    /deep/ .u-table-column,
-    th {
-        padding: 4px 0;
+        th {
+            padding: 0;
+            padding-left: 22px;
+        }
+
+        .u-table-column,
+        th {
+            padding: 8px;
+        }
+
+        tbody {
+            tr {
+                padding: 2px;
+
+                &:last-child {
+                    border-bottom: 0;
+                }
+            }
+        }
     }
 }
 </style>

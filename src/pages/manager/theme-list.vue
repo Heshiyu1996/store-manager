@@ -41,7 +41,7 @@
                     <u-table-column width="9vw" label="游戏时长（分钟）" ellipse>{{ row.duration || '-' }}</u-table-column>
                     <u-table-column width="9vw" label="间隔时长（分钟）" ellipse>{{ row.interval || '-' }}</u-table-column>
                     <u-table-column width="9vw" label="首场时间" ellipse
-                        >{{ (row.firstSession && row.firstSession.hour) || '-' }}时 {{ (row.firstSession && row.firstSession.minute) || '-' }}分</u-table-column
+                        >{{ row.firstSession && row.firstSession.hour }}时 {{ row.firstSession && row.firstSession.minute }}分</u-table-column
                     >
                     <u-table-column width="10vw" label="所属门店" ellipse>{{ row.storeName || '-' }}</u-table-column>
                     <u-table-column width="2vw" label="10分钟音频" ellipse>

@@ -47,11 +47,9 @@
                         <el-option v-for="item in CARD_TYPE_MAP" :key="item.value" :label="item.label" :value="item.value"> </el-option>
                     </el-select>
                 </el-form-item>
-            </template>
-            <template v-else>
-                <el-form-item label="所属门店">
-                    <el-select v-model="$v.form.storeId.$model" filterable placeholder="请选择所属门店">
-                        <el-option v-for="item in userTypeModifiedList" :key="item.value" :label="item.label" :value="item.value"> </el-option>
+                <el-form-item label="开卡门店">
+                    <el-select v-model="$v.form.storeId.$model" filterable placeholder="请选择开卡门店">
+                        <el-option v-for="item in getStoreListStore" :key="item.id" :label="item.name" :value="item.id"> </el-option>
                     </el-select>
                 </el-form-item>
             </template>
@@ -106,7 +104,7 @@ export default {
         userTypeModifiedList() {
             return USER_TYPE_MAP.filter(item => item.value <= this.getUserInfoStore.userType)
         },
-        ...mapGetters(['getUserInfoStore'])
+        ...mapGetters(['getUserInfoStore', 'getStoreListStore'])
     },
     watch: {
         visible(val) {
@@ -159,7 +157,7 @@ export default {
             },
             storeId: {
                 required: requiredIf(function() {
-                    return this.form.userType !== USER_TYPE.NORMAL
+                    return this.form.userType === USER_TYPE.NORMAL
                 })
             }
         }

@@ -24,10 +24,8 @@
                         <el-option v-for="item in CARD_TYPE_MAP" :key="item.value" :label="item.label" :value="item.value"> </el-option>
                     </el-select>
                 </el-form-item>
-            </template>
-            <template v-else>
-                <el-form-item label="所属门店">
-                    <el-select v-model="form.storeId" filterable placeholder="请选择所属门店">
+                <el-form-item label="开卡门店">
+                    <el-select v-model="form.storeId" filterable placeholder="请选择开卡门店">
                         <el-option v-for="item in getStoreListStore" :key="item.id" :label="item.name" :value="item.id"> </el-option>
                     </el-select>
                 </el-form-item>

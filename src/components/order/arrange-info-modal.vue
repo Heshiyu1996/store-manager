@@ -1,6 +1,7 @@
 <template>
     <u-modal :visible="visible" :title="type ? '新增预定' : '编辑预定'" @before-close="submit" @close="closeModal" class="arrange-info-modal">
         <el-form ref="form" :inline="true" :model="form" label-width="110px">
+            <el-divider content-position="left">Step1: 安排信息</el-divider>
             <el-form-item label="所属门店" :rules="{ required: true }">
                 <el-select v-model="form.storeId" filterable disabled size="mini">
                     <el-option v-for="item in getStoreListStore" :key="item.id" :label="item.name" :value="item.id"> </el-option>
@@ -16,7 +17,7 @@
                     <el-option v-for="item in otherList['staffList']" :key="item.account" :label="item.nickName" :value="item.account"> </el-option>
                 </el-select>
             </el-form-item>
-            <el-divider content-position="right">客户信息</el-divider>
+            <el-divider content-position="left">Step2: 客户信息</el-divider>
             <el-form-item label="客户来源" :rules="{ required: true }">
                 <el-select v-model="form.sourceType" :disabled="hasEnded" placeholder="请选择客户来源" size="mini">
                     <el-option-group v-show="group.children.length" v-for="group in sourceTypeOptions" :key="group.label" :label="group.label">
@@ -47,7 +48,7 @@
                 {{ form.arrangeTime | dateFormat('yyyy-MM-dd hh:mm:ss') }}
             </el-form-item>
             <br />
-            <el-divider content-position="right">支付信息</el-divider>
+            <el-divider content-position="left">Step3: 支付信息</el-divider>
             <el-form-item label="支付类型">
                 <PaymentInfoCard :disabled="hasEnded" v-model="form.paymentList" :amount.sync="form.amount" :list="otherList['paymentList']"></PaymentInfoCard>
                 <br />
@@ -62,6 +63,7 @@
                     <el-switch v-model="form.isArrived" :disabled="hasEnded"></el-switch>
                 </el-form-item>
                 <br />
+                <el-divider content-position="left">Step4: 其它信息</el-divider>
                 <el-form-item label="钥匙编号">
                     <el-select v-model="form.keyId" :disabled="hasEnded" filterable placeholder="请选择钥匙编号" size="mini">
                         <el-option v-for="item in otherList['keyList']" :key="item.id" :label="item.name" :value="item.id"> </el-option>
@@ -200,6 +202,7 @@ export default {
 <style lang="scss" scoped>
 .arrange-info-modal {
     /deep/ .u-modal-body {
+        margin: 20px 25px;
         overflow-y: scroll;
 
         .el-form {
@@ -246,14 +249,18 @@ export default {
             }
         }
 
-        .el-divider--horizontal {
-            margin: 12px 0;
-        }
-
         .u-error {
             position: absolute;
             bottom: -15px;
             font-size: 12px;
+        }
+
+        .el-divider {
+            margin: 14px 0;
+
+            .el-divider__text {
+                @include font-normal(12px, $primary-color);
+            }
         }
     }
 }

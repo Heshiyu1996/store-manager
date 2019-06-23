@@ -32,7 +32,7 @@
                         {{ row.birthday | dateFormat }}
                     </u-table-column>
                     <u-table-column width="12vw" label="账号类型" ellipse>{{ _findUserType(row.userType) || '-' }}</u-table-column>
-                    <u-table-column width="12vw" label="所属门店" ellipse>{{ row.storeName || '-' }}</u-table-column>
+                    <u-table-column width="12vw" label="开卡门店" ellipse>{{ row.storeName || '-' }}</u-table-column>
                     <u-table-column label="操作">
                         <u-layout v-show="_hasRight(row.userType)" direction="h">
                             <i class="icon el-icon-edit" @click="editRow(row)"></i> <i class="icon el-icon-delete" @click="deleteRow(row)"></i>

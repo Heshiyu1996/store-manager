@@ -7,7 +7,7 @@
                 </el-select>
                 <el-date-picker v-model="searchParams.date" type="date" @change="_getIncomeList" placeholder="请输入查询时间" size="medium"> </el-date-picker>
 
-                <el-popover :disabled="!incomeTotal" placement="right" width="350" trigger="hover" class="income-hover-btn">
+                <el-popover :disabled="!incomeTotal" placement="right" width="360" trigger="hover" class="income-hover-btn">
                     <u-table ref="incomeTable" :list="incomeList" auto is-list scroll class="income-table">
                         <template slot-scope="{ row }">
                             <u-table-column width="160px" label="支付类型" ellipse>{{ row.name }}</u-table-column>
@@ -61,34 +61,6 @@ import { createNamespacedHelpers } from 'vuex'
 
 const { mapGetters } = createNamespacedHelpers('login')
 const WORD_HOUR_LIST = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 0, 1, 2, 3, 4]
-const IS_STARTED_MAP = [
-    {
-        value: '',
-        label: '全部'
-    },
-    {
-        value: true,
-        label: '已开始'
-    },
-    {
-        value: false,
-        label: '未开始'
-    }
-]
-const IS_DELETED_MAP = [
-    {
-        value: '',
-        label: '全部'
-    },
-    {
-        value: true,
-        label: '已删除'
-    },
-    {
-        value: false,
-        label: '未删除'
-    }
-]
 
 export default {
     name: 'arrange-list',
@@ -109,9 +81,8 @@ export default {
             isOpenArrangeInfoModal: false,
             loading: true,
             pollingId: '',
+            incomeTotal: 0,
 
-            IS_STARTED_MAP,
-            IS_DELETED_MAP,
             OPERATION_TYPE,
             WORD_HOUR_LIST
         }
@@ -171,7 +142,7 @@ export default {
             )
         },
         startRow(id) {
-            this.$confirm(`是否开始执行所选预定 ？`).then(() =>
+            this.$confirm(`是否开始游戏？（请确认客户【已付款】且【已到店】）`).then(() =>
                 startReserve(id).then(() => {
                     this.$message('执行成功，开始计时')
                     this._getList()
@@ -267,29 +238,13 @@ export default {
                 height: 18px;
                 margin-right: 4px;
             }
-            @keyframes name {
-                0% {
-                    opacity: 1;
-                }
-                25% {
-                    opacity: 0.7;
-                }
-                50% {
-                    opacity: 0.5;
-                }
-                75% {
-                    opacity: 0.7;
-                }
-                100% {
-                    opacity: 1;
-                }
-            }
 
             .income-btn {
-                height: 38px;
+                height: 36px;
+                padding: 8px 20px;
+                vertical-align: top;
                 background: #ffb62f;
                 @include font-normal(14px, white, true);
-                animation: name 1s infinite;
 
                 &:hover {
                     opacity: 0.8;
