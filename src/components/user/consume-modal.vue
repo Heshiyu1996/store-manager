@@ -140,6 +140,7 @@ export default {
 <style lang="scss" scoped>
 .u-consume-modal {
     /deep/ .u-modal-body {
+        min-height: 500px;
         overflow-y: visible;
 
         .el-form {
