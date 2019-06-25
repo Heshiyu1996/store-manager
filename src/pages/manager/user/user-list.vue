@@ -108,7 +108,7 @@ export default {
     },
     methods: {
         goConsumeDetail(cardId) {
-            this.$router.push({ name: 'user-card-list', params: { cardId } })
+            this.$router.push({ name: 'card-list', params: { cardId } })
         },
         addPatch() {
             this.isOpenAddUserModal = true
