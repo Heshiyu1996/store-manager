@@ -45,7 +45,7 @@
             <el-divider content-position="left">Step3: 支付信息</el-divider>
             <el-form-item label="支付类型" vtop>
                 <PaymentInfoCard :disabled="hasEnded" v-model="form.paymentList" :amount.sync="form.amount" :list="otherList['paymentList']"></PaymentInfoCard>
-                <div class="card-consumption-wrapper">
+                <!-- <div class="card-consumption-wrapper">
                     <div class="consumption-content">
                         <u-input
                             v-model.number="form.cardId"
@@ -53,7 +53,6 @@
                             maxLength="11"
                             placeholder="请输入会员卡"
                             size="mini"
-                            disabled
                             @blur="getCardInfo(form.cardId)"
                             @keypress.enter="getCardInfo(form.cardId)"
                         />
@@ -62,12 +61,11 @@
                             maxLength="11"
                             placeholder="请输入消费金额"
                             size="mini"
-                            disabled
                             @change="addAmount(form.cardConsumption)"
                         />
                     </div>
                     <div class="card-info">卡号：[xxx]；卡内余额：xxx 元；所属人：xxx</div>
-                </div>
+                </div> -->
                 <span class="sum-tip">总计：{{ form.amount }} 元</span>
             </el-form-item>
             <br />
@@ -217,9 +215,9 @@ export default {
             })
         },
 
-        getCardInfo(cardId) {
-            console.log(cardId)
-        },
+        // getCardInfo(cardId) {
+        //     console.log(cardId)
+        // },
 
         _getArrangeTime() {
             getArrangeTime(this.searchParams).then(data => (this.list = [...data.list] || []))
@@ -270,7 +268,7 @@ export default {
 
             .arrange-time-tip,
             .sum-tip {
-                margin-left: 8px;
+                float: right;
                 @include font-normal(12px, $normal-color-s);
             }
 
@@ -292,38 +290,6 @@ export default {
             .textarea {
                 width: 506px;
                 height: 130px;
-            }
-
-            .card-consumption-wrapper {
-                padding: 6px 8px;
-                margin-top: -17px;
-                border: 1px dashed $border-color;
-
-                .consumption-content {
-                    height: 38px;
-
-                    .u-input {
-                        width: 130px;
-
-                        &:last-child {
-                            margin-left: 74px;
-                        }
-                    }
-                }
-
-                &:before {
-                    display: block;
-                    height: 20px;
-                    line-height: 20px;
-                    content: '会员卡消费（暂不可用）';
-                    @include font-normal(12px, $tip-color-m);
-                }
-
-                .card-info {
-                    height: 20px;
-                    line-height: 20px;
-                    @include font-normal(12px, $tip-color-s);
-                }
             }
         }
 
