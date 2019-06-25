@@ -18,7 +18,7 @@
             <u-table ref="operationTable" :list="cardList" auto is-list>
                 <template slot-scope="{ row }">
                     <u-table-column width="6vw" label="卡号" ellipse>{{ row.cardId || '-' }}</u-table-column>
-                    <u-table-column width="12vw" label="卡种" ellipse>{{ row.type }}（{{ row.discount }}）</u-table-column>
+                    <u-table-column width="12vw" label="卡种" ellipse>{{ _findCardTypeText(row.type) }}</u-table-column>
                     <u-table-column width="12vw" label="持卡人" ellipse>{{ row.ownerName }}</u-table-column>
                     <u-table-column width="12vw" label="开卡人" ellipse>{{ row.operator }}</u-table-column>
                     <u-table-column width="12vw" label="开卡门店" ellipse>{{ row.storeName }}</u-table-column>
@@ -54,7 +54,7 @@
 <script>
 import CardInfoModal from '@/components/card/card-info-modal'
 import { getCardList, deleteCard } from '@/server/api'
-import { RECHARGE_TYPE_MAP, MODIFY_MODAL_TYPE } from '@/utils/config'
+import { MODIFY_MODAL_TYPE, CARD_TYPE_MAP } from '@/utils/config'
 import { createNamespacedHelpers } from 'vuex'
 
 const { mapGetters } = createNamespacedHelpers('login')
@@ -72,10 +72,11 @@ export default {
                 totalCount: 0
             },
             rangeTime: [],
-
             cardList: [],
 
-            isOpenCardInfoModal: false
+            isOpenCardInfoModal: false,
+
+            CARD_TYPE_MAP
         }
     },
     watch: {
@@ -149,9 +150,9 @@ export default {
             this.isOpenCardInfoModal = false
             isSuccess && this._getList(false)
         },
-        _findRechargeTxt(type) {
-            if (typeof type !== 'number') return '-'
-            return RECHARGE_TYPE_MAP.find(item => type === item.value).label
+        _findCardTypeText(type) {
+            if (!type) return '-'
+            return CARD_TYPE_MAP.find(item => type === item.value).label
         }
     }
 }
