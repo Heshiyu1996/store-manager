@@ -18,12 +18,13 @@
             <u-table ref="operationTable" :list="cardList" auto is-list>
                 <template slot-scope="{ row }">
                     <u-table-column width="6vw" label="卡号" ellipse>{{ row.cardId || '-' }}</u-table-column>
-                    <u-table-column width="12vw" label="卡种" ellipse>{{ _findCardTypeText(row.type) }}</u-table-column>
-                    <u-table-column width="12vw" label="持卡人" ellipse>{{ row.ownerName }}</u-table-column>
+                    <u-table-column width="6vw" label="卡种" ellipse>{{ _findCardTypeText(row.type) }}</u-table-column>
+                    <u-table-column width="12vw" label="持卡人账号" ellipse>{{ row.ownerAccount }}</u-table-column>
+                    <u-table-column width="12vw" label="持卡人昵称" ellipse>{{ row.ownerName }}</u-table-column>
                     <u-table-column width="12vw" label="开卡人" ellipse>{{ row.operator }}</u-table-column>
                     <u-table-column width="12vw" label="开卡门店" ellipse>{{ row.storeName }}</u-table-column>
-                    <u-table-column width="12vw" label="余额（元）" ellipse> {{ row.balance }} </u-table-column>
-                    <u-table-column width="18vw" label="开卡时间">
+                    <u-table-column width="8vw" label="余额（元）" ellipse> {{ row.balance }} </u-table-column>
+                    <u-table-column width="14vw" label="开卡时间">
                         {{ row.createTime | dateFormat('yyyy-MM-dd hh:mm:ss') }}
                     </u-table-column>
                     <u-table-column label="操作">

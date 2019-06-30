@@ -2,16 +2,21 @@
     <u-modal :visible="visible" :title="type ? '新增会员卡' : '编辑会员卡'" @before-close="submit" @close="closeModal" class="card-info-modal">
         <el-form ref="form" :model="form" label-width="110px">
             <el-form-item label="卡号">
-                <u-input v-model="form.cardId" placeholder="请输入卡号" />
+                <u-input v-model="form.cardId" :disabled="!this.type" placeholder="请输入卡号" />
+            </el-form-item>
+            <el-form-item label="卡种">
+                <el-select v-model="form.type" filterable placeholder="请选择卡种">
+                    <el-option v-for="item in CARD_TYPE_MAP" :key="item.value" :label="item.label" :value="item.value"> </el-option>
+                </el-select>
             </el-form-item>
             <el-form-item label="初始金额">
-                <u-input v-model="form.balance" placeholder="请输入初始金额" />
+                <u-input v-model="form.balance" :disabled="!this.type" placeholder="请输入初始金额" />
             </el-form-item>
             <el-form-item label="持卡人账号">
                 <u-input v-model="form.ownerAccount" placeholder="请输入持卡人账号" />
             </el-form-item>
             <el-form-item label="开卡门店">
-                <el-select v-model="form.storeId" filterable placeholder="请选择开卡门店">
+                <el-select v-model="form.storeId" filterable clearable placeholder="请选择开卡门店">
                     <el-option v-for="item in getStoreListStore" :key="item.id" :label="item.name" :value="item.id"> </el-option>
                 </el-select>
             </el-form-item>
@@ -22,7 +27,7 @@
 <script>
 import { CloseModalMixin, InvalidCheckMixin } from '@/components/common/mixins'
 import { addCard, editCard } from '@/server/api'
-import { RECHARGE_TYPE_MAP, MODIFY_MODAL_TYPE } from '@/utils/config'
+import { RECHARGE_TYPE_MAP, MODIFY_MODAL_TYPE, CARD_TYPE_MAP } from '@/utils/config'
 import { createNamespacedHelpers } from 'vuex'
 
 const { mapGetters } = createNamespacedHelpers('login')
@@ -57,7 +62,8 @@ export default {
 
             RECHARGE_TYPE_MAP,
             RECORD_TYPE,
-            RECORD_TYPE_MAP
+            RECORD_TYPE_MAP,
+            CARD_TYPE_MAP
         }
     },
     computed: {
