@@ -23,11 +23,19 @@
                     size="mini"
                     @blur="getCardInfo(cardId)"
                     @keypress.enter="getCardInfo(cardId)"
+                    :disabled="disabled"
                     :class="{ 'is-invalid': !isValidCardId && !firstInputCardId }"
                 />
-                <u-input v-model.number="cardConsumption" maxLength="11" placeholder="请输入消费金额" size="mini" @change="addAmount(cardConsumption)" />
+                <u-input
+                    v-model.number="cardConsumption"
+                    :disabled="disabled"
+                    maxLength="11"
+                    placeholder="请输入消费金额"
+                    size="mini"
+                    @change="addAmount(cardConsumption)"
+                />
             </div>
-            <div class="card-info">
+            <div v-show="targetCard.cardId" class="card-info">
                 <template v-if="targetCard.cardId">
                     卡号：<b>{{ targetCard.cardId }}</b
                     >；卡内余额：<b>{{ targetCard.balance }} 元</b>；所属人：<b>{{ targetCard.ownerName }}</b>

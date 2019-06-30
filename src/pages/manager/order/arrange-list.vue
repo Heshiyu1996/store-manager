@@ -17,7 +17,7 @@
 
                     <el-button slot="reference" class="income-btn">
                         <u-icon name="income" class="income-icon" />
-                        <span>{{ incomeTotal ? `今日收款：${incomeTotal} 元` : '今日暂无收入，请加油吧！' }}</span>
+                        <span>{{ incomeTotal ? `今日收款：${incomeTotal} 元` : '今日暂无收入，请加油吧^-^' }}</span>
                     </el-button>
                 </el-popover>
             </u-layout>
@@ -244,7 +244,7 @@ export default {
                 height: 36px;
                 padding: 8px 20px;
                 vertical-align: top;
-                background: #ffb62f;
+                background: $normal-color-s;
                 @include font-normal(14px, white, true);
 
                 &:hover {
