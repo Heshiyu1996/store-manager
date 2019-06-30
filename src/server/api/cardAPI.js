@@ -62,7 +62,7 @@ export const addCard = data =>
 // 编辑会员卡
 export const editCard = data =>
     http({
-        url: `/api/card/${data}`,
+        url: `/api/card/${data.cardId}`,
         method: 'put',
         data
     })
