@@ -280,9 +280,19 @@ export default {
             padding: 0;
         }
 
-        .u-table-column {
-            line-height: 26px;
-            height: auto;
+        /deep/ .u-table {
+            th {
+                span {
+                    display: inline-block;
+                    max-width: 180px;
+                    @include ellipse();
+                }
+            }
+
+            .u-table-column {
+                line-height: 26px;
+                height: auto;
+            }
         }
 
         .icon {

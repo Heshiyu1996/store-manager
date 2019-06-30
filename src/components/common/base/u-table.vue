@@ -7,7 +7,7 @@
             <thead v-if="list.length !== 0">
                 <tr>
                     <th v-for="(column, index) in columns" :style="column.style" :key="index">
-                        <span type="7" :class="column.required ? 'required' : ''">{{ column.label }}</span>
+                        <span type="7" :class="column.required ? 'required' : ''" :title="column.label">{{ column.label }}</span>
                         <u-tooltip v-if="column.tooltip" :content="column.tooltip" :direction="column.tooltipDirection"><u-icon name="info"/></u-tooltip>
                         <u-icon v-if="column.showSort" :name="orderDesc ? 'sort-desc' : 'sort-asc'" @click="setOrderType" class="sort" />
                         <u-th-select
