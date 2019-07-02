@@ -9,5 +9,9 @@
 
 #app {
     height: 100%;
+
+    .el-message {
+        color: red;
+    }
 }
 </style>

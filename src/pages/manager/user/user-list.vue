@@ -6,6 +6,7 @@
                     <el-option v-for="item in USER_TYPE_MAP" :key="item.value" :label="item.label" :value="item.value"> </el-option>
                 </el-select>
                 <u-input v-model.trim="searchParams.name" maxLength="100" placeholder="请输入姓名" searchIcon @key-press-enter="_getList" />
+                <el-button class="income-btn" @click="outputPhone">一键导出手机</el-button>
             </u-layout>
             <u-layout class="operation">
                 <el-tooltip class="item" effect="dark" content="添加" placement="top">
@@ -107,6 +108,9 @@ export default {
         this._getList(true)
     },
     methods: {
+        outputPhone() {
+            this.$message.error('此功能开发中，即将到来~')
+        },
         goConsumeDetail(cardId) {
             this.$router.push({ name: 'card-list', params: { cardId } })
         },

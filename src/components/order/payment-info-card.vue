@@ -175,6 +175,8 @@ export default {
     }
 
     .payment-consumption-wrapper {
+        overflow: scroll;
+        max-height: 180px;
         padding: 6px 8px;
 
         &:before {

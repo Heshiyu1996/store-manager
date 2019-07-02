@@ -13,6 +13,9 @@ Vue.use(VCharts)
 Vue.prototype.$bus = new Vue()
 Vue.prototype.$store = store
 
+// 把普通的改为success
+Vue.prototype.$message = Object.assign(Vue.prototype.$message.success, { error: Vue.prototype.$message.error })
+
 new Vue({
     router,
     store,

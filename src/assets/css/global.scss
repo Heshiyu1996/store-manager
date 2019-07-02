@@ -57,3 +57,19 @@ body {
 .el-range-separator {
     width: 7% !important;
 }
+
+.el-message {
+    &.el-message--success {
+        background: $primary-color !important;
+        border: $normal-color-s !important;
+
+        .el-message__content {
+            color: white !important;
+        }
+    }
+
+    .el-icon-success {
+        color: white !important;
+    }
+
+}
