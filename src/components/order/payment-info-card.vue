@@ -102,7 +102,7 @@ export default {
             this.cardIdInput = val
         },
         cardIdInput(val) {
-            this.$emit('update:cardId', val)
+            this.$emit('update:cardId', val || null)
         },
         cardConsumption(val) {
             this.cardConsumptionInput = val
