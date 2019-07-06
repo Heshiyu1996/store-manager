@@ -43,29 +43,23 @@
             </el-form-item>
             <br />
             <el-divider content-position="left">Step3: 支付信息</el-divider>
-            <el-form-item label="支付类型" vtop>
-                <PaymentInfoCard :disabled="hasEnded" v-model="form.paymentList" :amount.sync="form.amount" :list="otherList['paymentList']"></PaymentInfoCard>
-                <!-- <div class="card-consumption-wrapper">
-                    <div class="consumption-content">
-                        <u-input
-                            v-model.number="form.cardId"
-                            :regex="/^[0-9\u4e00-\u9fa5]+$/g"
-                            maxLength="11"
-                            placeholder="请输入会员卡"
-                            size="mini"
-                            @blur="getCardInfo(form.cardId)"
-                            @keypress.enter="getCardInfo(form.cardId)"
-                        />
-                        <u-input
-                            v-model.number="form.cardConsumption"
-                            maxLength="11"
-                            placeholder="请输入消费金额"
-                            size="mini"
-                            @change="addAmount(form.cardConsumption)"
-                        />
-                    </div>
-                    <div class="card-info">卡号：[xxx]；卡内余额：xxx 元；所属人：xxx</div>
-                </div> -->
+            <el-form-item label="消费明细" vtop>
+                <PaymentInfoCard
+                    v-model="form.paymentList"
+                    :disabled="hasEnded"
+                    :amountTemp.sync="form.amountTemp"
+                    :cardId.sync="form.cardId"
+                    :cardConsumption.sync="form.cardConsumption"
+                    :cardPeopleNum.sync="form.cardPeopleNum"
+                    :discount="form.discount"
+                    :list="otherList['paymentList']"
+                ></PaymentInfoCard>
+                <div class="extra-discount">
+                    <el-checkbox v-model="form.hasDiscount">特殊优惠</el-checkbox>
+
+                    <u-input v-if="form.hasDiscount" v-model.number="form.discount" maxLength="11" placeholder="请输入特殊优惠（元）" size="mini" />
+                </div>
+
                 <span class="sum-tip">总计：{{ form.amount }} 元</span>
             </el-form-item>
             <br />
@@ -122,7 +116,11 @@ export default {
                 amount: 0,
                 date: 0,
                 cardId: null,
-                cardConsumption: null
+                cardConsumption: null,
+
+                // 以下是额外字段：
+                hasDiscount: false,
+                amountTemp: null
             },
             searchParams: {},
             num: 0,
@@ -167,17 +165,23 @@ export default {
         ...mapGetters(['getStoreListStore'])
     },
     watch: {
-        // 'form.cardConsumption'(val, oldVal) {
-        //     console.log(val, oldVal)
-        //     oldVal && (this.form.amount = this.form.amount - oldVal)
-        //     val && (this.form.amount = this.form.amount + val)
-        // }
+        'form.discount'(val) {
+            let amount = this.form.amountTemp - val || 0
+            this.form.amount = Number(amount.toFixed(2))
+        },
+        'form.amountTemp'(val) {
+            let amount = val - this.form.discount || 0
+            this.form.amount = Number(amount.toFixed(2))
+        },
+        'form.hasDiscount'() {
+            this.form.discount = null
+        }
     },
     created() {
         this.$bus.$on('open-arrange-info-modal', (arrangeDetail, isAdd) => {
             this.type = isAdd
-            const { id: orderId, date, themeId, hour, storeId } = arrangeDetail
-            this.form = this.type ? { ...arrangeDetail } : { ...this.form, ...arrangeDetail }
+            const { id: orderId, date, themeId, hour, storeId, amount } = arrangeDetail
+            this.form = this.type ? { ...arrangeDetail } : { ...this.form, ...arrangeDetail, amountTemp: amount }
             this.searchParams = { orderId, date, themeId, hour, storeId }
             this._getArrangeTime()
         })
@@ -264,6 +268,10 @@ export default {
                 .arrange-time {
                     width: 193px;
                 }
+            }
+
+            .extra-discount {
+                text-align: right;
             }
 
             .arrange-time-tip,
