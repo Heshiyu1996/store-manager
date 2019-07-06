@@ -173,7 +173,7 @@ export default new Router({
                 // 3-查流水
                 {
                     path: 'card-list',
-                    name: 'card-list',
+                    name: 'card-list-wx',
                     component: () => import('@/pages/wx/card-list'),
                     meta: {
                         noAuth: true
