@@ -181,7 +181,8 @@ export default {
 
     .icon {
         position: absolute;
-        top: 10px;
+        top: 50%;
+        transform: translateY(-50%);
         right: 10px;
         font-size: 18px;
         color: $normal-color-s;

@@ -216,15 +216,18 @@ export const RECHARGE_TYPE_MAP = [
 export const CARD_TYPE_MAP = [
     {
         label: '金卡',
-        value: 1
+        value: 1,
+        discount: 0.8
     },
     {
         label: '银卡',
-        value: 2
+        value: 2,
+        discount: 0.85
     },
     {
         label: '铜卡',
-        value: 3
+        value: 3,
+        discount: 0.88
     }
 ]
 
