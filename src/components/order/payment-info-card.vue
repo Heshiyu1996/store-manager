@@ -21,6 +21,7 @@
                     @keypress.enter="getCardInfo(cardIdInput)"
                     :disabled="disabled"
                     :class="{ 'is-invalid': !isValidCardId && !firstInputCardId }"
+                    class="card-input"
                 />
                 <div v-show="targetCard.cardId" class="card-type" :class="`type-${targetCard.type}`">
                     这是一张{{ _findCardTypeText(targetCard.type) }}! 可以享受折扣：{{ discountRate }}
@@ -40,6 +41,7 @@
                             placeholder="请输入消费人数"
                             size="mini"
                             :disabled="disabled || !targetCard.cardId"
+                            class="people-num"
                         />
                         <u-input
                             v-model.number="cardConsumptionInput"
@@ -47,6 +49,7 @@
                             maxLength="11"
                             placeholder="请输入消费金额"
                             size="mini"
+                            class="consumption"
                         />
                         元
                     </div>
@@ -252,10 +255,13 @@ export default {
             position: relative;
         }
 
+        .card-input {
+            width: 100% !important;
+        }
+
         .card-type {
-            display: inline-block;
-            height: 12px;
-            line-height: 12px;
+            height: 10px;
+            line-height: 10px;
             margin-left: 6px;
             font-size: 12px;
             @include font-normal(12px, $error-color);
@@ -276,12 +282,18 @@ export default {
         .card-info-wrapper {
             width: 100%;
             display: inline-block;
-            margin-top: 12px;
+            margin-top: 8px;
             padding: 0 8px;
-            // border-top: 1px dashed $border-color;
             background: $border-color;
             border-radius: 6px;
             @include font-normal(12px, $normal-color-s);
+
+            .card-consume-wrapper {
+                .people-num,
+                .consume {
+                    width: 130px;
+                }
+            }
 
             .info {
                 display: flex;
@@ -310,16 +322,15 @@ export default {
         }
 
         /deep/ .u-input {
-            width: 130px !important;
             height: 28px;
             line-height: 28px;
 
             &:last-child {
-                margin-left: 74px;
+                margin-left: 43px;
             }
 
             input {
-                width: 130px;
+                width: 100%;
             }
 
             &.is-invalid {
