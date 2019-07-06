@@ -21,7 +21,7 @@
                     <el-option v-for="item in RECHARGE_TYPE_MAP" :key="item.value" :label="item.label" :value="item.value"> </el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item v-if="isRecharge" label="操作门店">
+            <el-form-item :label="`${ isRecharge ? '操作门店' : '消费门店' }`">
                 <el-select v-model="form.storeId" filterable>
                     <el-option v-for="item in getStoreListStore" :key="item.id" :label="item.name" :value="item.id"> </el-option>
                 </el-select>
