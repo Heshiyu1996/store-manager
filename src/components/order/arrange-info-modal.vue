@@ -57,7 +57,7 @@
                 <div class="extra-discount">
                     <el-checkbox v-model="form.hasDiscount">特殊优惠</el-checkbox>
 
-                    <u-input v-if="form.hasDiscount" v-model.number="form.discount" maxLength="11" placeholder="请输入特殊优惠（元）" size="mini" />
+                    <u-input v-show="form.hasDiscount" v-model.number="form.discount" maxLength="11" placeholder="请输入特殊优惠（元）" size="mini" />
                 </div>
 
                 <span class="sum-tip">总计：{{ form.amount }} 元</span>
@@ -116,6 +116,7 @@ export default {
                 amount: 0,
                 date: 0,
                 cardId: null,
+                discount: null,
                 cardConsumption: null,
 
                 // 以下是额外字段：
@@ -181,7 +182,9 @@ export default {
         this.$bus.$on('open-arrange-info-modal', (arrangeDetail, isAdd) => {
             this.type = isAdd
             const { id: orderId, date, themeId, hour, storeId, amount } = arrangeDetail
-            this.form = this.type ? { ...arrangeDetail } : { ...this.form, ...arrangeDetail, amountTemp: amount, hasDiscount: !!arrangeDetail.discount }
+            let baseForm = { ...this.form, ...arrangeDetail },
+                editFormExtra = { amountTemp: amount, hasDiscount: !!arrangeDetail.discount }
+            this.form = this.type ? { ...baseForm } : { ...baseForm, ...editFormExtra }
             this.searchParams = { orderId, date, themeId, hour, storeId }
             this._getArrangeTime()
         })
