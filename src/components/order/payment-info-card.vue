@@ -75,11 +75,11 @@ export default {
             paymentData: {},
             targetCard: {},
 
-            cardPeopleNumInput: null,
+            cardPeopleNumInput: this.cardPeopleNum || null,
             paymentSum: 0,
 
-            cardIdInput: null,
-            cardConsumptionInput: null,
+            cardIdInput: this.cardId || null,
+            cardConsumptionInput: this.cardConsumption || null,
 
             isValidCardId: false,
             firstInputCardId: true
@@ -137,6 +137,9 @@ export default {
         'targetCard.cardId'(val) {
             !val && (this.cardConsumptionInput = this.cardPeopleNumInput = null)
         }
+    },
+    created() {
+        this.cardIdInput && this.getCardInfo(this.cardIdInput)
     },
     methods: {
         getCardInfo(cardId) {
