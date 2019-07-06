@@ -181,7 +181,7 @@ export default {
         this.$bus.$on('open-arrange-info-modal', (arrangeDetail, isAdd) => {
             this.type = isAdd
             const { id: orderId, date, themeId, hour, storeId, amount } = arrangeDetail
-            this.form = this.type ? { ...arrangeDetail } : { ...this.form, ...arrangeDetail, amountTemp: amount }
+            this.form = this.type ? { ...arrangeDetail } : { ...this.form, ...arrangeDetail, amountTemp: amount, hasDiscount: !!arrangeDetail.discount }
             this.searchParams = { orderId, date, themeId, hour, storeId }
             this._getArrangeTime()
         })
@@ -219,18 +219,9 @@ export default {
             })
         },
 
-        // getCardInfo(cardId) {
-        //     console.log(cardId)
-        // },
-
         _getArrangeTime() {
             getArrangeTime(this.searchParams).then(data => (this.list = [...data.list] || []))
         }
-
-        // addAmount(cardConsumption) {
-        //     console.log(cardConsumption)
-        //     typeof cardConsumption === 'number' && (this.form.amount = this.form.amount + cardConsumption)
-        // }
     }
 }
 </script>
