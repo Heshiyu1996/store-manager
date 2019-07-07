@@ -176,15 +176,15 @@ export default {
         },
         'form.hasDiscount'() {
             this.form.discount = null
+            this.$set(this.form, 'discount', null)
         }
     },
     created() {
         this.$bus.$on('open-arrange-info-modal', (arrangeDetail, isAdd) => {
             this.type = isAdd
             const { id: orderId, date, themeId, hour, storeId, amount } = arrangeDetail
-            let baseForm = { ...this.form, ...arrangeDetail },
-                editFormExtra = { amountTemp: amount, hasDiscount: !!arrangeDetail.discount }
-            this.form = this.type ? { ...baseForm } : { ...baseForm, ...editFormExtra }
+            let editFormExtra = { discount: null, amountTemp: amount || 0, hasDiscount: !!arrangeDetail.discount }
+            this.form = this.type ? { ...arrangeDetail, ...editFormExtra } : { ...this.form, ...arrangeDetail, ...editFormExtra }
             this.searchParams = { orderId, date, themeId, hour, storeId }
             this._getArrangeTime()
         })
