@@ -11,7 +11,7 @@
                 <br />
 
                 <u-icon name="edit" class="icon" @click="editRow" /> | <u-icon name="remove" class="icon" @click="deleteRow" /> |
-                <el-button type="danger" @click="startRow" size="mini" class="start-btn">开始游戏</el-button>
+                <el-button @click="startRow" size="mini" class="start-btn">开始游戏</el-button>
             </div>
 
             <div v-if="isStarted || isEnding || isEnded">
@@ -96,8 +96,25 @@ export default {
     justify-content: center;
     align-items: center;
     padding: 6px;
-    margin-right: 8px;
     text-align: center;
+
+    @keyframes shiny {
+        0% {
+            opacity: 1;
+        }
+        25% {
+            opacity: 0.7;
+        }
+        50% {
+            opacity: 0.5;
+        }
+        75% {
+            opacity: 0.7;
+        }
+        100% {
+            opacity: 1;
+        }
+    }
 
     .green-light,
     .started-light,
@@ -112,7 +129,6 @@ export default {
         right: -5px;
         border-radius: 10px 0 0 10px;
         color: white;
-        // transition: all .3s ease;
     }
 
     .green-light {
@@ -125,6 +141,7 @@ export default {
 
     .ending-light {
         background: red;
+        animation: shiny 0.6s infinite;
     }
 
     .ended-light {
