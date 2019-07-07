@@ -26,12 +26,12 @@
             <div id="musicArrange"></div>
 
             <div v-loading.body="loading">
-                <u-table v-if="!loading" ref="operationTable" :list="list" auto is-list scroll>
+                <u-table v-if="!loading" ref="operationTable" :list="list" auto is-list>
                     <template slot-scope="{ row }">
                         <u-table-column label="时间" ellipse>
                             {{ row.hour }}
                         </u-table-column>
-                        <u-table-column v-for="theme in themeList" :key="theme.id" :label="theme.name" width="185px" ellipse class="arrange-info-item">
+                        <u-table-column v-for="theme in themeList" :key="theme.id" :label="theme.name" width="200px" ellipse class="arrange-info-item">
                             <ArrangeInfoCard
                                 :arrange-info="row[theme.id]"
                                 :theme-id="theme.id"
@@ -266,8 +266,33 @@ export default {
     .content-wrapper {
         font-size: 12px;
 
+        /deep/ thead {
+            tr {
+                position: sticky;
+                top: 56px;
+                white-space: nowrap;
+                background: $brand-disabled;
+                box-shadow: 1px 1px 6px -2px;
+                z-index: 2;
+            }
+        }
+
         /deep/ tbody {
             max-height: 62vh;
+
+            tr {
+                white-space: nowrap;
+
+                td:first-child {
+                    position: sticky;
+                    left: 0;
+                    padding-top: 4%;
+                    border-right: 1px solid $border-color;
+                    background: $brand-disabled;
+                    box-shadow: 3px 1px 4px -6px;
+                    z-index: 1;
+                }
+            }
         }
 
         #musicArrange {
@@ -275,8 +300,7 @@ export default {
         }
 
         .arrange-info-item {
-            border-left: 1px dashed $border-color;
-
+            border-right: 1px dashed $border-color;
             padding: 0;
         }
 
