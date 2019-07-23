@@ -33,6 +33,10 @@ service.interceptors.request.use(
                 }
                 config.data = JSON.stringify(requestData)
             }
+
+            // attachment下载类型（一键导出使用）
+            let downloadRegex = /\/api\/user\/output/
+            downloadRegex.test(config.url) && (config.responseType = 'blob')
         }
         // 预防CSRF攻击，请求头携带sessionId字段
         let sessionId = fetchCookieValue('ZZH_ELP_SESS')
@@ -50,7 +54,8 @@ service.interceptors.request.use(
 service.interceptors.response.use(
     response => {
         const res = response.data
-        console.log(res)
+        // attachment下载类型（一键导出使用）
+        if (response.headers['content-disposition']) return res
         if (isMock || res.code === 200) {
             return res.data // 直接返回数据
         } else {

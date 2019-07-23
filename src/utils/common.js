@@ -88,3 +88,17 @@ export const playMusic = (musicList, idSelector) => {
     }
     return myAudio
 }
+
+export const downloadAttachmentFile = (blobData, fileName = `下载文件名.xls`) => {
+    const blob = blobData
+    const reader = new FileReader()
+    reader.readAsDataURL(blob)
+    reader.onload = e => {
+        const a = document.createElement('a')
+        a.download = fileName
+        a.href = e.target.result
+        document.body.appendChild(a)
+        a.click()
+        document.body.removeChild(a)
+    }
+}

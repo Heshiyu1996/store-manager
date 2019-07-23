@@ -98,3 +98,11 @@ export const getOtherList = data =>
         method: 'post',
         data
     })
+
+// 一键导出手机
+export const outputPhoneList = data =>
+    http({
+        url: `/api/user/output`,
+        method: 'post',
+        data
+    })
